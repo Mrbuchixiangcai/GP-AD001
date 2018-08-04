@@ -1,0 +1,1 @@
+"source\boot.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Listings\boot.lst) OBJECT(.\Objects\boot.obj)

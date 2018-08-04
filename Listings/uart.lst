@@ -1,0 +1,127 @@
+C51 COMPILER V9.00   UART                                                                  08/04/2018 12:05:32 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\uart.obj
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\uart.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inclu
+                    -de) DEBUG OBJECTEXTEND PRINT(.\Listings\uart.lst) OBJECT(.\Objects\uart.obj)
+
+line level    source
+
+   1          //头文件header file//
+   2          #include "app_main.h"
+   3          
+   4          uint8_t  idata  Rx_Pointer;
+   5          uint8_t  idata  Uart0_EnableSend;
+   6          uint8_t  idata  Uart0_Tx_Pointer;
+   7          uint16_t xdata  mUart0_Rx_Pointer;
+   8          uint16_t xdata  sUart0_Rx_Pointer;
+   9          uint8_t  idata  Uart0_Tx_TimeOut;
+  10          uint8_t  idata  Uart0_Rx_TimeOut;
+  11          
+  12          uint8_t  xdata  WIFI_ReceiveBuffer[UART0_LEN_BUFFER];
+  13          uint8_t  xdata  Uart0_TransmitBuffer[UART0_LEN_BUFFER];
+  14          uint8_t  xdata  Uart0_ReceiveBuffer[UART0_RX_LEN_BUFFER];
+  15          uint8_t  idata  Count200ms_3Step;
+  16          uint8_t  idata  Uart0_SendString_3Step;
+  17          
+  18          void Uart0Transmit_SendString(char *str) 
+  19          {
+  20   1              uint8_t i;
+  21   1       do{WDT_clear();} while(Uart0_EnableSend);
+  22   1              Count200ms_3Step=0;
+  23   1              //Uart0_SendString_3Step=0;
+  24   1              for(i=0;i<UART0_LEN_BUFFER;i++)         
+  25   1                      Uart0_TransmitBuffer[i]=0;
+  26   1              for(i=0;*str!='\0';i++) 
+  27   1              { 
+  28   2                      Uart0_TransmitBuffer[i]=*str; 
+  29   2                      str++;
+  30   2              }
+  31   1              Uart0_Tx_Pointer=0;
+  32   1              Uart0_EnableSend=1;
+  33   1              Uart0_Tx_TimeOut=10;    
+  34   1              USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
+  35   1      }
+  36          void Uart0Transmit_SendString_3Step(void) 
+  37          {
+  38   1              if(Uart0_SendString_3Step)
+  39   1              {
+  40   2                      if(Count200ms_3Step>=20)        
+  41   2                      {               
+  42   3                              do{WDT_clear();} while(Uart0_EnableSend);
+  43   3                              Uart0_SendString_3Step--;
+  44   3                              Count200ms_3Step=0;
+  45   3                              Uart0_Tx_Pointer=0;
+  46   3                              Uart0_EnableSend=1;
+  47   3                              Uart0_Tx_TimeOut=10;
+  48   3                              USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
+  49   3                      }
+  50   2                      else 
+  51   2                              Count200ms_3Step++;
+  52   2              }
+  53   1              else
+  54   1              {
+C51 COMPILER V9.00   UART                                                                  08/04/2018 12:05:32 PAGE 2   
+
+  55   2                      if(Flag_alarm_say_to_IOT)
+  56   2                      {
+  57   3                              Flag_alarm_say_to_IOT=0;
+  58   3                              Uart0_SendString_3Step=3;
+  59   3                              Uart0Transmit_SendString("$$$Alarm up\r\n");//闹钟响应，通知IoT，以便app操作控制机台
+  60   3                      }
+  61   2                      else if(Flag_time_sync)
+  62   2                      {
+  63   3                              Flag_time_sync=0;
+  64   3                              Uart0_SendString_3Step=3;
+  65   3                              Uart0Transmit_SendString("$$$Time sync\r\n");//请求校准时间，一个小时发送一次，这一次要发三次
+  66   3                      }
+  67   2                      else if(cntFlag_ON_OFF)
+  68   2                      {
+  69   3                              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);//请求校准时间，一个小时发送一次，这一次要发三次
+  70   3                              cntFlag_ON_OFF--;
+  71   3                              Uart0_SendString_3Step=2;
+  72   3                      }               
+  73   2              }
+  74   1      }
+  75          void Uart0_Receive_Parse(void)
+  76          {
+  77   1              uint8_t i;
+  78   1              while(mUart0_Rx_Pointer!=sUart0_Rx_Pointer)
+  79   1              {
+  80   2                      WDT_clear();
+  81   2                      Uart0_Rx_TimeOut=10;    
+  82   2                      WIFI_ReceiveBuffer[Rx_Pointer]=Uart0_ReceiveBuffer[sUart0_Rx_Pointer];
+  83   2                      Uart0_ReceiveBuffer[sUart0_Rx_Pointer]=0x00;
+  84   2                      if(++sUart0_Rx_Pointer>=(UART0_RX_LEN_BUFFER-1))        
+  85   2                              sUart0_Rx_Pointer=0;
+  86   2                      if(WIFI_ReceiveBuffer[Rx_Pointer++]=='\n')
+  87   2                      {
+  88   3                              Wifi_CommandDeal(WIFI_ReceiveBuffer);
+  89   3                              for(i=0;i<UART0_LEN_BUFFER;i++)
+  90   3                                      WIFI_ReceiveBuffer[i]=0x00;
+  91   3                              Rx_Pointer=0x00;
+  92   3                              //Flag_data_bk=1;
+  93   3                      }
+  94   2              }       
+  95   1      }
+  96          
+  97          
+  98          
+  99          
+ 100          
+ 101          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    373    ----
+   CONSTANT SIZE    =     29    ----
+   XDATA SIZE       =    505       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =      7    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

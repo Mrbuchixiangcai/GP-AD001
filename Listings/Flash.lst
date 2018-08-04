@@ -1,0 +1,147 @@
+C51 COMPILER V9.00   FLASH                                                                 08/04/2018 12:05:31 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE FLASH
+OBJECT MODULE PLACED IN .\Objects\Flash.obj
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\Flash.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\incl
+                    -ude) DEBUG OBJECTEXTEND PRINT(.\Listings\Flash.lst) OBJECT(.\Objects\Flash.obj)
+
+line level    source
+
+   1          #include "app_main.h"
+   2          #include <intrins.h>
+   3          
+   4          unsigned char eeprom_write_enable[4];
+   5          
+   6          void eeprom_init(void)
+   7          {
+   8   1              FIDR   = 0;
+   9   1              FMCR   = 0;  
+  10   1              FSADRH = 0;
+  11   1              FSADRM = (unsigned char)(EEP_ADDRESS_START >> 8);           
+  12   1              FSADRL = (unsigned char)EEP_ADDRESS_START;       
+  13   1      }
+  14          void Program_Reset(void)
+  15          {
+  16   1              ((void (code *) (void)) 0x0000)();
+  17   1      }
+  18          void eeprom_wr_flag_endable(unsigned char enable)
+  19          {
+  20   1              unsigned char i = 0;
+  21   1              unsigned char ret = 0xA2;   
+  22   1              for(i=0;i<4;i++)
+  23   1              {
+  24   2              if(enable)  
+  25   2                      eeprom_write_enable[i]=ret;
+  26   2              else                        
+  27   2                      eeprom_write_enable[i]= 0 ;
+  28   2              ret++;
+  29   2              }        
+  30   1      }
+  31          void EpromResetCMD(void)
+  32          {
+  33   1              FMCR = 0x01;
+  34   1              _nop_();  
+  35   1              _nop_();
+  36   1              _nop_();  
+  37   1              _nop_();
+  38   1      }
+  39          void EpromWriteCMD(unsigned char code *ptr_addr)
+  40          {
+  41   1              unsigned int tmp = (unsigned char code *)ptr_addr;      
+  42   1              FSADRH = 0;
+  43   1              FSADRM = (unsigned char)(tmp>>8);           
+  44   1              FSADRL = (unsigned char)tmp;            
+  45   1              FIDR   = 0xA5;                                                                      
+  46   1              if((eeprom_write_enable[0]==0xA2) && (eeprom_write_enable[1]==0xA3) && (eeprom_write_enable[2]==0xA4) && 
+             -(eeprom_write_enable[3]==0xA5))
+  47   1              {
+  48   2                      FMCR = 0x03;                                             
+  49   2                      _nop_(); 
+  50   2                      _nop_();
+  51   2                      _nop_();  
+  52   2                      _nop_();
+  53   2              }
+C51 COMPILER V9.00   FLASH                                                                 08/04/2018 12:05:31 PAGE 2   
+
+  54   1              else
+  55   1              {
+  56   2                      Program_Reset();                                         
+  57   2              }
+  58   1              eeprom_init();                  
+  59   1      }
+  60          void EpromEraseCMD(unsigned char code *ptr_addr)
+  61          {
+  62   1              unsigned char i;
+  63   1              unsigned int  tmp = (unsigned char code *)ptr_addr;     
+  64   1              unsigned char xdata *ImageDat = 0x8000;                                                                  
+             -                                                       
+  65   1              EpromResetCMD();                                           
+  66   1              for(i=0; i<FLASH_PAGE_SIZE; i++)                
+  67   1                      ImageDat[i]=0;                                             
+  68   1              FSADRH = 0;                                               
+  69   1              FSADRM = (unsigned char)(tmp>>8);       
+  70   1              FSADRL = (unsigned char)tmp;        
+  71   1              FIDR   = 0xA5;                                             
+  72   1              if((eeprom_write_enable[0]==0xA2) && (eeprom_write_enable[1]==0xA3) && (eeprom_write_enable[2]==0xA4) && 
+             -(eeprom_write_enable[3]==0xA5))
+  73   1              {
+  74   2                      FMCR = 0x02;                                             
+  75   2                      _nop_(); 
+  76   2                      _nop_();
+  77   2                      _nop_();  
+  78   2                      _nop_();
+  79   2              }
+  80   1              else
+  81   1              {
+  82   2                      Program_Reset();                                         
+  83   2              }
+  84   1              eeprom_init();                                               
+  85   1      }
+  86          unsigned char eeprom_page_write_data(unsigned char code *eep_address,unsigned char *dat)
+  87          {
+  88   1              unsigned char i;
+  89   1              unsigned char j=0;
+  90   1              unsigned char xdata *ImageDat = 0x8000;       
+  91   1              unsigned char code *ROMadr = (unsigned char code *)eep_address;                                               
+             -  
+  92   1              cli();    
+  93   1              eeprom_wr_flag_endable(1);  
+  94   1              EpromEraseCMD(ROMadr);                                    
+  95   1              EpromResetCMD();                                                                                         
+             -       
+  96   1              for(i=0;i<FLASH_PAGE_SIZE;i++)                  
+  97   1                      ImageDat[i] = dat[j++];                                  
+  98   1              EpromWriteCMD(ROMadr);                                                                                   
+             -                                      
+  99   1              eeprom_wr_flag_endable(0);   
+ 100   1              ROMadr+=FLASH_PAGE_SIZE;
+ 101   1              sei();    
+ 102   1              return 0;
+ 103   1      }
+ 104          unsigned char  eeprom_byte_read_data(unsigned char code *eep_address)
+ 105          {  
+ 106   1              unsigned char code *p = (unsigned char code *)eep_address;    
+ 107   1              return (*p);                                                                                                             
+ 108   1      }
+ 109          
+ 110          
+C51 COMPILER V9.00   FLASH                                                                 08/04/2018 12:05:31 PAGE 3   
+
+ 111          
+ 112          
+ 113          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    354    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      4       9
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

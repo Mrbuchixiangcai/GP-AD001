@@ -1,0 +1,1 @@
+"source\bt_mode.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Listings\bt_mode.lst) OBJECT(.\Objects\bt_mode.obj)

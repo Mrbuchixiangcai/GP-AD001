@@ -1,0 +1,289 @@
+C51 COMPILER V9.00   DEFINE                                                                08/04/2018 12:05:33 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE DEFINE
+OBJECT MODULE PLACED IN .\Objects\define.obj
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\define.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inc
+                    -lude) DEBUG OBJECTEXTEND PRINT(.\Listings\define.lst) OBJECT(.\Objects\define.obj)
+
+line level    source
+
+   1          #include "app_main.h"
+   2          
+   3          ALRAM_TypeDef alarm;
+   4          PLAY_MODE PlayMode;
+   5          TIMER_MODE TimerMode;
+   6          PROGRAM_TypeDef program1; //‘⁄Ω” ’µΩ°∞program Play£®‘›∂®£©°± ±£¨≤•∑≈◊Ó∫Û“ª¥ŒΩ” ’µΩµƒ°∞$$${Program:[00,01,0
+             -1,00,FFFFFF,03,0A,00,1E]}\r\n°± ˝æ›
+   7          PROGRAM_TypeDef program2;
+   8          PROGRAM_TypeDef program3;
+   9          
+  10          //Õ‚≤øµ˜”√_±‰¡ø∂®“Âvariable definition//
+  11          uint8_t idata cntAppTick;
+  12          uint8_t idata gRTC_Sec; // RTC ˝æ›
+  13          uint8_t idata gRTC_Sec_bk;
+  14          uint8_t idata gRTC_Hour;
+  15          uint8_t idata gRTC_Hour_bk;
+  16          uint8_t xdata gRTC_Hour_bk_24; //º∆ ˝24–° ±
+  17          uint8_t idata gRTC_Minute;
+  18          uint8_t idata gRTC_Minute_bk;
+  19          uint8_t idata gRTC_Week; //÷‹º∏
+  20          uint8_t idata cntTimer;
+  21          uint8_t idata sys_volume;
+  22          uint8_t idata sys_volume_bk; //‘⁄≤ª∂œµÁ«Èøˆœ¬ø™πÿª˙±£¥Ê“Ù¡ø÷µ   //
+  23          uint8_t idata color_mode_bk; //‘⁄≤ª∂œµÁ«Èøˆœ¬ø™πÿª˙±£¥Ê—’…´ƒ£ Ω //
+  24          uint8_t idata PlayMode_bk; //‘⁄≤ª∂œµÁ«Èøˆœ¬ø™πÿª˙±£¥Êø™ª˙◊¥Ã¨ƒ£ Ω //
+  25          uint8_t xdata timeSync_PowerON_Cnt; //…œµÁ10s«Î«ÛÕ¨≤Ω ±º‰
+  26          // uint8_t idata
+  27          // data_bk[64];//…Ë÷√¡Àø¥√≈π∑£¨‘⁄”ˆµΩ“‚Õ‚÷ÿ∆Ù÷Æ∫Ûª·¥”0x0000∆Ù∂Ø£¨÷Æ«∞µƒ ˝æ›∂ºª·«Â≥˝
+  28          //À˘“‘”√’‚∏ˆ ˝◊È‘⁄“ª–© ˝æ›±‰∂Ø÷Æ∫Û5sƒ⁄  Ω¯––±∏∑›£¨»Áπ˚ ˝æ›≤ª±‰∂ØæÕ≤ª±∏∑›
+  29          // uint8_t
+  30          // data_bk_Cnt;//…Ë÷√¡Àø¥√≈π∑£¨‘⁄”ˆµΩ“‚Õ‚÷ÿ∆Ù÷Æ∫Ûª·¥”0x0000∆Ù∂Ø£¨÷Æ«∞µƒ ˝æ›∂ºª·«Â≥˝
+  31          //À˘“‘”√’‚∏ˆ ˝◊È‘⁄“ª–© ˝æ›±‰∂Ø÷Æ∫Û5sƒ⁄  Ω¯––±∏∑›£¨»Áπ˚ ˝æ›≤ª±‰∂ØæÕ≤ª±∏∑›
+  32          //¥À±‰¡ø «Ω¯––º∆ ˝5sµƒ
+  33          uint8_t cntFlag_ON_OFF = 0;
+  34          
+  35          //±Í÷æŒª∂®“Âflags definetion//
+  36          bit AppTick0;
+  37          bit AppTick1;
+  38          bit AppTick2;
+  39          bit AppTick3;
+  40          bit AppTick4;
+  41          bit AppTick5;
+  42          bit AppTick1ms;
+  43          bit gbHalfSecond;
+  44          bit enableMute; //Œ™1æÕ’˚ÃÂæ≤“Ù£¨Œ™0æÕΩ‚≥˝æ≤“Ù
+  45          bit enableMute_bk;
+  46          bit setReset;
+  47          bit setFactory;
+  48          bit Flag_Demo_Mode;
+  49          bit Flag_TestMode;
+  50          uint8_t Falg_TimeSync_Allow; // ±º‰‘ –Ì±Í÷æŒ™£¨»Áπ˚Œ™“ªæÕ“ª÷±¡Ω∑÷÷”«Î«ÛÕ¨≤Ω£¨
+  51          bit Flag_data_bk; //…Ë÷√¡Àø¥√≈π∑£¨‘⁄”ˆµΩ“‚Õ‚÷ÿ∆Ù÷Æ∫Ûª·¥”0x0000∆Ù∂Ø£¨÷Æ«∞µƒ ˝æ›∂ºª·«Â≥˝
+  52                            //À˘“‘”√’‚∏ˆ ˝◊È‘⁄“ª–© ˝æ›±‰∂Ø÷Æ∫Û5sƒ⁄
+  53                            //Ω¯––±∏∑›£¨»Áπ˚ ˝æ›≤ª±‰∂ØæÕ≤ª±∏∑› ±‰∂Ø ±∞—¥À±Í÷æŒª÷√“ª
+C51 COMPILER V9.00   DEFINE                                                                08/04/2018 12:05:33 PAGE 2   
+
+  54          bit Flag_alarm_say_to_IOT; //ƒ÷÷”œÏ”¶ ±”¶Œ™“™¡¨–¯∑¢ÀÕ¡ΩÃı”Ôæ‰∏˜3¥Œ£¨À˘“‘µ⁄∂˛Ãı“™∑≈‘⁄uart¿Ô√Ê
+  55          bit Flag_time_sync; // ±º‰«Î«ÛÕ¨≤Ω ±”¶Œ™“™∑¢ÀÕ”Ôæ‰3¥Œ£¨¥À ±”–ø…ƒ‹∫Õ∆‰À˚µƒ“™ÀÕ∑¢ÀÕµƒ
+  56                              //≥ÂÕª£¨À˘“‘µ⁄∂˛Ãı“™∑≈‘⁄uart¿Ô√Ê
+  57          bit Flag_alarm_wake_only;
+  58          
+  59          uint8_t cntFlash;
+  60          uint8_t Led_Flash;
+  61          // extern bit       Flag_data_bk;
+  62          
+  63          
+  64          
+  65          void sys_tick(void)
+  66          {
+  67   1              AppTick1ms = 1;
+  68   1              if (cntAppTick == 0)
+  69   1                      AppTick0 = 1;
+  70   1              if (cntAppTick == 1)
+  71   1                      AppTick1 = 1;
+  72   1              if (cntAppTick == 2)
+  73   1                      AppTick2 = 1;
+  74   1              if (cntAppTick == 3)
+  75   1                      AppTick3 = 1;
+  76   1              if (cntAppTick == 4)
+  77   1                      AppTick4 = 1;
+  78   1              if (cntAppTick == 5)
+  79   1                      AppTick5 = 1;
+  80   1              if (cntAppTick == 6)
+  81   1              {
+  82   2                      if (--Uart0_Tx_TimeOut == 0)
+  83   2                              Uart0_EnableSend = 0;
+  84   2                      if (--Uart0_Rx_TimeOut == 0)
+  85   2                              Rx_Pointer = 0;
+  86   2                      if (--Uart1_Tx_TimeOut == 0)
+  87   2                              Uart1_EnableSend = 0;
+  88   2                      if (--Uart1_Rx_TimeOut == 0)
+  89   2                              Uart1_Rx_Pointer = 0;
+  90   2              }
+  91   1              if (++cntAppTick >= 10)
+  92   1                      cntAppTick = 0;
+  93   1      }
+  94          
+  95          void Compare_1MinutePorc(void)
+  96          {
+  97   1              static uint8_t cntSetVolume;
+  98   1              //uint8_t       code *EEPAddress_data_bk;
+  99   1              if (gRTC_Sec != gRTC_Sec_bk)
+ 100   1              {
+ 101   2                      gRTC_Sec_bk = gRTC_Sec;
+ 102   2                      //Uart0Transmit_SendString(MCU_VER);
+ 103   2                      if (alarm.Runing)
+ 104   2                      {
+ 105   3                              if (++cntSetVolume>10)
+ 106   3                              {//µ±ƒ÷÷”œÏ”¶ ±£¨≥ı º“Ù¡øŒ™1£¨√ø10sº”“ªº∂
+ 107   4                                      cntSetVolume = 0;
+ 108   4                                      if (sys_volume<alarm.volume)
+ 109   4                                              sys_volume++;
+ 110   4                              }
+ 111   3                      }
+ 112   2                      if (Falg_TimeSync_Allow == 1)
+ 113   2                      {//»Áπ˚Falg_TimeSync_AllowŒ™1æÕø™ ºº∆ ˝10£¨10sµΩ¡ÀæÕ∑¢ÀÕ«Î«ÛÕ¨≤Ω–≈œ¢
+ 114   3                       //»ª∫Û»Áπ˚√ª”– ’µΩªÿ∏¥µƒ ±º‰–≈œ¢æÕ√ø∏Ù¡Ω∑÷÷”∑¢“ª¥Œ
+ 115   3                              timeSync_PowerON_Cnt++;
+C51 COMPILER V9.00   DEFINE                                                                08/04/2018 12:05:33 PAGE 3   
+
+ 116   3                              if (timeSync_PowerON_Cnt >= 10)
+ 117   3                              {
+ 118   4                                      timeSync_PowerON_Cnt = 0;
+ 119   4                                      Uart0_SendString_3Step = 3;
+ 120   4                                      Uart0Transmit_SendString("$$$Time sync\r\n");//ø™ª˙10sµΩ¡ÀæÕ∑¢ÀÕ«Î«ÛÕ¨≤Ω ±º‰÷∏¡Ó
+ 121   4                                      Falg_TimeSync_Allow = 2;
+ 122   4                              }
+ 123   3                      }
+ 124   2                      //À¢EEPROM£¨√ø¥Œ ˝æ›±‰∂Ø∂º‘⁄5s÷Æƒ⁄À¢–¬“ª¥Œ
+ 125   2                      //              if(Flag_data_bk)
+ 126   2                      //              {
+ 127   2                      //                      if(++data_bk_Cnt>5)
+ 128   2                      //                      {
+ 129   2                      //                              data_bk_Cnt=0;
+ 130   2                      //                              Flag_data_bk=0;
+ 131   2                      //                              EEPAddress_data_bk=0x0400+64;
+ 132   2                      //                              data_bk[0]  = 0xAA;
+ 133   2                      //                              data_bk[1]  = PlayMode;
+ 134   2                      //                              data_bk[2]  = spa_name;
+ 135   2                      //                              data_bk[3]  = spa_volume;
+ 136   2                      //                              data_bk[4]  = enable_SPApause;
+ 137   2                      //                              data_bk[5]  = enableMute;
+ 138   2                      //                              data_bk[6]  = color_mode;
+ 139   2                      //                              data_bk[7]  = userR_val;
+ 140   2                      //                              data_bk[8]  = userG_val;
+ 141   2                      //                              data_bk[9]  = userB_val;
+ 142   2                      //                              data_bk[10] = Light_Brightness;
+ 143   2                      //                              data_bk[11] = TimerMode;
+ 144   2                      //                              data_bk[12] = cntTimer;
+ 145   2                      //                              data_bk[13] = alarm.cntTimer;
+ 146   2                      //                              data_bk[14] = alarm.spa_name;
+ 147   2                      //                              data_bk[15] = alarm.volume;
+ 148   2                      //                              data_bk[16] = alarm.color_mode;
+ 149   2                      //                              data_bk[17] = alarm.userR_val;
+ 150   2                      //                              data_bk[18] = alarm.userG_val;
+ 151   2                      //                              data_bk[19] = alarm.userB_val;
+ 152   2                      //                              data_bk[20] = alarm.Brightness;
+ 153   2                      //                              data_bk[21] = alarm.Enable;
+ 154   2                      //                              data_bk[22] = alarm.Week;
+ 155   2                      //                              data_bk[23] = alarm.Hour;
+ 156   2                      //                              data_bk[24] = alarm.Minute;
+ 157   2                      //                              data_bk[25] = alarm.Duration;
+ 158   2                      //                              data_bk[26] = alarm.play_pause;
+ 159   2                      //                              data_bk[27] = program1.spa_name;
+ 160   2                      //                              data_bk[28] = program1.color_mode;
+ 161   2                      //                              data_bk[29] = program1.userR_val;
+ 162   2                      //                              data_bk[30] = program1.userG_val;
+ 163   2                      //                              data_bk[31] = program1.userB_val;
+ 164   2                      //                              data_bk[32] = program1.Light_Brightness;
+ 165   2                      //                              data_bk[33] = program1.sys_volume;
+ 166   2                      //                              data_bk[34] = program1.PlayMode;
+ 167   2                      //                              data_bk[35] = program1.enable_SPApause;
+ 168   2                      //                              eeprom_page_write_data(EEPAddress_data_bk,&data_bk);
+ 169   2                      //                      }
+ 170   2                      //              }
+ 171   2                      //              else
+ 172   2                      //              {
+ 173   2                      //                      data_bk_Cnt=0;
+ 174   2                      //              }
+ 175   2      
+ 176   2      
+ 177   2                      if (gRTC_Minute != gRTC_Minute_bk)
+C51 COMPILER V9.00   DEFINE                                                                08/04/2018 12:05:33 PAGE 4   
+
+ 178   2                      {
+ 179   3                              gRTC_Minute_bk = gRTC_Minute;
+ 180   3                              if ((cntTimer) && (--cntTimer == 0))
+ 181   3                              {//œ»≈–∂œcntTimer «∑Ò¥Û”⁄0£¨»ª∫Û‘Ÿ≈–∂œ--cntTimer «∑ÒŒ™0£¨’‚—˘»Áπ˚cntTimerŒ™1£¨ƒ«"--cntTime"Œ™0
+ 182   4                                      GP389_OFF();
+ 183   4                                      //color_mode=COLOR_OFF;
+ 184   4                                      //TimerMode=cntTimer=TIMER_OFF;// 
+ 185   4                                      alarm.Runing = 0;
+ 186   4                                      Uart0_SendString_3Step = 3;    // 
+ 187   4                                      ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
+ 188   4                              }
+ 189   3                              if ((alarm.cntTimer) && (--alarm.cntTimer == 0))
+ 190   3                              {//œ»≈–∂œalarm.cntTimer «∑Ò¥Û”⁄0£¨»ª∫Û‘Ÿ≈–∂œ--alarm.cntTimer «∑ÒŒ™0£¨’‚—˘»Áπ˚alarm.cntTimerŒ™1£¨ƒ«"--al
+             -arm.cntTimer"Œ™0
+ 191   4                                      GP389_OFF();
+ 192   4                                      //color_mode=COLOR_OFF;
+ 193   4                                      //TimerMode=cntTimer=TIMER_OFF;// 
+ 194   4                                      alarm.Runing = 0;
+ 195   4                                      Uart0_SendString_3Step = 5;    // 
+ 196   4                                      ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
+ 197   4                              }
+ 198   3                              if ((alarm.Enable == 1) && (gRTC_Hour == alarm.Hour) && (gRTC_Minute == alarm.Minute))
+ 199   3                              {
+ 200   4                                      if ((gRTC_Week & alarm.Week) || (Flag_alarm_wake_only))
+ 201   4                                      {
+ 202   5                                              if (!(alarm.Week & 0x80))// «∑Ò√ø÷‹÷ÿ∏¥
+ 203   5                                                      alarm.Week &= ~gRTC_Week;
+ 204   5                                              Flag_alarm_wake_only = 0;
+ 205   5                                              sys_volume = 1;
+ 206   5                                              enableMute = 0;
+ 207   5                                              cntSetVolume = 0;
+ 208   5                                              alarm.Runing = 1;
+ 209   5                                              PlayMode = PLAY_MUSIC;
+ 210   5                                              userR_val = alarm.userR_val;
+ 211   5                                              userG_val = alarm.userG_val;
+ 212   5                                              userB_val = alarm.userB_val;
+ 213   5                                              spa_name = alarm.spa_name;
+ 214   5                                              enable_SPApause = alarm.play_pause;
+ 215   5                                              enableMute = ((enable_SPApause == 0) ? 0 : 1);//Œﬁ¬€÷Æ«∞≤•∑≈ªπ «‘›Õ££¨÷ª“™ƒ÷÷”œÏ”¶≤¢«“ƒ÷÷”‘ –Ì≤•∑≈æÕ≤
+             -•∑≈
+ 216   5                                              spa_cmd = ((enable_SPApause == 0) ? SPA_PALY : SPA_PAUSE);//Œﬁ¬€÷Æ«∞≤•∑≈ªπ «‘›Õ££¨÷ª“™ƒ÷÷”œÏ”¶≤¢«“ƒ÷÷
+             -”‘ –Ì≤•∑≈æÕ≤•∑≈
+ 217   5                                              color_mode = alarm.color_mode;
+ 218   5                                              Light_Brightness = alarm.Brightness;
+ 219   5                                              TimerMode = cntTimer = alarm.cntTimer = alarm.Duration;
+ 220   5                                              ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
+ 221   5                                              Uart0_SendString_3Step = 3;
+ 222   5                                              Flag_alarm_say_to_IOT = 1;
+ 223   5                                      }
+ 224   4                              }
+ 225   3                              if (Falg_TimeSync_Allow == 2)
+ 226   3                              {//Õ¨≤Ω ±º‰Œ™
+ 227   4                                      timeSync_PowerON_Cnt++;
+ 228   4                                      if (timeSync_PowerON_Cnt >= 2)
+ 229   4                                      {
+ 230   5                                              timeSync_PowerON_Cnt = 0;
+ 231   5                                              Flag_time_sync = 1;
+ 232   5                                      }
+ 233   4                              }
+ 234   3      
+ 235   3                              if (gRTC_Hour != gRTC_Hour_bk)
+ 236   3                              {
+C51 COMPILER V9.00   DEFINE                                                                08/04/2018 12:05:33 PAGE 5   
+
+ 237   4                                      gRTC_Hour_bk = gRTC_Hour;
+ 238   4                                      gRTC_Hour_bk_24++;
+ 239   4                                      if (gRTC_Hour_bk_24 >= 24)
+ 240   4                                      {
+ 241   5                                              gRTC_Hour_bk_24 = 0;
+ 242   5                                              Falg_TimeSync_Allow = 2;
+ 243   5                                              Flag_time_sync = 1;
+ 244   5                                      }
+ 245   4                              }
+ 246   3                      }
+ 247   2              }
+ 248   1      }
+ 249          
+ 250          
+ 251          
+ 252          
+ 253          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    526    ----
+   CONSTANT SIZE    =     15    ----
+   XDATA SIZE       =     57    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =     13    ----
+   BIT SIZE         =     18    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

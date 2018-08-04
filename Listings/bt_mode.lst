@@ -1,0 +1,279 @@
+C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE BT_MODE
+OBJECT MODULE PLACED IN .\Objects\bt_mode.obj
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\bt_mode.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\in
+                    -clude) DEBUG OBJECTEXTEND PRINT(.\Listings\bt_mode.lst) OBJECT(.\Objects\bt_mode.obj)
+
+line level    source
+
+   1          //头文件header file//
+   2          #include "app_main.h"
+   3          
+   4          //宏定义macro definition//
+   5          
+   6          //类型定义byte definition//
+   7          BT_STEP  BT_Step; 
+   8          
+   9          //变量定义variable definition//
+  10          uint8_t  idata bt_cmd;       
+  11          uint8_t  idata cntMuteBT;   
+  12          uint8_t  idata bt_volume;    
+  13          uint8_t  idata Uart1_Rx_Pointer;
+  14          uint8_t  idata Uart1_Tx_Pointer;
+  15          uint8_t  idata Uart1_EnableSend; 
+  16          uint8_t  idata Uart1_Tx_TimeOut;
+  17          uint8_t  idata Uart1_Rx_TimeOut; 
+  18          uint8_t  xdata Uart1_TransmitBuffer[UART1_LEN_BUFFER];
+  19          uint8_t  xdata Uart1_ReceiveBuffer_A[UART1_LEN_BUFFER]; 
+  20          uint8_t  xdata Uart1_ReceiveBuffer_B[UART1_LEN_BUFFER]; 
+  21          
+  22          bit BT_Work; 
+  23          bit flag_bt_conn;  //蓝牙连接标志位
+  24          bit flag_bt_play;  //蓝牙播放
+  25          bit flag_bt_pause; //暂停
+  26          bit Uart1_RX_Finish_A;   
+  27          bit Uart1_RX_Finish_B;  
+  28          bit Uart1_ReceiveBuffer_A_B;
+  29          
+  30          void Uart1Transmit_SendString(char *str) 
+  31          {
+  32   1              uint8_t i;
+  33   1              while(Uart1_EnableSend);
+  34   1              for(i=0;i<UART1_LEN_BUFFER;i++)         
+  35   1                      Uart1_TransmitBuffer[i]=0;
+  36   1              for(i=0;*str!='\0';i++) 
+  37   1              { 
+  38   2                      Uart1_TransmitBuffer[i]=*str; 
+  39   2                      str++;
+  40   2              }
+  41   1              Uart1_Tx_Pointer=0;
+  42   1              Uart1_EnableSend=1;
+  43   1              USI1DR=Uart1_TransmitBuffer[Uart1_Tx_Pointer++];
+  44   1      }
+  45          char  code BT_Command_tab[][8]= //用于改变歌曲时发送给wifi的第几首歌
+  46          {
+  47                  "     \r\n",//NONE
+  48                  "AT+MT\r\n",//BT_PAUSE
+  49                  "AT+MA\r\n",//BT_PALY
+  50                  "AT+ME\r\n",//BT_PREV
+  51                  "AT+MD\r\n",//BT_NEXT
+  52                  "AT+CA\r\n",//BT_PARIR
+  53                  "AT+CB\r\n",//BT_PARIR_EXT
+  54                  "AT+CC\r\n",//BT_LINK_BACK
+C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 2   
+
+  55                  "AT+CP\r\n",//BT_POWER_DOWN
+  56                  "AT+CD\r\n",//BT_DISCONN
+  57                  "AT+CZ\r\n",//BT_CLEAR_LIST
+  58                  "AT+H0\r\n",
+  59                  "AT+H1\r\n",
+  60                  "AT+H2\r\n",
+  61                  "AT+H3\r\n",
+  62                  "AT+H4\r\n",
+  63                  "AT+H5\r\n",
+  64                  "AT+H6\r\n",
+  65                  "AT+H7\r\n",
+  66                  "AT+H8\r\n",
+  67                  "AT+H9\r\n",
+  68                  "AT+HA\r\n",
+  69                  "AT+HB\r\n",
+  70                  "AT+HC\r\n",
+  71                  "AT+HD\r\n",    
+  72                  "AT+HE\r\n",
+  73                  "AT+HF\r\n",    
+  74          };
+  75          
+  76          void bt_send_cmd(uint8_t cmd) 
+  77          {       
+  78   1              uint8_t code bt_vol_send_tab[]={0,1,2,3,6,7,9,10,12,14,15};
+  79   1              if(cmd<BT_VOL)
+  80   1                      Uart1Transmit_SendString(&BT_Command_tab[cmd][0]);
+  81   1              else
+  82   1                      Uart1Transmit_SendString(&BT_Command_tab[BT_VOL+bt_vol_send_tab[sys_volume]][0]);
+  83   1      } 
+  84          
+  85          void BlueMode_Receive(void) 
+  86          {
+  87   1              uint8_t i;
+  88   1              char *BT_CMD;
+  89   1              if((Uart1_RX_Finish_A) || (Uart1_RX_Finish_B))
+  90   1              {
+  91   2                      if(Uart1_RX_Finish_A)
+  92   2                      {
+  93   3                              Uart1_RX_Finish_A=0;
+  94   3                              BT_CMD=Uart1_ReceiveBuffer_A; 
+  95   3                      }
+  96   2                      else
+  97   2                      {
+  98   3                              Uart1_RX_Finish_B=0;
+  99   3                              BT_CMD=Uart1_ReceiveBuffer_B; 
+ 100   3                      }
+ 101   2                      if(BT_CMD[0]=='I') 
+ 102   2                      {
+ 103   3                              if(BT_CMD[1]=='I')
+ 104   3                                      flag_bt_conn = 1; 
+ 105   3                              if(BT_CMD[1]=='A')
+ 106   3                                      flag_bt_conn = 0; 
+ 107   3                              if(BT_CMD[1]=='X')
+ 108   3                                      flag_bt_conn = 0; 
+ 109   3                      }
+ 110   2                      else if(BT_CMD[0]=='M')
+ 111   2                      {
+ 112   3                              if(BT_CMD[1]=='A')
+ 113   3                                      flag_bt_play=0; 
+ 114   3                              if(BT_CMD[1]=='B')
+ 115   3                              {
+ 116   4                                      flag_bt_play=1; 
+C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 3   
+
+ 117   4                                      bt_volume=~sys_volume;
+ 118   4                              }
+ 119   3                      }
+ 120   2                      else if(BT_CMD[0]=='O') 
+ 121   2                      {
+ 122   3                              if((BT_CMD[1]=='F'))//if(BT_CMD[1]=='N')
+ 123   3                              {
+ 124   4                                      if(PlayMode==PLAY_BT) 
+ 125   4                                      {}//GP389_OFF();
+ 126   4                              }
+ 127   3                      }
+ 128   2                      else if(BT_CMD[0]=='H') 
+ 129   2                      {
+ 130   3                              if(PlayMode==PLAY_BT)
+ 131   3                              {
+ 132   4                                      uint8_t code bt_vol_resp_tab[]={0,1,2,3,4,4,4,5,6,6, 7, 7, 8, 8, 9,10,10};
+ 133   4                                      if(BT_CMD[1]>'9')
+ 134   4                                              sys_volume= (BT_CMD[1]-'A')+10;
+ 135   4                                      else
+ 136   4                                              sys_volume= BT_CMD[1]-'0';
+ 137   4                                      if(sys_volume>15)
+ 138   4                                              sys_volume=15;
+ 139   4                                      sys_volume=bt_vol_resp_tab[sys_volume];
+ 140   4                              }
+ 141   3                      }                       
+ 142   2                      for(i=0;i<UART1_LEN_BUFFER;i++)         
+ 143   2                              BT_CMD[i]=0;
+ 144   2              }
+ 145   1      }
+ 146          void BlueMode_Handle(void) //接收到的数据信息/状态进行处理
+ 147          {
+ 148   1          BlueMode_Receive();  
+ 149   1              if(PlayMode == PLAY_BT)
+ 150   1              {
+ 151   2                      if(BT_Work == 0) //初始化蓝牙
+ 152   2                      {
+ 153   3                              cntMuteBT=0;            
+ 154   3                              flag_bt_conn=0;
+ 155   3                              flag_bt_play=0;
+ 156   3                              bt_volume=~sys_volume; //这个可能为bt_volume=~sys_volume
+ 157   3                              BT_Step=BT_STEP_START;
+ 158   3                      }
+ 159   2                      BT_Work=1;      
+ 160   2                      switch(BT_Step)
+ 161   2                      {
+ 162   3                              case BT_STEP_START:
+ 163   3                                      EN_MUTE(); //复位PC13端口
+ 164   3                                      SET_AUCH(); //(maybe)空操作
+ 165   3                                      BT_Step++;
+ 166   3                                      break;
+ 167   3                              case BT_STEP_INITI1:
+ 168   3              UART1_def_init(); 
+ 169   3              CLR_BT_POWER(); //复位PA11 连接蓝牙芯片vbat端口
+ 170   3                                BT_Step++;
+ 171   3                                      break;
+ 172   3                              case BT_STEP_INITI2:
+ 173   3                                   BT_Step++;
+ 174   3                                      break;
+ 175   3                              case BT_STEP_INITI3:
+ 176   3                                      SET_BT_POWER(); //置位PA11，对应蓝牙芯片的vbat脚
+ 177   3                                BT_Step++;
+ 178   3                                      break;
+C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 4   
+
+ 179   3                              case BT_STEP_INITI4:
+ 180   3                                      UART1_init(); 
+ 181   3                                      BT_Step++;
+ 182   3                                      break;
+ 183   3                              default: 
+ 184   3                                      if(sys_volume!=bt_volume) //如果蓝牙音量信息和系统音量信息不相等，把系统的发给蓝牙
+ 185   3                                      {
+ 186   4                                              bt_volume=sys_volume;
+ 187   4                                              bt_send_cmd(BT_VOL); //串口发送音量信息到app端
+ 188   4                                      }
+ 189   3                                      else if(bt_cmd)
+ 190   3                                      {
+ 191   4                                              bt_send_cmd(bt_cmd); 
+ 192   4                                              bt_cmd=BT_NONE; //清零bt_cmd
+ 193   4                                      }
+ 194   3                                      if(BT_MUTE_DET()) //读P12端口电平，如果
+ 195   3                                      {
+ 196   4                                              if(cntMuteBT>5)
+ 197   4                                              {
+ 198   5                                                      DE_MUTE(); //置位PC13 不静音
+ 199   5                                              }
+ 200   4                                              else
+ 201   4                                                      ++cntMuteBT;
+ 202   4                                      }
+ 203   3                                      else
+ 204   3                                      {
+ 205   4                                              EN_MUTE();      //复位PC13，静音可能    
+ 206   4                                      }                                       
+ 207   3                                      break;
+ 208   3                      }
+ 209   2              }       
+ 210   1              else
+ 211   1              {
+ 212   2                      if(BT_Work==1)
+ 213   2                      {
+ 214   3                              cntMuteBT=0;    
+ 215   3                              BT_Step=BT_STEP_START;
+ 216   3                      }
+ 217   2                      BT_Work=0;
+ 218   2                      switch(BT_Step)
+ 219   2                      {
+ 220   3                              case BT_STEP_START:
+ 221   3                                      EN_MUTE();
+ 222   3                                      BT_Step++;
+ 223   3                                      break;
+ 224   3                              case BT_STEP_INITI1:
+ 225   3                                      BT_Step++;
+ 226   3                                      break;
+ 227   3                              case BT_STEP_INITI2:
+ 228   3                                      BT_Step++;      
+ 229   3                                      break;
+ 230   3                              case BT_STEP_INITI3:
+ 231   3                                      SET_BT_POWER();
+ 232   3                                      BT_Step++;
+ 233   3                                      break;
+ 234   3                              case BT_STEP_INITI4:
+ 235   3                                      BT_Step++;
+ 236   3              CLR_AUCH();
+ 237   3                                      break;
+ 238   3                              default: 
+ 239   3                                      break;
+ 240   3                      }
+C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 5   
+
+ 241   2              }
+ 242   1      }
+ 243          
+ 244          
+ 245          
+ 246          
+ 247          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    566    ----
+   CONSTANT SIZE    =    244    ----
+   XDATA SIZE       =     25       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =      8    ----
+   BIT SIZE         =      7    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

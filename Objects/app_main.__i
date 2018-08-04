@@ -1,0 +1,1 @@
+"source\app_main.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Listings\app_main.lst) OBJECT(.\Objects\app_main.obj)

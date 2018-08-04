@@ -1,0 +1,395 @@
+C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inclu
+                    -de) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //======================================================
+   2          // Main program routine
+   3          // - Device name  : MC96F6432
+   4          // - Package type : 44MQFP
+   5          //======================================================
+   6          // For XDATA variable : V1.041.00 ~
+   7          #define         MAIN    1
+   8          
+   9          // Generated    : Sat, Jan 06, 2018 (12:08:12)
+  10          #include "app_main.h"
+  11          #include "MC96F6432.h"
+  12          #include "func_def.h"
+  13          
+  14          void main()
+  15          {
+  16   1              while(1)
+  17   1              {
+  18   2              cli();                  // disable INT. during peripheral setting
+  19   2              port_init();            // initialize ports
+  20   2              clock_init();           // initialize operation clock
+  21   2              ADC_init();             // initialize A/D convertor
+  22   2              LCD_init();             // initialize LCD
+  23   2              Timer0_init();          // initialize Timer0
+  24   2              Timer3_init();          // initialize Timer3
+  25   2              UART0_init();           // initialize UART interface
+  26   2              WT_init();              // initialize Watch timer
+  27   2              WDT_init();
+  28   2              sei();                  // enable INT.  
+  29   2              app_main();
+  30   2              BootLoader_handle();
+  31   2              }
+  32   1      }
+  33          
+  34          
+  35          void INT_USI1_Rx() interrupt 3
+  36          {
+  37   1              uint8_t tmp;
+  38   1              tmp=USI1DR;     
+  39   1              USI1ST1&=~0x20;
+  40   1              Uart1_Rx_TimeOut=10;
+  41   1              if(Uart1_ReceiveBuffer_A_B)
+  42   1              {
+  43   2                      if(Uart1_Rx_Pointer<UART1_LEN_BUFFER)   
+  44   2                              Uart1_ReceiveBuffer_A[Uart1_Rx_Pointer++]=tmp;
+  45   2                      if(tmp=='\n')
+  46   2                      {
+  47   3                              Uart1_Rx_Pointer =0;
+  48   3                              Uart1_RX_Finish_A=1;
+  49   3                              Uart1_ReceiveBuffer_A_B=~Uart1_ReceiveBuffer_A_B;
+  50   3                      }
+  51   2              }
+  52   1              else
+  53   1              {
+  54   2                      if(Uart1_Rx_Pointer<UART1_LEN_BUFFER)   
+C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 2   
+
+  55   2                              Uart1_ReceiveBuffer_B[Uart1_Rx_Pointer++]=tmp;
+  56   2                      if(tmp=='\n')
+  57   2                      {
+  58   3                              Uart1_Rx_Pointer =0;
+  59   3                              Uart1_RX_Finish_B=1;
+  60   3                              Uart1_ReceiveBuffer_A_B=~Uart1_ReceiveBuffer_A_B;
+  61   3                      }
+  62   2              }
+  63   1      }
+  64          void INT_USI1_Tx() interrupt 4
+  65          {
+  66   1              USI1ST1&=~0x80;
+  67   1              if(Uart1_EnableSend)
+  68   1              {                
+  69   2                      Uart1_Tx_TimeOut=10;
+  70   2                      USI1DR=Uart1_TransmitBuffer[Uart1_Tx_Pointer++];
+  71   2                      if(Uart1_TransmitBuffer[Uart1_Tx_Pointer]=='\0')
+  72   2                              Uart1_EnableSend=0;
+  73   2              }
+  74   1      }
+  75          void INT_USI0_Rx() interrupt 9
+  76          {
+  77   1              uint8_t tmp;
+  78   1              tmp=USI0DR;     
+  79   1              USI0ST1&=~0x20;
+  80   1              Uart0_ReceiveBuffer[mUart0_Rx_Pointer]=tmp;
+  81   1              if(++mUart0_Rx_Pointer>=(UART0_RX_LEN_BUFFER-1))        
+  82   1                      mUart0_Rx_Pointer=0;
+  83   1      }
+  84          
+  85          void INT_USI0_Tx() interrupt 10
+  86          {
+  87   1              USI0ST1&=~0x80;
+  88   1              if(Uart0_EnableSend)
+  89   1              {                
+  90   2                      Uart0_Tx_TimeOut=10;
+  91   2                      USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
+  92   2                      if(Uart0_TransmitBuffer[Uart0_Tx_Pointer]=='\0')
+  93   2                              Uart0_EnableSend=0;
+  94   2              }
+  95   1      }
+  96          
+  97          void INT_Timer0() interrupt 13
+  98          {
+  99   1              sys_tick(); 
+ 100   1      }
+ 101          
+ 102          void INT_Timer3() interrupt 16
+ 103          {
+ 104   1              led_rgb_drive();
+ 105   1              voice_in_timer();
+ 106   1      }
+ 107          
+ 108          void INT_WT() interrupt 20
+ 109          {
+ 110   1              gbHalfSecond=(!gbHalfSecond);
+ 111   1              if(gbHalfSecond)
+ 112   1              {
+ 113   2                      if(++gRTC_Sec>59) 
+ 114   2                      {
+ 115   3                              gRTC_Sec=0;
+ 116   3      //                      if(++gRTC_Minute>59)
+C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 3   
+
+ 117   3      //                      {
+ 118   3      //                              gRTC_Minute=0;
+ 119   3      //                              if(++gRTC_Hour>23)
+ 120   3      //                              {       
+ 121   3      //                                      gRTC_Hour=0;
+ 122   3      //                                      gRTC_Week<<=1;
+ 123   3      //                                      if(gRTC_Week==0x80)
+ 124   3      //                                              gRTC_Week=0x01;
+ 125   3      //                              }
+ 126   3      //                      }
+ 127   3                      }
+ 128   2                      if(++gRTC_Minute>59)
+ 129   2                      {
+ 130   3                              gRTC_Minute=0;
+ 131   3                              if(++gRTC_Hour>23)
+ 132   3                              {       
+ 133   4                                      gRTC_Hour=0;
+ 134   4                                      gRTC_Week<<=1;
+ 135   4                                      if(gRTC_Week==0x80)
+ 136   4                                              gRTC_Week=0x01;
+ 137   4                              }
+ 138   3                      }
+ 139   2              }
+ 140   1      }
+ 141          unsigned int ADC_read()
+ 142          {
+ 143   1              unsigned int adcVal;
+ 144   1              adcVal = ((ADCDRH << 8) | ADCDRL);      
+ 145   1              return  adcVal;
+ 146   1      }
+ 147          
+ 148          void ADC_init()
+ 149          {
+ 150   1              // initialize A/D convertor
+ 151   1              ADCCRL = 0x80;          // setting
+ 152   1              ADCCRH = 0x07;          // trigger source, alignment, frequency
+ 153   1      }
+ 154          
+ 155          void ADC_start(unsigned char ch)
+ 156          {
+ 157   1              // start A/D convertor
+ 158   1              ADCCRL  = (ADCCRL & 0xf0) | (ch & 0x0f);        // select channel
+ 159   1              ADCCRL |= 0x40;         // start ADC
+ 160   1      }
+ 161          
+ 162          void LCD_init()
+ 163          {
+ 164   1              // initialize LCD
+ 165   1              // Frame freq. = 16.000000Hz
+ 166   1              LCDCRH = 0x00;          // LCD control High
+ 167   1              LCDCRL = 0x00;          // LCD control Low
+ 168   1              LCDCCR = 0x00;          // LCD contrast
+ 169   1      }
+ 170          
+ 171          
+ 172          void WDT_clear()
+ 173          {
+ 174   1              WDTCR |= 0x20;          // Clear Watch-dog timer
+ 175   1      }
+ 176          
+ 177          void WDT_init()
+ 178          {
+C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 4   
+
+ 179   1              // initialize Watch-dog timer
+ 180   1              WDTDR = 0x01;           // period
+ 181   1              WDTCR = 0xC0;           // setting
+ 182   1              WDTCR |= 0x02;  // Use WDTRC
+ 183   1              WDT_clear();
+ 184   1      }
+ 185          void Timer0_init()
+ 186          {
+ 187   1              // initialize Timer0
+ 188   1              // 8bit timer, period = 1.002667mS
+ 189   1              T0CR  = 0x88;           // timer setting
+ 190   1              T0DR  = 0x5D;           // period count
+ 191   1              IE2  |= 0x02;           // Enable Timer0 interrupt
+ 192   1              T0CR |= 0x01;           // clear counter
+ 193   1      }
+ 194          
+ 195          void Timer3_init()
+ 196          {
+ 197   1              // initialize Timer3
+ 198   1              // 8bit timer, period = 0.050000mS
+ 199   1              T3CR  = 0x8A;           // timer setting
+ 200   1              T3DR  = 0x4A;           // period count
+ 201   1              IE2  |= 0x10;           // Enable Timer3 interrupt
+ 202   1              T3CR |= 0x01;           // clear counter
+ 203   1      }
+ 204          
+ 205          void UART0_init()
+ 206          {
+ 207   1              // initialize UART interface
+ 208   1              // UART0 : ASync. 57692bps N 8 1
+ 209   1              USI0CR2  = 0x02;        // activate USI0
+ 210   1              USI0CR1  = 0x06;        // Async/Sync, bit count, parity
+ 211   1              USI0CR2 |= 0xEC;        // interrupt, speed
+ 212   1              USI0CR3  = 0x00;        // stop bit
+ 213   1              USI0BD   = 0x0C;        // baud rate
+ 214   1              IE1     |= 0x18;        // enable UART0 interrupt       
+ 215   1      }
+ 216          
+ 217          bit enUart1=0;
+ 218          void UART1_init()
+ 219          {
+ 220   1              // UART1 : ASync. 9615bps N 8 1
+ 221   1              if(!enUart1)
+ 222   1              {
+ 223   2                      USI1CR2  = 0x02;        // activate USI1
+ 224   2                      USI1CR1  = 0x06;        // Async/Sync, bit count, parity
+ 225   2                      USI1CR2 |= 0xEC;        // interrupt, speed
+ 226   2                      USI1CR3  = 0x00;        // stop bit
+ 227   2                      USI1BD   = 0x4D;        // baud rate
+ 228   2                      IE      |= 0x18;        // enable UART1 interrupt
+ 229   2              }
+ 230   1              enUart1=1;
+ 231   1      }
+ 232          
+ 233          
+ 234          void UART1_def_init()
+ 235          {
+ 236   1              // UART1 : ASync. 9615bps N 8 1
+ 237   1              if(enUart1)
+ 238   1              {
+ 239   2                      USI1CR2 = 0x00;         // activate USI1
+ 240   2                      USI1CR1 = 0x00;         // Async/Sync, bit count, parity
+C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 5   
+
+ 241   2                      USI1CR2 = 0x00;   // interrupt, speed
+ 242   2                      USI1CR3 = 0x00;         // stop bit
+ 243   2                      USI1BD  = 0x00;         // baud rate
+ 244   2                      IE     &=~0x18;  // enable UART1 interrupt
+ 245   2              }
+ 246   1              enUart1=0;
+ 247   1      }
+ 248          
+ 249          void WT_init()
+ 250          {
+ 251   1              // initialize Watch timer
+ 252   1              WTCR = 0x88;            // setting
+ 253   1              WTDR = 0x01;            // set duty
+ 254   1              WTDR = 0x81;            // clear WT
+ 255   1              IE3 |= 0x04;            // Enable WT interrupt
+ 256   1      }
+ 257          
+ 258          void clock_init()
+ 259          {
+ 260   1              // external clock
+ 261   1              XTFLSR = 0xA8;          // MC96F6432A only, others ignore this line
+ 262   1              OSCCR  = 0x0A;          // Enable int. 1MHz and Ext. OSC
+ 263   1              BITCR  = 0x09;          // Set waiting time : 16ms@1MHz
+ 264   1              while((BITCR & 0x80) == 0);     // Ext. OSC stabilizing time
+ 265   1              SCCR   = 0x01;          // Change to Ext. OSC
+ 266   1              OSCCR |= 0x05;          // Disable Int. OSC
+ 267   1      }
+ 268          
+ 269          void port_init()
+ 270          {
+ 271   1              // initialize ports
+ 272   1              //   1 : P55      out 
+ 273   1              //   2 : RxD0     in  
+ 274   1              //   3 : TxD0     out 
+ 275   1              //   4 : P42      out 
+ 276   1              //   5 : P43      out 
+ 277   1              //   6 : P37      out 
+ 278   1              //   7 : P36      out 
+ 279   1              //   8 : P35      out 
+ 280   1              //   9 : P34      out 
+ 281   1              //  10 : P33      out 
+ 282   1              //  11 : P32      out 
+ 283   1              //  12 : P31      out 
+ 284   1              //  13 : P30      in  
+ 285   1              //  14 : P27      out 
+ 286   1              //  15 : P26      in  
+ 287   1              //  16 : P25      out 
+ 288   1              //  17 : P24      out 
+ 289   1              //  18 : P23      out 
+ 290   1              //  19 : P22      out 
+ 291   1              //  20 : P21      out 
+ 292   1              //  21 : TxD1     out 
+ 293   1              //  22 : RxD1     in  
+ 294   1              //  23 : P11      out 
+ 295   1              //  24 : P12      in  
+ 296   1              //  25 : P13      out 
+ 297   1              //  26 : P14      out 
+ 298   1              //  27 : P15      out 
+ 299   1              //  28 : P16      in  
+ 300   1              //  29 : P17      out 
+ 301   1              //  30 : AN5      in  
+ 302   1              //  31 : P06      out 
+C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 6   
+
+ 303   1              //  32 : P05      out 
+ 304   1              //  33 : P04      out 
+ 305   1              //  34 : P03      out 
+ 306   1              //  35 : P02      out 
+ 307   1              //  36 : P01      out 
+ 308   1              //  37 : P00      out 
+ 309   1              //  40 : P50      out 
+ 310   1              //  41 : P51      out 
+ 311   1              //  42 : P52      out 
+ 312   1              //  43 : SXIN     in  
+ 313   1              //  44 : SXOUT    out 
+ 314   1              P0IO = 0x7F;            // direction
+ 315   1              P0PU = 0x00;            // pullup
+ 316   1              P0OD = 0x00;            // open drain
+ 317   1              P0DB = 0x00;            // bit7~6(debounce clock), bit5~0=P07~02 debounce
+ 318   1              P0   = 0x00;            // port initial value
+ 319   1      
+ 320   1              P1IO = 0x98;            // direction
+ 321   1              P1PU = 0x20;            // pullup
+ 322   1              P1OD = 0x00;            // open drain
+ 323   1              P15DB = 0x00;           // debounce : P54, 52, 17, 16, 12, 11
+ 324   1              P1   = 0x00;            // port initial value
+ 325   1      
+ 326   1              P2IO = 0xFF;            // direction
+ 327   1              P2PU = 0x00;            // pullup
+ 328   1              P2OD = 0x02;            // open drain
+ 329   1              P2   = 0x00;            // port initial value
+ 330   1      
+ 331   1              P3IO = 0xFE;            // direction
+ 332   1              P3PU = 0x00;            // pullup
+ 333   1              P3   = 0x00;            // port initial value
+ 334   1      
+ 335   1              P4IO = 0xFE;            // direction
+ 336   1              P4PU = 0x00;            // pullup
+ 337   1              P4OD = 0x00;            // open drain
+ 338   1              P4   = 0x00;            // port initial value
+ 339   1      
+ 340   1              P5IO = 0xFF;            // direction
+ 341   1              P5PU = 0x00;            // pullup
+ 342   1              P5   = 0x00;            // port initial value
+ 343   1      
+ 344   1              // Set port functions
+ 345   1              P0FSRH = 0x20;          // P0 selection High
+ 346   1              P0FSRL = 0x00;          // P0 selection Low
+ 347   1              P1FSRH = 0x00;          // P1 selection High
+ 348   1              P1FSRL = 0x03;          // P1 selection Low
+ 349   1              P2FSRH = 0x00;          // P2 selection High
+ 350   1              P2FSRL = 0x03;          // P2 selection Low
+ 351   1              P3FSR = 0x00;           // P3 selection
+ 352   1              P4FSR = 0x0A;           // P4 selection
+ 353   1              P5FSR = 0x2D;           // P5 selection
+ 354   1      }
+ 355          
+ 356          
+ 357          
+ 358          
+ 359          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    837    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 7   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

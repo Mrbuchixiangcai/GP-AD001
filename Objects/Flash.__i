@@ -1,0 +1,1 @@
+"source\Flash.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Listings\Flash.lst) OBJECT(.\Objects\Flash.obj)

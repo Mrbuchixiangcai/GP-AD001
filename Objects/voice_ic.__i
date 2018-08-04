@@ -1,0 +1,1 @@
+"source\voice_ic.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Listings\voice_ic.lst) OBJECT(.\Objects\voice_ic.obj)

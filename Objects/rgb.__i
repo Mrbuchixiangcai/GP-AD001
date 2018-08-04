@@ -1,0 +1,1 @@
+"source\rgb.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Listings\rgb.lst) OBJECT(.\Objects\rgb.obj)

@@ -1,0 +1,61 @@
+#ifndef __VOICE_IC_H__
+#define __VOICE_IC_H__
+
+//宏定义macro definition//
+#define uint8_t  unsigned char 
+#define uint16_t unsigned int 	
+
+//类型定义byte definition//
+typedef enum
+{
+	SPA_NONE             =0X00,
+    SPA_BRAHM_LULLABY    =0X01,	//勃拉姆斯摇篮曲
+    SPA_OCEAN            =0X02, //海洋
+    SPA_OUTDOOR          =0X03, //野外的
+    SPA_RAIN             =0X04, //雨声
+    SPA_BROOK            =0X05,	//小溪
+    SPA_WHITENOISE       =0X06, //white noise白噪声
+	SPA_VOL0             =0X07,
+    SPA_VOL15            =0X16,
+	SPA_PAUSE            =0X17,
+    SPA_PALY             =0X18,
+}SPA_NAME;
+typedef enum
+{
+    VOICE_STEP_START =0,
+    VOICE_STEP_INITI1  ,
+    VOICE_STEP_INITI2  ,
+    VOICE_STEP_INITI3  ,
+    VOICE_STEP_INITI4  ,
+}VOICE_STEP;
+
+
+extern VOICE_STEP  Voice_Step;
+extern SPA_NAME spa_name;
+extern uint8_t idata voice_send_step; //语音发送步骤
+extern uint8_t idata voice_send_data; //语音发送数据
+extern uint8_t idata voice_50us_cnt; //50us计时
+extern uint8_t idata voice_50us_cnt_set; //50us计时设计
+extern uint8_t idata spa_cmd; //spa命令
+extern uint8_t idata spa_volume; //音量
+extern uint8_t idata cur_spa_name;
+extern uint8_t idata cntSPAOn;
+
+//外部调用_标志位定义flags definetion//
+extern bit           gbVoice_Work;
+extern bit           flag_voice_send; //语音发送标志
+extern bit           enableMute; //voice语音播放时的暂停播放标志位，通过判断这个标志去执行命令
+extern bit		     enableMute_bk;
+extern bit           enable_SPApause; //0表示播放
+
+//外部调用_函数定义function definetion//
+extern void set_voice_vol(uint8_t vol); 
+extern void voice_send(uint8_t key);
+extern void voice_in_timer(void);
+extern void DealWith_Voice(void); 
+
+#endif
+
+
+
+

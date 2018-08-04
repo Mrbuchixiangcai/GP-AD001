@@ -1,0 +1,17 @@
+".\Objects\STARTUP.obj",
+".\Objects\app_main.obj",
+".\Objects\boot.obj",
+".\Objects\bt_mode.obj",
+".\Objects\Flash.obj",
+".\Objects\key.obj",
+".\Objects\main.obj",
+".\Objects\rgb.obj",
+".\Objects\uart.obj",
+".\Objects\update.obj",
+".\Objects\voice_ic.obj",
+".\Objects\wifi_mode.obj",
+".\Objects\define.obj" 
+TO ".\Objects\GP389" 
+PRINT(".\Listings\GP389.m51") RAMSIZE(256) 
+CODE( 0X0500 -0X3FFF , ?PR?BOOTLOADER_HANDLE?BOOT(0x0100),?PR?MAIN?MAIN(0X0500) )
+XDATA( 0X0000-0X2FF )

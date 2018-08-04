@@ -1,0 +1,243 @@
+C51 COMPILER V9.00   APP_MAIN                                                              08/04/2018 12:05:29 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE APP_MAIN
+OBJECT MODULE PLACED IN .\Objects\app_main.obj
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\app_main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\i
+                    -nclude) DEBUG OBJECTEXTEND PRINT(.\Listings\app_main.lst) OBJECT(.\Objects\app_main.obj)
+
+line level    source
+
+   1          //头文件header file//
+   2          #include "app_main.h"
+   3          
+   4          /**********
+   5          //这里写重要的事或者说明
+   6          //每次升级需要手动改写APP_MAIN.h模块的#define MCU_VER     "$$$VER0.x\r\n" 的版本号
+   7          //每次升级需要手动改写APP_MAIN.h模块的#define Key_MCU_VER "$$$Enter TestMode:0.x\r\n" 的版本号
+   8          //每次大的升级，比如0.xx升级到1.xx时修改wifi.c的“else if(char_compare(WIFI_CMD,"VER0.\r\n")==0)”中的VER0
+             -.
+   9          ***********/
+  10          
+  11          
+  12          
+  13          
+  14          
+  15          
+  16          
+  17          void setLed_Handle(void)//LED灯的相关处理
+  18          {
+  19   1              if(setReset)//清除wifi列表闪烁三秒
+  20   1              {
+  21   2                      if(++cntFlash>=12)//500ms
+  22   2                      {
+  23   3                       cntFlash=0;
+  24   3                       if(++Led_Flash>24)//3s 快闪，4次/s
+  25   3                        setReset=0;
+  26   3                      }
+  27   2                      LED_15MIN(Led_Flash%2);//Led_Flash为1(因为上面先加不会为0)时余数为1亮，为2时灭
+  28   2                      LED_30MIN(Led_Flash%2);
+  29   2                      LED_60MIN(Led_Flash%2);
+  30   2              }
+  31   1              else if(setFactory)//恢复出厂设置常亮三秒
+  32   1              {
+  33   2      //              uint8_t i;
+  34   2      //              uint8_t code *EEPAddress_data_bk;
+  35   2      //              EEPAddress_data_bk=0x0400+64;
+  36   2                      if(++cntFlash>=50)//500ms
+  37   2                      {
+  38   3                              cntFlash=0;
+  39   3                              if(++Led_Flash>6)//3s
+  40   3                              {
+  41   4                               setFactory=0;
+  42   4      //                      for(i=0;i<64;i++)//
+  43   4      //                      {//恢复出厂设置时把EEPROM(data_bk[i])的数据也清掉
+  44   4      //                              eeprom_page_write_data(EEPAddress_data_bk,0);;
+  45   4      //                      }
+  46   4                               ((void (code *) (void)) 0x0000)();
+  47   4                              }
+  48   3      
+  49   3                      }
+  50   2                      LED_15MIN(1);
+  51   2                      LED_30MIN(1);
+  52   2                      LED_60MIN(1);
+  53   2              }
+C51 COMPILER V9.00   APP_MAIN                                                              08/04/2018 12:05:29 PAGE 2   
+
+  54   1              else if(Flag_TestMode)//进入测试模式TIMER60LED灯闪烁2s提示
+  55   1              {
+  56   2                      if(++cntFlash>=12)//500ms
+  57   2                      {
+  58   3                       cntFlash=0;
+  59   3                       if(++Led_Flash>16)//2s 快闪，4次/s
+  60   3                        Flag_TestMode=0;
+  61   3                      }
+  62   2                      //LED_15MIN(Led_Flash%2);//Led_Flash为1(因为上面先加不会为0)时余数为1亮，为2时灭
+  63   2                      //LED_30MIN(Led_Flash%2);
+  64   2                      LED_60MIN(Led_Flash%2);
+  65   2              }
+  66   1              else if((PlayMode<=PLAY_ON)&&(color_mode==COLOR_OFF)) 
+  67   1              {
+  68   2                      LED_15MIN(0);
+  69   2                      LED_30MIN(0);
+  70   2                      LED_60MIN(0);
+  71   2                      TimerMode=cntTimer=TIMER_OFF;
+  72   2              }       
+  73   1              else if(TimerMode==TIMER_15MIN)
+  74   1              {
+  75   2                      LED_15MIN(1);
+  76   2                      LED_30MIN(0);
+  77   2                      LED_60MIN(0);
+  78   2              }
+  79   1              else if(TimerMode==TIMER_30MIN)
+  80   1              {
+  81   2                      LED_15MIN(0);
+  82   2                      LED_30MIN(1);
+  83   2                      LED_60MIN(0);
+  84   2              }       
+  85   1              else if(TimerMode==TIMER_60MIN)
+  86   1              {
+  87   2                      LED_15MIN(0);
+  88   2                      LED_30MIN(0);
+  89   2                      LED_60MIN(1);
+  90   2              }
+  91   1              else 
+  92   1              {
+  93   2                      LED_15MIN(0);
+  94   2                      LED_30MIN(0);
+  95   2                      LED_60MIN(0);
+  96   2              }       
+  97   1      }
+  98          void PowerON_Reset(void)
+  99          {
+ 100   1              //uint8_t i;
+ 101   1              //uint8_t       code *EEPAddress_data_bk;
+ 102   1              sys_volume=2; //默认音量是第5级
+ 103   1              Light_Brightness=1;
+ 104   1              PlayMode=PLAY_ON; //初始化上电为开机
+ 105   1              enableMute=1;//整体静音与其他参数逻辑与，为1静音，为0解除静音 
+ 106   1              EN_MUTE();
+ 107   1              Uart0_SendString_3Step=3;
+ 108   1              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
+ 109   1              Falg_TimeSync_Allow=1;
+ 110   1      //      EEPAddress_data_bk=0x0400+64;
+ 111   1      //      for(i=0;i<64;i++)//
+ 112   1      //      {//读数据出来赋给data_bk
+ 113   1      //              data_bk[i]=eeprom_byte_read_data(EEPAddress_data_bk+i);
+ 114   1      //      }
+ 115   1      //      if(data_bk[0]==0xAA)
+C51 COMPILER V9.00   APP_MAIN                                                              08/04/2018 12:05:29 PAGE 3   
+
+ 116   1      //      {//如果data_bk[0]为0，说明为第一次出厂第一次上电或者是恢复出厂设置
+ 117   1      //       //把读出来的数据赋给相应的数据，对应在写EEPROM时的顺序
+ 118   1      //              //PlayMode = ((data_bk[1]<=3) && (data_bk[1]>=0))?data_bk[1]:0;
+ 119   1      //              PlayMode = ((data_bk[1]<=3)?data_bk[1]:0;
+ 120   1      //              spa_name = ((data_bk[2]<=0x18) && (data_bk[2]>=0x00))?data_bk[2]:0;
+ 121   1      //              spa_volume = ((data_bk[3]<=10) && (data_bk[3]>=0))?data_bk[3]:0;
+ 122   1      //              enable_SPApause = ((data_bk[4]==0) && (data_bk[4]==1))?data_bk[4]:0;
+ 123   1      //                      spa_cmd = (enable_SPApause==0)?SPA_PALY:SPA_PAUSE;
+ 124   1      //              enableMute = ((data_bk[5]==0) && (data_bk[5]==1))?data_bk[5]:0;
+ 125   1      //              color_mode = ((data_bk[6]<=10) && (data_bk[6]>=0))?data_bk[6]:0;
+ 126   1      //              userR_val = ((data_bk[7]<=255) && (data_bk[7]>=0))?data_bk[7]:0;
+ 127   1      //              userG_val = ((data_bk[8]<=255) && (data_bk[8]>=0))?data_bk[8]:0;
+ 128   1      //              userB_val = ((data_bk[9]<=255) && (data_bk[9]>=0))?data_bk[9]:0;
+ 129   1      //              Light_Brightness = ((data_bk[10]<=3) && (data_bk[10]>=0))?data_bk[10]:0;
+ 130   1      //              TimerMode = ((data_bk[11]==0) || (data_bk[11]==15) || (data_bk[11]==30) || (data_bk[11]==60))?data_bk[
+             -11]:0;
+ 131   1      //              cntTimer = ((data_bk[12]<=60) && (data_bk[12]>=0))?data_bk[12]:0;
+ 132   1      //              alarm.cntTimer = ((data_bk[13]<=60) && (data_bk[13]>=0))?data_bk[13]:0;
+ 133   1      //              alarm.spa_name = ((data_bk[14]<=0x18) && (data_bk[14]>=0x00))?data_bk[14]:0;
+ 134   1      //              alarm.volume = ((data_bk[15]<=10) && (data_bk[15]>=0))?data_bk[15]:0;
+ 135   1      //              alarm.color_mode = ((data_bk[16]<=10) && (data_bk[16]>=0))?data_bk[16]:0;
+ 136   1      //              alarm.userR_val = ((data_bk[17]<=255) && (data_bk[17]>=0))?data_bk[17]:0;
+ 137   1      //              alarm.userG_val = ((data_bk[18]<=255) && (data_bk[18]>=0))?data_bk[18]:0;
+ 138   1      //              alarm.userB_val = ((data_bk[19]<=255) && (data_bk[19]>=0))?data_bk[19]:0;
+ 139   1      //              alarm.Brightness = ((data_bk[20]<=3) && (data_bk[20]>=0))?data_bk[20]:0;
+ 140   1      //              alarm.Enable = ((data_bk[21]==1) || (data_bk[21]==0))?data_bk[21]:0;
+ 141   1      //              alarm.Week = data_bk[22];
+ 142   1      //              alarm.Hour = data_bk[23];
+ 143   1      //              alarm.Minute = data_bk[24];
+ 144   1      //              alarm.Duration = data_bk[25];
+ 145   1      //              alarm.play_pause = data_bk[26];
+ 146   1      //              program1.spa_name = ((data_bk[27]<=0x18) && (data_bk[27]>=0x00))?data_bk[27]:0;
+ 147   1      //              program1.color_mode = ((data_bk[28]<=10) && (data_bk[28]>=0))?data_bk[28]:0;
+ 148   1      //              program1.userR_val = ((data_bk[29]<=255) && (data_bk[29]>=0))?data_bk[29]:0;
+ 149   1      //              program1.userG_val = ((data_bk[30]<=255) && (data_bk[30]>=0))?data_bk[30]:0;
+ 150   1      //              program1.userB_val = ((data_bk[31]<=255) && (data_bk[31]>=0))?data_bk[31]:0;
+ 151   1      //              program1.Light_Brightness = ((data_bk[32]<=3) && (data_bk[32]>=0))?data_bk[32]:0;
+ 152   1      //              program1.sys_volume = ((data_bk[33]<=10) && (data_bk[33]>=0))?data_bk[33]:0;
+ 153   1      //              program1.PlayMode = ((data_bk[34]<=3) && (data_bk[34]>=0))?data_bk[34]:0;
+ 154   1      //              program1.enable_SPApause = ((data_bk[35]==0) && (data_bk[35]==1))?data_bk[35]:0;
+ 155   1      //      }
+ 156   1      }
+ 157          void app_main(void)
+ 158          {
+ 159   1              PowerON_Reset();
+ 160   1      //              if((PlayMode==PLAY_ON) || (PlayMode==PLAY_BT)) //开机进入
+ 161   1      //              {
+ 162   1      //                      enableMute=0;
+ 163   1      //                      enable_SPApause=0;
+ 164   1      //                      PlayMode=PLAY_MUSIC;
+ 165   1      //                      if(spa_name==SPA_NONE) //spa_name为枚举变量类型，SPA_WHITENOISE为枚举变量元素
+ 166   1      //                      {
+ 167   1      //                              spa_name=SPA_BRAHM_LULLABY;
+ 168   1      //                      }
+ 169   1      //              }
+ 170   1              while(1)
+ 171   1              { 
+ 172   2              Uart0_Receive_Parse();          
+ 173   2                      if(AppTick1ms) //3ms
+ 174   2                      {
+ 175   3                              AppTick1ms=0;
+ 176   3                      }
+C51 COMPILER V9.00   APP_MAIN                                                              08/04/2018 12:05:29 PAGE 4   
+
+ 177   2                      if(AppTick0)
+ 178   2                      {
+ 179   3                              AppTick0=0;
+ 180   3                              KeyScan();
+ 181   3                              KeyComMsg();
+ 182   3                      }
+ 183   2                      if(AppTick1)
+ 184   2                      {
+ 185   3                              AppTick1=0;
+ 186   3                              BlueMode_Handle();
+ 187   3                      }
+ 188   2                      if(AppTick2)
+ 189   2                      {
+ 190   3                              AppTick2=0;
+ 191   3                              DealWith_Voice();
+ 192   3                      }
+ 193   2                      if(AppTick3)
+ 194   2                      {
+ 195   3                              AppTick3=0;
+ 196   3                              RGB_Handle();
+ 197   3                      }
+ 198   2                      if(AppTick4)
+ 199   2                      {
+ 200   3                              AppTick4=0;
+ 201   3                              setLed_Handle();
+ 202   3                              Uart0Transmit_SendString_3Step(); 
+ 203   3                              Compare_1MinutePorc(); //10ms被调用一次
+ 204   3                      }
+ 205   2                       WDT_clear();
+ 206   2              }
+ 207   1      }
+ 208          
+ 209          
+ 210          
+ 211          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    336    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

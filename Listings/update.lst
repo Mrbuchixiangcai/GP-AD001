@@ -1,0 +1,248 @@
+C51 COMPILER V9.00   UPDATE                                                                08/04/2018 12:05:32 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE UPDATE
+OBJECT MODULE PLACED IN .\Objects\update.obj
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\update.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inc
+                    -lude) DEBUG OBJECTEXTEND PRINT(.\Listings\update.lst) OBJECT(.\Objects\update.obj)
+
+line level    source
+
+   1          //===============================================================
+   2          //      File name : update.c ?PR?UPDATE_HANDLE?UPDATE(0x4000)
+   3          //=============================================================== 
+   4          #include "app_main.h"
+   5          
+   6          uint8_t   idata  update_step;
+   7          uint16_t  idata  Update_Rx_Pointer;
+   8          uint16_t  idata  Update_PacketSum;
+   9          uint16_t  idata  Update_ByteSizeSum;
+  10          uint16_t  idata  Update_PacketCurrent;
+  11          uint16_t  idata  Update_ByteSizeCurrent;
+  12          uint8_t   xdata  *Update_ReceiveBuffer;
+  13          
+  14          void putChar(char ch)
+  15          {
+  16   1              USI0ST1&=~0xC0;         
+  17   1              USI0DR=ch;  
+  18   1              while(!(USI0ST1 & 0xC0));
+  19   1      }
+  20          void putString(char *str) 
+  21          {
+  22   1              USI0ST1&=~0xC0;         
+  23   1              USI0DR=*str++;  
+  24   1              while(*str!='\0') 
+  25   1              { 
+  26   2                      if((USI0ST1 & 0xC0))
+  27   2                      {
+  28   3                              USI0ST1&=~0xC0;          
+  29   3                              USI0DR=*str++; 
+  30   3                      }
+  31   2              }
+  32   1      }
+  33          
+  34          void update_handle(void)
+  35          {
+  36   1              uint16_t i;
+  37   1              uint8_t  Head;  //包头部
+  38   1              uint16_t Packet_P;
+  39   1              uint16_t Packet_N;
+  40   1              uint16_t sumPacket_CRC;
+  41   1              uint16_t curPacket_CRC;
+  42   1              uint8_t  TimeOut_L;             
+  43   1              uint8_t  TimeOut_M;     
+  44   1              uint8_t  TimeOut_H;     
+  45   1              uint8_t  code *curEEPAddress;
+  46   1              uint8_t  code *Boot_ROMadr;
+  47   1              WDTDR = 0x00;           // period
+  48   1              WDTCR = 0x00;           // setting      
+  49   1              IE3 &=~0x04;   // dsable WT interrupt
+  50   1              IE  &=~0x18;   // dsable UART1 interrupt
+  51   1              IE1 &=~0x18;   // dsable UART0 interrupt
+  52   1              IE2 &=~0x10;   // dsable Timer3 interrupt
+  53   1              update_step=0;
+  54   1              Update_Rx_Pointer=0;    
+C51 COMPILER V9.00   UPDATE                                                                08/04/2018 12:05:32 PAGE 2   
+
+  55   1              Update_PacketCurrent=0; 
+  56   1              TimeOut_L=0;            
+  57   1              TimeOut_M=0;    
+  58   1              TimeOut_H=0;    
+  59   1              Update_ReceiveBuffer=Uart0_ReceiveBuffer;
+  60   1              for(i=0;i<Update_LEN_BUFFER;i++)
+  61   1                      Update_ReceiveBuffer[i]=0x00;
+  62   1              LED_RED(1); //端口置位宏定义
+  63   1              LED_GREEN(1);
+  64   1              LED_BLUE(1);
+  65   1              putChar('C');
+  66   1              while(1)        
+  67   1              {
+  68   2                      switch(update_step)
+  69   2                      {
+  70   3                              case 0:
+  71   3                                      WDT_clear();
+  72   3                                      if(USI0ST1 & 0x20)
+  73   3                                      {
+  74   4                                              Update_ReceiveBuffer[Update_Rx_Pointer++]=USI0DR;
+  75   4                                              TimeOut_L=0;            
+  76   4                                              TimeOut_M=0;    
+  77   4                                              TimeOut_H=0;    
+  78   4                                      }
+  79   3                                      if(Update_ReceiveBuffer[0]==0x6E)
+  80   3                                      {
+  81   4                                              if(Update_PacketSum) 
+  82   4                                              {
+  83   5                                                      putString("update fail");
+  84   5                                                      update_step=0;
+  85   5                                                      return;
+  86   5                                              }
+  87   4                                              else
+  88   4                                              {
+  89   5                                                      putString("update ok");
+  90   5                                                      update_step=6;
+  91   5                                                      break;
+  92   5                                              }
+  93   4                                      }
+  94   3                                      if(Update_Rx_Pointer==5+256+2)//263
+  95   3                                      {
+  96   4                                              Update_Rx_Pointer=0;
+  97   4                                              update_step++;
+  98   4                                      }
+  99   3                                      break;
+ 100   3                              case 1:
+ 101   3                                      WDT_clear();
+ 102   3                                      Update_Rx_Pointer=0;
+ 103   3                                      Head=Update_ReceiveBuffer[0];
+ 104   3                                      Packet_P=(Update_ReceiveBuffer[1]<<8)|Update_ReceiveBuffer[2];
+ 105   3                                      Packet_N=(Update_ReceiveBuffer[3]<<8)|Update_ReceiveBuffer[4];
+ 106   3                                      if((Head!=0x02)||(Packet_P!=(~Packet_N)))
+ 107   3                                      {
+ 108   4                                              putChar(0x15); 
+ 109   4                                              update_step=0;
+ 110   4                                              break;
+ 111   4                                      }
+ 112   3                                      if(((Packet_P-Update_PacketCurrent)==1)||((Packet_P-Update_PacketCurrent)==0))
+ 113   3                                      {
+ 114   4                                              Update_PacketCurrent=Packet_P;
+ 115   4                                              curEEPAddress=EEP_ADDRESS_START+(Update_PacketCurrent*256);
+ 116   4                                              if(curEEPAddress>EEP_ADDRESS_END)
+C51 COMPILER V9.00   UPDATE                                                                08/04/2018 12:05:32 PAGE 3   
+
+ 117   4                                              {
+ 118   5                                                      return; 
+ 119   5                                              }
+ 120   4                                      }
+ 121   3                                      else
+ 122   3                                      {
+ 123   4                                              putChar(0x15); 
+ 124   4                                              update_step=0;
+ 125   4                                              break;
+ 126   4                                      }
+ 127   3                                      update_step++;
+ 128   3                                      break;
+ 129   3                              case 2:
+ 130   3                                      WDT_clear();
+ 131   3                                      sumPacket_CRC=0;
+ 132   3                                      curPacket_CRC=0;
+ 133   3                                      for(i=0;i<256;i++)
+ 134   3                                              sumPacket_CRC+=Update_ReceiveBuffer[i+5];
+ 135   3                                      curPacket_CRC =Update_ReceiveBuffer[256+5]<<8;
+ 136   3                                      curPacket_CRC|=Update_ReceiveBuffer[256+5+1];
+ 137   3                                      if(sumPacket_CRC!=curPacket_CRC)
+ 138   3                                      {
+ 139   4                                              putChar(0x15); 
+ 140   4                                              update_step=0;
+ 141   4                                              break;
+ 142   4                                      }
+ 143   3                                      update_step++;
+ 144   3                                      break;
+ 145   3                              case 3:
+ 146   3                                      WDT_clear();
+ 147   3                                      eeprom_page_write_data(curEEPAddress,&Update_ReceiveBuffer[5]);         
+ 148   3                                      eeprom_page_write_data(curEEPAddress+64,&Update_ReceiveBuffer[5+64]);           
+ 149   3                                      eeprom_page_write_data(curEEPAddress+64+64,&Update_ReceiveBuffer[5+64+64]);             
+ 150   3                                      eeprom_page_write_data(curEEPAddress+64+64+64,&Update_ReceiveBuffer[5+64+64+64]);       
+ 151   3                                      Update_PacketSum-=1;
+ 152   3                                      update_step++;
+ 153   3                                      break;
+ 154   3                              case 4:
+ 155   3                                      WDT_clear();
+ 156   3                                      for(i=0;i<256;i++)
+ 157   3                                      {
+ 158   4                                              if(Update_ReceiveBuffer[i+5]!=eeprom_byte_read_data(curEEPAddress+i))
+ 159   4                                              {
+ 160   5                                                      putChar(0x15); 
+ 161   5                                                      update_step=0;
+ 162   5                                                      break;
+ 163   5                                              }
+ 164   4                                      }
+ 165   3                                      update_step++;
+ 166   3                                      break;
+ 167   3                              case 5:
+ 168   3                                      WDT_clear();
+ 169   3                                      for(i=0;i<Update_LEN_BUFFER;i++)
+ 170   3                                              {Update_ReceiveBuffer[i]=0x00;WDT_clear();}
+ 171   3                                      putChar(0x96); 
+ 172   3                                      update_step=0;
+ 173   3                                      break;
+ 174   3                              case 6:         
+ 175   3      //                              Boot_ROMadr=BOOT_ADDRESS_START;
+ 176   3      //                              curEEPAddress=EEP_ADDRESS_START+BOOT_ADDRESS_START;
+ 177   3      //                              while(Boot_ROMadr<BOOT_ADDRESS_END)
+ 178   3      //                              {
+C51 COMPILER V9.00   UPDATE                                                                08/04/2018 12:05:32 PAGE 4   
+
+ 179   3      //                                      for(i=0;i<64;i++)
+ 180   3      //                                      {Update_ReceiveBuffer[i]=eeprom_byte_read_data(curEEPAddress+i);WDT_clear();}
+ 181   3      //                                      eeprom_page_write_data(Boot_ROMadr,Update_ReceiveBuffer);       //??????????????        
+ 182   3      //                                      curEEPAddress+=64;      
+ 183   3      //                                      Boot_ROMadr  +=64;                               
+ 184   3      //                              }
+ 185   3                                WDT_clear();
+ 186   3                                      update_step++;
+ 187   3                                      break;
+ 188   3                              case 7:
+ 189   3                                      WDT_clear();
+ 190   3                                      for(i=0;i<FLASH_PAGE_SIZE;i++)
+ 191   3                                              Update_ReceiveBuffer[i]=0xAA;
+ 192   3                                      eeprom_page_write_data(EEP_ADDRESS_MSG_START,Update_ReceiveBuffer);     
+ 193   3              WDT_clear();                    
+ 194   3                                      ((void (code *)(void))0x0000)();
+ 195   3                                      return;
+ 196   3                                      break;
+ 197   3                              default:
+ 198   3                                      WDT_clear();
+ 199   3                                      update_step=0;
+ 200   3                                      break;
+ 201   3                      }
+ 202   2                      WDT_clear();
+ 203   2                      if(++TimeOut_L==0)
+ 204   2                      {
+ 205   3                              if(++TimeOut_M==0)
+ 206   3                              {
+ 207   4                                      if(++TimeOut_H>=2)
+ 208   4                                       ((void (code *)(void))0x0000)();
+ 209   4                              }
+ 210   3                      }
+ 211   2              }
+ 212   1      }
+*** WARNING C280 IN LINE 46 OF SOURCE\UPDATE.C: 'Boot_ROMadr': unreferenced local variable
+ 213          
+ 214          
+ 215          
+ 216          
+ 217          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1122    ----
+   CONSTANT SIZE    =     22    ----
+   XDATA SIZE       =      2      14
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =     11    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
