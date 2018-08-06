@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 1   
+C51 COMPILER V9.00   BT_MODE                                                               08/06/2018 15:52:17 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE BT_MODE
@@ -62,7 +62,7 @@ line level    source
   52                  "AT+CA\r\n",//BT_PARIR
   53                  "AT+CB\r\n",//BT_PARIR_EXT
   54                  "AT+CC\r\n",//BT_LINK_BACK
-C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 2   
+C51 COMPILER V9.00   BT_MODE                                                               08/06/2018 15:52:17 PAGE 2   
 
   55                  "AT+CP\r\n",//BT_POWER_DOWN
   56                  "AT+CD\r\n",//BT_DISCONN
@@ -126,7 +126,7 @@ line level    source
  114   3                              if(BT_CMD[1]=='B')
  115   3                              {
  116   4                                      flag_bt_play=1; 
-C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 3   
+C51 COMPILER V9.00   BT_MODE                                                               08/06/2018 15:52:17 PAGE 3   
 
  117   4                                      bt_volume=~sys_volume;
  118   4                              }
@@ -190,7 +190,7 @@ line level    source
  176   3                                      SET_BT_POWER(); //置位PA11，对应蓝牙芯片的vbat脚
  177   3                                BT_Step++;
  178   3                                      break;
-C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 4   
+C51 COMPILER V9.00   BT_MODE                                                               08/06/2018 15:52:17 PAGE 4   
 
  179   3                              case BT_STEP_INITI4:
  180   3                                      UART1_init(); 
@@ -254,7 +254,7 @@ line level    source
  238   3                              default: 
  239   3                                      break;
  240   3                      }
-C51 COMPILER V9.00   BT_MODE                                                               08/04/2018 12:05:30 PAGE 5   
+C51 COMPILER V9.00   BT_MODE                                                               08/06/2018 15:52:17 PAGE 5   
 
  241   2              }
  242   1      }

@@ -1,6 +1,7 @@
 #ifndef __DEFINE_H__
 #define __DEFINE_H__
 
+//头文件header file//
 #include "app_main.h"
 
 //宏定义macro definition//
@@ -11,46 +12,39 @@
             P3 |= 0x20;     \
         else                \
             P3 &= ~0x20;
-
 #define LED_GREEN(a)        \
         if (a)              \
             P3 |= 0x10;     \
         else                \
             P3 &= ~0x10;
-
 #define LED_RED(a)          \
         if (a)              \
             P3 |= 0x08;     \
         else                \
             P3 &= ~0x08;
-
 #define LED_15MIN(a)        \
         if (a)              \
             P0 |= 0x10;     \
         else                \
             P0 &= ~0x10
-
 #define LED_30MIN(a)        \
         if (a)              \
             P0 |= 0x20;     \
         else                \
             P0 &= ~0x20
-
 #define LED_60MIN(a)        \
         if (a)              \
             P0 |= 0x40;     \
         else                \
             P0 &= ~0x40
-
 #define VOIC_DATA(a)        \
         if (a)              \
             P1 |= 0x80;     \
         else                \
             P1 &= ~0x80
-
-#define VOIC_BUSY() (P1 & 0x40)
-#define CHECK_DC5V() (P3 & 0x01)
-#define BT_LED_DET() (P1 & 0x02)
+#define VOIC_BUSY()   (P1 & 0x40)
+#define CHECK_DC5V()  (P3 & 0x01)
+#define BT_LED_DET()  (P1 & 0x02)
 #define BT_MUTE_DET() (P1 & 0x04)
 #define EN_MUTE()           \
         do {                \
@@ -96,45 +90,50 @@
         } while (0)
 
 //类型定义byte definition//
-typedef enum { PLAY_OFF = 0, PLAY_ON, PLAY_BT, PLAY_MUSIC } PLAY_MODE;
+typedef enum { 
+	PLAY_OFF = 0, 
+	PLAY_ON, 
+	PLAY_BT, 
+	PLAY_MUSIC 
+}PLAY_MODE;
 typedef enum {
-  TIMER_OFF = 0,
-  TIMER_15MIN = 15,
-  TIMER_30MIN = 30,
-  TIMER_45MIN = 45,
-  TIMER_60MIN = 60,
-} TIMER_MODE;
+	TIMER_OFF = 0,
+	TIMER_15MIN = 15,
+	TIMER_30MIN = 30,
+	TIMER_45MIN = 45,
+	TIMER_60MIN = 60,
+}TIMER_MODE;
 
 typedef struct {
-  uint8_t Enable; //闹钟总开关
-  uint8_t Week;
-  uint8_t Hour;
-  uint8_t Minute;
-  uint8_t userR_val;
-  uint8_t userG_val;
-  uint8_t userB_val;
-  uint8_t spa_name;
-  uint8_t volume;
-  uint8_t play_pause;
-  uint8_t color_mode;
-  uint8_t Brightness;
-  uint8_t Duration;
-  uint8_t Runing;
-  uint8_t cntTimer;
-} ALRAM_TypeDef;
+	uint8_t Enable; //闹钟总开关
+	uint8_t Week;
+	uint8_t Hour;
+	uint8_t Minute;
+	uint8_t userR_val;
+	uint8_t userG_val;
+	uint8_t userB_val;
+	uint8_t spa_name;
+	uint8_t volume;
+	uint8_t play_pause;
+	uint8_t color_mode;
+	uint8_t Brightness;
+	uint8_t Duration;
+	uint8_t Runing;
+	uint8_t cntTimer;
+}ALRAM_TypeDef;
 
 typedef struct {
-  uint8_t spa_name;
-  uint8_t color_mode;
-  uint8_t userR_val;
-  uint8_t userG_val;
-  uint8_t userB_val;
-  uint8_t Light_Brightness;
-  uint8_t sys_volume;
-  uint8_t PlayMode;
-  uint8_t enable_SPApause;
-  uint8_t enableMute;
-  uint8_t TimerMode;
+	uint8_t spa_name;
+	uint8_t color_mode;
+	uint8_t userR_val;
+	uint8_t userG_val;
+	uint8_t userB_val;
+	uint8_t Light_Brightness;
+	uint8_t sys_volume;
+	uint8_t PlayMode;
+	uint8_t enable_SPApause;
+	uint8_t enableMute;
+	uint8_t TimerMode;
 } PROGRAM_TypeDef;
 
 //变量定义variable definition//

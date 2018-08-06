@@ -1,5 +1,9 @@
+//头文件header file//
 #include "app_main.h"
 
+//宏定义macro definition//
+
+//类型定义byte definition//
 ALRAM_TypeDef alarm;
 PLAY_MODE PlayMode;
 TIMER_MODE TimerMode;
@@ -7,7 +11,7 @@ PROGRAM_TypeDef program1; //在接收到“program Play（暂定）”时，播放最后一次接收
 PROGRAM_TypeDef program2;
 PROGRAM_TypeDef program3;
 
-//外部调用_变量定义variable definition//
+//变量定义variable definition//
 uint8_t idata cntAppTick;
 uint8_t idata gRTC_Sec; // RTC数据
 uint8_t idata gRTC_Sec_bk;
@@ -60,8 +64,13 @@ uint8_t cntFlash;
 uint8_t Led_Flash;
 // extern bit       Flag_data_bk;
 
-
-
+//函数定义function definetion//
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void sys_tick(void)
 {
 	AppTick1ms = 1;
@@ -92,6 +101,12 @@ void sys_tick(void)
 		cntAppTick = 0;
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void Compare_1MinutePorc(void)
 {
 	static uint8_t cntSetVolume;

@@ -1,8 +1,12 @@
 //Í·ÎÄ¼þheader file//
 #include "app_main.h"
 
+//ºê¶¨Òåmacro definition//
 #define   ADCKEY_NUM  8
 
+//ÀàÐÍ¶¨Òåbyte definition//
+
+//±äÁ¿¶¨Òåvariable definition//
 uint8_t   gbKeyPress; //°´¼ü°´ÏÂ
 uint8_t   gbKeyNone;  //Ã»ÓÐ°´¼ü°´ÏÂ
 uint8_t   KeyValue;   //°´¼üÖµ
@@ -36,6 +40,15 @@ code uint16_t ADKEY_TAB2[ADCKEY_NUM]= //°´¼üÕý³£µçÑ¹ÖµÓëÔÊÐíÎó²îÖµ
 	0x0E00,
 };
 
+//±êÖ¾Î´¶¨Òåflags definetion//
+
+//º¯Êý¶¨Òåfunction definetion//
+/*******************************************************************
+º¯ÊýÔ­ÐÍ£º
+ÊäÈë²ÎÊý£º
+Êä³ö²ÎÊý£º
+º¯Êý¹¦ÄÜ£º
+*******************************************************************/
 uint8_t GetKeyValue(void) 
 { 
 	uint8_t  i;
@@ -64,6 +77,12 @@ uint8_t GetKeyValue(void)
 	return KeyNum; //·µ»Ø°´¼ü
 }
 
+/*******************************************************************
+º¯ÊýÔ­ÐÍ£º
+ÊäÈë²ÎÊý£º
+Êä³ö²ÎÊý£º
+º¯Êý¹¦ÄÜ£º
+*******************************************************************/
 void KeyEventPorc(uint8_t KeyTmp) //±»µ÷ÓÃÊ±½ÓÊÕµÄÊÇGetKeyValue()µÄ·µ»ØÖµ  Ò»°ã¹Ì¶¨£¬²»¸ü¸Ä
 {
 	gbKeyPress=0;
@@ -96,7 +115,7 @@ void KeyEventPorc(uint8_t KeyTmp) //±»µ÷ÓÃÊ±½ÓÊÕµÄÊÇGetKeyValue()µÄ·µ»ØÖµ  Ò»°ã¹
 					KeyValue |= K_H;
 					cntKeyLoop=cKEY_RATE_VOL;
 					break;
-					case 2:
+				case 2:
 				case 3:
 					KeyEvent=3;
 					KeyValue |= K_R;
@@ -132,13 +151,23 @@ void KeyEventPorc(uint8_t KeyTmp) //±»µ÷ÓÃÊ±½ÓÊÕµÄÊÇGetKeyValue()µÄ·µ»ØÖµ  Ò»°ã¹
 	}
 }
 
-//
+/*******************************************************************
+º¯ÊýÔ­ÐÍ£º
+ÊäÈë²ÎÊý£º
+Êä³ö²ÎÊý£º
+º¯Êý¹¦ÄÜ£º
+*******************************************************************/
 void KeyScan(void) //±»Ö÷º¯Êýµ÷ÓÃ
 {
 	KeyEventPorc(GetKeyValue());
 }
 
-//
+/*******************************************************************
+º¯ÊýÔ­ÐÍ£º
+ÊäÈë²ÎÊý£º
+Êä³ö²ÎÊý£º
+º¯Êý¹¦ÄÜ£º
+*******************************************************************/
 void KeyComMsg(void) 
 {
 	if(gbKeyPress)
@@ -158,7 +187,7 @@ void KeyComMsg(void)
 	   	switch(KeyValue)
 		{
 			case KU(T_POWER):
-			{}
+			{ }
 			case KLU(T_POWER): //value65 Ã¿¸ö°´¼ü7¸öÄ£Ê½ 
 			{
 				if(cntKeylong>=25)

@@ -19,6 +19,7 @@ uint8_t  xdata Uart1_TransmitBuffer[UART1_LEN_BUFFER];
 uint8_t  xdata Uart1_ReceiveBuffer_A[UART1_LEN_BUFFER]; 
 uint8_t  xdata Uart1_ReceiveBuffer_B[UART1_LEN_BUFFER]; 
 
+//标志未定义flags definetion//
 bit BT_Work; 
 bit flag_bt_conn;  //蓝牙连接标志位
 bit flag_bt_play;  //蓝牙播放
@@ -27,6 +28,12 @@ bit Uart1_RX_Finish_A;
 bit Uart1_RX_Finish_B;  
 bit Uart1_ReceiveBuffer_A_B;
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void Uart1Transmit_SendString(char *str) 
 {
 	uint8_t i;
@@ -42,6 +49,13 @@ void Uart1Transmit_SendString(char *str)
 	Uart1_EnableSend=1;
 	USI1DR=Uart1_TransmitBuffer[Uart1_Tx_Pointer++];
 }
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 char  code BT_Command_tab[][8]= //用于改变歌曲时发送给wifi的第几首歌
 {
 	"     \r\n",//NONE
@@ -73,6 +87,12 @@ char  code BT_Command_tab[][8]= //用于改变歌曲时发送给wifi的第几首歌
 	"AT+HF\r\n",	
 };
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void bt_send_cmd(uint8_t cmd) 
 {	
   	uint8_t code bt_vol_send_tab[]={0,1,2,3,6,7,9,10,12,14,15};
@@ -82,6 +102,12 @@ void bt_send_cmd(uint8_t cmd)
 		Uart1Transmit_SendString(&BT_Command_tab[BT_VOL+bt_vol_send_tab[sys_volume]][0]);
 } 
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void BlueMode_Receive(void) 
 {
 	uint8_t i;
@@ -143,6 +169,13 @@ void BlueMode_Receive(void)
 			BT_CMD[i]=0;
 	}
 }
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void BlueMode_Handle(void) //接收到的数据信息/状态进行处理
 {
     BlueMode_Receive();  

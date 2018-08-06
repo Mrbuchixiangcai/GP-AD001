@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  08/06/2018 15:52:17 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   52   1              else
   53   1              {
   54   2                      if(Uart1_Rx_Pointer<UART1_LEN_BUFFER)   
-C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 2   
+C51 COMPILER V9.00   MAIN                                                                  08/06/2018 15:52:17 PAGE 2   
 
   55   2                              Uart1_ReceiveBuffer_B[Uart1_Rx_Pointer++]=tmp;
   56   2                      if(tmp=='\n')
@@ -126,7 +126,7 @@ line level    source
  114   2                      {
  115   3                              gRTC_Sec=0;
  116   3      //                      if(++gRTC_Minute>59)
-C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 3   
+C51 COMPILER V9.00   MAIN                                                                  08/06/2018 15:52:17 PAGE 3   
 
  117   3      //                      {
  118   3      //                              gRTC_Minute=0;
@@ -190,7 +190,7 @@ line level    source
  176          
  177          void WDT_init()
  178          {
-C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 4   
+C51 COMPILER V9.00   MAIN                                                                  08/06/2018 15:52:17 PAGE 4   
 
  179   1              // initialize Watch-dog timer
  180   1              WDTDR = 0x01;           // period
@@ -254,7 +254,7 @@ line level    source
  238   1              {
  239   2                      USI1CR2 = 0x00;         // activate USI1
  240   2                      USI1CR1 = 0x00;         // Async/Sync, bit count, parity
-C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 5   
+C51 COMPILER V9.00   MAIN                                                                  08/06/2018 15:52:17 PAGE 5   
 
  241   2                      USI1CR2 = 0x00;   // interrupt, speed
  242   2                      USI1CR3 = 0x00;         // stop bit
@@ -318,7 +318,7 @@ line level    source
  300   1              //  29 : P17      out 
  301   1              //  30 : AN5      in  
  302   1              //  31 : P06      out 
-C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 6   
+C51 COMPILER V9.00   MAIN                                                                  08/06/2018 15:52:17 PAGE 6   
 
  303   1              //  32 : P05      out 
  304   1              //  33 : P04      out 
@@ -382,7 +382,7 @@ line level    source
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =    837    ----
    CONSTANT SIZE    =   ----    ----
-C51 COMPILER V9.00   MAIN                                                                  08/04/2018 12:05:32 PAGE 7   
+C51 COMPILER V9.00   MAIN                                                                  08/06/2018 15:52:17 PAGE 7   
 
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
