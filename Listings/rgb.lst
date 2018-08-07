@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   RGB                                                                   08/06/2018 15:52:18 PAGE 1   
+C51 COMPILER V9.00   RGB                                                                   08/07/2018 12:04:30 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE RGB
@@ -38,289 +38,311 @@ line level    source
   28          uint8_t  tickRGB; //tick标记
   29          
   30          //函数定义function definetion//
-  31          //
-  32          //
-  33          //
-  34          void led_rgb_drive(void)
-  35          {
-  36   1              if(--R_val==0) 
-  37   1                      LED_RED(0); //端口复位宏定义
-  38   1              if(--G_val==0)
-  39   1                      LED_GREEN(0);
-  40   1              if(--B_val==0)
-  41   1                      LED_BLUE(0);
-  42   1              if(--sumRGB_val==0) //亮度调节，三个等级1/2/3
-  43   1              {
-  44   2                      if(Light_Brightness==0)
-  45   2                      {
-  46   3                              R_val=0;
-  47   3                              G_val=0;
-  48   3                              B_val=0;
-  49   3                      }
-  50   2                      else if(Light_Brightness==1)    
-  51   2                      {
-  52   3                              R_val=curR_val/4;
-  53   3                              G_val=curG_val/4;
-  54   3                              B_val=curB_val/4;
-C51 COMPILER V9.00   RGB                                                                   08/06/2018 15:52:18 PAGE 2   
+  31          /*******************************************************************
+  32          函数原型：
+  33          输入参数：
+  34          输出参数：
+  35          函数功能：RGB亮度调节函数
+  36          *******************************************************************/
+  37          void led_rgb_drive(void)
+  38          {
+  39   1              if(--R_val==0) 
+  40   1                      LED_RED(0); //端口复位宏定义
+  41   1              if(--G_val==0)
+  42   1                      LED_GREEN(0);
+  43   1              if(--B_val==0)
+  44   1                      LED_BLUE(0);
+  45   1              if(--sumRGB_val==0) //亮度调节，三个等级1/2/3
+  46   1              {
+  47   2                      if(Light_Brightness==0)
+  48   2                      {
+  49   3                              R_val=0;
+  50   3                              G_val=0;
+  51   3                              B_val=0;
+  52   3                      }
+  53   2                      else if(Light_Brightness==1)    
+  54   2                      {
+C51 COMPILER V9.00   RGB                                                                   08/07/2018 12:04:30 PAGE 2   
 
-  55   3                      }
-  56   2                      else if(Light_Brightness==2)    
-  57   2                      {
-  58   3                              R_val=curR_val/2;
-  59   3                              G_val=curG_val/2;
-  60   3                              B_val=curB_val/2;
-  61   3                      }
-  62   2                      else  //if(Light_Brightness==3)
-  63   2                      {
-  64   3                              R_val=curR_val;
-  65   3                              G_val=curG_val;
-  66   3                              B_val=curB_val;
-  67   3                      }
-  68   2                      if((PlayMode==PLAY_BT) && (BT_LED_DET()))
-  69   2                              SET_BT_LED();
-  70   2                      else
-  71   2                              CLR_BT_LED();
-  72   2                      if(R_val) 
-  73   2                              LED_RED(1); //端口置位宏定义
-  74   2                      if(G_val)
-  75   2                              LED_GREEN(1);
-  76   2                      if(B_val)
-  77   2                              LED_BLUE(1);
-  78   2                      tickRGB=1;
-  79   2              }
-  80   1      }
-  81          //在RGB_Handle(void)函数中，单独选中某个颜色时，把重复性的语句，打包成函数调用
-  82          void RGBColorSet(uint8_t R,uint8_t G,uint8_t B)
-  83          {
-  84   1              curR_val=R;
-  85   1              curG_val=G;
-  86   1              curB_val=B;
-  87   1      }
-  88          
-  89          void led_rgb_play(void)
-  90          {  
-  91   1              if(++play_rgb_speed<4) //自加，到10就执行if后面的语句
-  92   1                      return;
-  93   1              play_rgb_speed=0; //play_rgb_speed到10清零
-  94   1              if(play_rgb_index == 0) //红
-  95   1              {
-  96   2                      if(curR_val < 255) //到255就不加了
-  97   2                              curR_val++;
-  98   2                      if(curG_val > 0) 
-  99   2                              curG_val--;
- 100   2                      if(curB_val > 0) 
- 101   2                              curB_val--;                             
- 102   2                      if((curR_val==255) && (curG_val==0) && (curB_val==0) && (++cnt_rgb_pause>30)) 
- 103   2                      {
- 104   3                              cnt_rgb_pause=0;
- 105   3                              play_rgb_index++; //颜色自加时颜色索引play_reg_index自加
- 106   3                      }
- 107   2              }
- 108   1              else if(play_rgb_index == 1) //橙
- 109   1              {
- 110   2                      if(curR_val < 255) 
- 111   2                              curR_val++;
- 112   2                      if(curR_val > 255) 
- 113   2                              curR_val--;                             
- 114   2                      if(curG_val < 128) 
- 115   2                               curG_val++;
- 116   2                      if(curG_val > 128) 
-C51 COMPILER V9.00   RGB                                                                   08/06/2018 15:52:18 PAGE 3   
+  55   3                              R_val=curR_val/4;
+  56   3                              G_val=curG_val/4;
+  57   3                              B_val=curB_val/4;
+  58   3                      }
+  59   2                      else if(Light_Brightness==2)    
+  60   2                      {
+  61   3                              R_val=curR_val/2;
+  62   3                              G_val=curG_val/2;
+  63   3                              B_val=curB_val/2;
+  64   3                      }
+  65   2                      else  //if(Light_Brightness==3)
+  66   2                      {
+  67   3                              R_val=curR_val;
+  68   3                              G_val=curG_val;
+  69   3                              B_val=curB_val;
+  70   3                      }
+  71   2                      if((PlayMode==PLAY_BT) && (BT_LED_DET()))
+  72   2                              SET_BT_LED();
+  73   2                      else
+  74   2                              CLR_BT_LED();
+  75   2                      if(R_val) 
+  76   2                              LED_RED(1); //端口置位宏定义
+  77   2                      if(G_val)
+  78   2                              LED_GREEN(1);
+  79   2                      if(B_val)
+  80   2                              LED_BLUE(1);
+  81   2                      tickRGB=1;
+  82   2              }
+  83   1      }
+  84          
+  85          /*******************************************************************
+  86          函数原型：
+  87          输入参数：
+  88          输出参数：
+  89          函数功能：在RGB_Handle(void)函数中，单独选中某个颜色时，把重复性的语句，打包成函数调用
+  90          *******************************************************************/
+  91          void RGBColorSet(uint8_t R,uint8_t G,uint8_t B)
+  92          {
+  93   1              curR_val=R;
+  94   1              curG_val=G;
+  95   1              curB_val=B;
+  96   1      }
+  97          
+  98          /*******************************************************************
+  99          函数原型：
+ 100          输入参数：
+ 101          输出参数：
+ 102          函数功能：RGB颜色渐变函数
+ 103          *******************************************************************/
+ 104          void led_rgb_play(void)
+ 105          {  
+ 106   1              if(++play_rgb_speed<4) //自加，到10就执行if后面的语句
+ 107   1                      return;
+ 108   1              play_rgb_speed=0; //play_rgb_speed到10清零
+ 109   1              if(play_rgb_index == 0) //红
+ 110   1              {
+ 111   2                      if(curR_val < 255) //到255就不加了
+ 112   2                              curR_val++;
+ 113   2                      if(curG_val > 0) 
+ 114   2                              curG_val--;
+ 115   2                      if(curB_val > 0) 
+ 116   2                              curB_val--;                             
+C51 COMPILER V9.00   RGB                                                                   08/07/2018 12:04:30 PAGE 3   
 
- 117   2                              curG_val--;
- 118   2                      if(curB_val > 0) 
- 119   2                              curB_val--;
- 120   2                      if((curR_val==255) && (curG_val==128) && (curB_val==0) && (++cnt_rgb_pause>30)) 
- 121   2                      {
- 122   3                              cnt_rgb_pause=0;
- 123   3                              play_rgb_index++;
- 124   3                      }
- 125   2              }
- 126   1              else if(play_rgb_index == 2)//黄 
- 127   1              {
- 128   2                      if(curR_val < 255) 
- 129   2                              curR_val++;
- 130   2                      if(curG_val < 255) 
- 131   2                              curG_val++;                             
- 132   2                      if(curB_val > 0) 
- 133   2                              curB_val--;
- 134   2                      if((curR_val==255) && (curG_val==255) && (curB_val==0) && (++cnt_rgb_pause>30)) 
- 135   2                      {
- 136   3                              cnt_rgb_pause=0;
- 137   3                              play_rgb_index++;
- 138   3                      }
- 139   2              }               
- 140   1              else if(play_rgb_index == 3)//绿
- 141   1              {
- 142   2                      if(curR_val > 0) 
- 143   2                              curR_val--;
- 144   2                      if(curG_val < 255) 
- 145   2                              curG_val++;                             
- 146   2                      if(curB_val > 0) 
- 147   2                              curB_val--;
- 148   2                      if((curR_val==0) && (curG_val==255) && (curB_val==0) && (++cnt_rgb_pause>30)) 
- 149   2                      {
- 150   3                              cnt_rgb_pause=0;
- 151   3                              play_rgb_index++;
- 152   3                      }
- 153   2              }               
- 154   1              else if(play_rgb_index == 4)//蓝
- 155   1              {
- 156   2                      if(curR_val > 0) 
- 157   2                              curR_val--;
- 158   2                      if(curG_val > 0) 
- 159   2                              curG_val--;
- 160   2                      if(curB_val < 255) 
- 161   2                              curB_val++;
- 162   2                      if((curR_val==0) && (curG_val==0) && (curB_val==255) && (++cnt_rgb_pause>30)) 
- 163   2                      {
- 164   3                              cnt_rgb_pause=0;
- 165   3                              play_rgb_index++;
- 166   3                      }
- 167   2              }       
- 168   1              else if(play_rgb_index == 5)//青
- 169   1              {
- 170   2                      if(curR_val > 0) 
- 171   2                              curR_val--;
- 172   2                      if(curG_val < 255) 
- 173   2                              curG_val++;
- 174   2                      if(curB_val < 255) 
- 175   2                              curB_val++;
- 176   2                      if((curR_val==0) && (curG_val==255) && (curB_val==255) && (++cnt_rgb_pause>30)) 
- 177   2                      {
- 178   3                              cnt_rgb_pause=0;
-C51 COMPILER V9.00   RGB                                                                   08/06/2018 15:52:18 PAGE 4   
+ 117   2                      if((curR_val==255) && (curG_val==0) && (curB_val==0) && (++cnt_rgb_pause>30)) 
+ 118   2                      {
+ 119   3                              cnt_rgb_pause=0;
+ 120   3                              play_rgb_index++; //颜色自加时颜色索引play_reg_index自加
+ 121   3                      }
+ 122   2              }
+ 123   1              else if(play_rgb_index == 1) //橙
+ 124   1              {
+ 125   2                      if(curR_val < 255) 
+ 126   2                              curR_val++;
+ 127   2                      if(curR_val > 255) 
+ 128   2                              curR_val--;                             
+ 129   2                      if(curG_val < 128) 
+ 130   2                               curG_val++;
+ 131   2                      if(curG_val > 128) 
+ 132   2                              curG_val--;
+ 133   2                      if(curB_val > 0) 
+ 134   2                              curB_val--;
+ 135   2                      if((curR_val==255) && (curG_val==128) && (curB_val==0) && (++cnt_rgb_pause>30)) 
+ 136   2                      {
+ 137   3                              cnt_rgb_pause=0;
+ 138   3                              play_rgb_index++;
+ 139   3                      }
+ 140   2              }
+ 141   1              else if(play_rgb_index == 2)//黄 
+ 142   1              {
+ 143   2                      if(curR_val < 255) 
+ 144   2                              curR_val++;
+ 145   2                      if(curG_val < 255) 
+ 146   2                              curG_val++;                             
+ 147   2                      if(curB_val > 0) 
+ 148   2                              curB_val--;
+ 149   2                      if((curR_val==255) && (curG_val==255) && (curB_val==0) && (++cnt_rgb_pause>30)) 
+ 150   2                      {
+ 151   3                              cnt_rgb_pause=0;
+ 152   3                              play_rgb_index++;
+ 153   3                      }
+ 154   2              }               
+ 155   1              else if(play_rgb_index == 3)//绿
+ 156   1              {
+ 157   2                      if(curR_val > 0) 
+ 158   2                              curR_val--;
+ 159   2                      if(curG_val < 255) 
+ 160   2                              curG_val++;                             
+ 161   2                      if(curB_val > 0) 
+ 162   2                              curB_val--;
+ 163   2                      if((curR_val==0) && (curG_val==255) && (curB_val==0) && (++cnt_rgb_pause>30)) 
+ 164   2                      {
+ 165   3                              cnt_rgb_pause=0;
+ 166   3                              play_rgb_index++;
+ 167   3                      }
+ 168   2              }               
+ 169   1              else if(play_rgb_index == 4)//蓝
+ 170   1              {
+ 171   2                      if(curR_val > 0) 
+ 172   2                              curR_val--;
+ 173   2                      if(curG_val > 0) 
+ 174   2                              curG_val--;
+ 175   2                      if(curB_val < 255) 
+ 176   2                              curB_val++;
+ 177   2                      if((curR_val==0) && (curG_val==0) && (curB_val==255) && (++cnt_rgb_pause>30)) 
+ 178   2                      {
+C51 COMPILER V9.00   RGB                                                                   08/07/2018 12:04:30 PAGE 4   
 
- 179   3                              play_rgb_index++;
- 180   3                      }
- 181   2              }               
- 182   1              else //紫
- 183   1              {
- 184   2                      if(curR_val < 255)
- 185   2                              curR_val++;
- 186   2                      if(curG_val > 0) 
- 187   2                              curG_val--;                             
- 188   2                      if(curB_val < 255) 
- 189   2                              curB_val++;
- 190   2                      if((curR_val==255) && (curG_val==0) && (curB_val==255) && (++cnt_rgb_pause>50)) 
- 191   2                      {
- 192   3                              cnt_rgb_pause=0;
- 193   3                              play_rgb_index=0;
- 194   3                      }
- 195   2          }   
- 196   1      }
- 197          void RGB_Handle(void)
- 198          {
- 199   1              if(tickRGB==0)
- 200   1                      return;
- 201   1              tickRGB=0;
- 202   1              if((color_mode==COLOR_CHANGE) && (color_mode!=color_mode_bk))//color_mode_bk在开关机时用作备份，不冲突
- 203   1              {
- 204   2                      color_mode_bk=color_mode;
- 205   2                      play_rgb_index = 0;
- 206   2                      curR_val=127;
- 207   2                      curG_val=0;
- 208   2                      curB_val=0;     
- 209   2              }
- 210   1              if((PlayMode==PLAY_OFF) || (color_mode==COLOR_OFF))
- 211   1              {
- 212   2                      RGBColorSet(0,0,0);
- 213   2              }
- 214   1              else if(color_mode == COLOR_WHITE)
- 215   1              {
- 216   2                      RGBColorSet(255,255,255);
- 217   2              }
- 218   1              else if(color_mode == COLOR_RED)
- 219   1              {
- 220   2                      RGBColorSet(255,0,0);
- 221   2              }
- 222   1              else if(color_mode == COLOR_ORANGE)
- 223   1              {
- 224   2                      RGBColorSet(255,128,0);
- 225   2              }
- 226   1              else if(color_mode == COLOR_YELLOW)
- 227   1              {
- 228   2                      RGBColorSet(255,255,0);
- 229   2              }
- 230   1              else if(color_mode == COLOR_GREEN)
- 231   1              {
- 232   2                      RGBColorSet(0,255,0);
- 233   2              }
- 234   1              else if(color_mode == COLOR_CYAN)
- 235   1              {
- 236   2                      RGBColorSet(0,255,255);
- 237   2              }
- 238   1              else if(color_mode == COLOR_BLUE)
- 239   1              {
- 240   2                      RGBColorSet(0,0,255);
-C51 COMPILER V9.00   RGB                                                                   08/06/2018 15:52:18 PAGE 5   
+ 179   3                              cnt_rgb_pause=0;
+ 180   3                              play_rgb_index++;
+ 181   3                      }
+ 182   2              }       
+ 183   1              else if(play_rgb_index == 5)//青
+ 184   1              {
+ 185   2                      if(curR_val > 0) 
+ 186   2                              curR_val--;
+ 187   2                      if(curG_val < 255) 
+ 188   2                              curG_val++;
+ 189   2                      if(curB_val < 255) 
+ 190   2                              curB_val++;
+ 191   2                      if((curR_val==0) && (curG_val==255) && (curB_val==255) && (++cnt_rgb_pause>30)) 
+ 192   2                      {
+ 193   3                              cnt_rgb_pause=0;
+ 194   3                              play_rgb_index++;
+ 195   3                      }
+ 196   2              }               
+ 197   1              else //紫
+ 198   1              {
+ 199   2                      if(curR_val < 255)
+ 200   2                              curR_val++;
+ 201   2                      if(curG_val > 0) 
+ 202   2                              curG_val--;                             
+ 203   2                      if(curB_val < 255) 
+ 204   2                              curB_val++;
+ 205   2                      if((curR_val==255) && (curG_val==0) && (curB_val==255) && (++cnt_rgb_pause>50)) 
+ 206   2                      {
+ 207   3                              cnt_rgb_pause=0;
+ 208   3                              play_rgb_index=0;
+ 209   3                      }
+ 210   2          }   
+ 211   1      }
+ 212          
+ 213          /*******************************************************************
+ 214          函数原型：
+ 215          输入参数：
+ 216          输出参数：
+ 217          函数功能：RGB颜色
+ 218          *******************************************************************/
+ 219          void RGB_Handle(void)
+ 220          {
+ 221   1              if(tickRGB==0)
+ 222   1                      return;
+ 223   1              tickRGB=0;
+ 224   1              if((color_mode==COLOR_CHANGE) && (color_mode!=color_mode_bk))//color_mode_bk在开关机时用作备份，不冲突
+ 225   1              {
+ 226   2                      color_mode_bk=color_mode;
+ 227   2                      play_rgb_index = 0;
+ 228   2                      curR_val=127;
+ 229   2                      curG_val=0;
+ 230   2                      curB_val=0;     
+ 231   2              }
+ 232   1              if((PlayMode==PLAY_OFF) || (color_mode==COLOR_OFF))
+ 233   1              {
+ 234   2                      RGBColorSet(0,0,0);
+ 235   2              }
+ 236   1              else if(color_mode == COLOR_WHITE)
+ 237   1              {
+ 238   2                      RGBColorSet(255,255,255);
+ 239   2              }
+ 240   1              else if(color_mode == COLOR_RED)
+C51 COMPILER V9.00   RGB                                                                   08/07/2018 12:04:30 PAGE 5   
 
- 241   2              }
- 242   1              else if(color_mode == COLOR_PURPLE)
- 243   1              {
- 244   2                      RGBColorSet(128,0,255);
- 245   2              }
- 246   1              else if(color_mode == COLOR_USER)
- 247   1              {
- 248   2                      curR_val=userR_val;
- 249   2                      curG_val=userG_val;
- 250   2                      curB_val=userB_val;
- 251   2                      if((userR_val==255)&&(userG_val==255)&&(userB_val==255))
- 252   2                      {
- 253   3                              color_mode=COLOR_WHITE;
- 254   3                      }
- 255   2                      else if((userR_val==255)&&(userG_val==0)&&(userB_val==0))
- 256   2                      {
- 257   3                              color_mode=COLOR_RED;
- 258   3                      }
- 259   2                      else if((userR_val==255)&&(userG_val==128)&&(userB_val==0))
- 260   2                      {
- 261   3                              color_mode=COLOR_ORANGE;
- 262   3                      }
- 263   2                      else if((userR_val==255)&&(userG_val==255)&&(userB_val==0))
- 264   2                      {
- 265   3                              color_mode=COLOR_YELLOW;
- 266   3                      }
- 267   2                      else if((userR_val==0)&&(userG_val==255)&&(userB_val==0))
- 268   2                      {
- 269   3                              color_mode=COLOR_GREEN;
- 270   3                      }
- 271   2                      else if((userR_val==0)&&(userG_val==255)&&(userB_val==255))
- 272   2                      {
- 273   3                              color_mode=COLOR_CYAN;
- 274   3                      }
- 275   2                      else if((userR_val==0)&&(userG_val==0)&&(userB_val==255))
- 276   2                      {
- 277   3                              color_mode=COLOR_BLUE;
- 278   3                      }
- 279   2                      else if((userR_val==128)&&(userG_val==0)&&(userB_val==255))
- 280   2                      {
- 281   3                              color_mode=COLOR_PURPLE;
- 282   3                      }
- 283   2              }
- 284   1              else if(color_mode == COLOR_CHANGE)
- 285   1              {
- 286   2                      led_rgb_play(); //颜色自加模式
- 287   2              }
- 288   1              if((color_mode==COLOR_OFF)&&(color_mode == COLOR_USER))
- 289   1              {//按键控制灯光时，把颜色值赋给userR_val
- 290   2                      userR_val=curR_val;
- 291   2                      userG_val=curG_val;
- 292   2                      userB_val=curB_val;
- 293   2              }
- 294   1              if(color_mode!=COLOR_OFF)
- 295   1              {
- 296   2               color_mode_bk=color_mode;      
- 297   2              }
- 298   1      }
- 299          
- 300          
- 301              
- 302          
-C51 COMPILER V9.00   RGB                                                                   08/06/2018 15:52:18 PAGE 6   
+ 241   1              {
+ 242   2                      RGBColorSet(255,0,0);
+ 243   2              }
+ 244   1              else if(color_mode == COLOR_ORANGE)
+ 245   1              {
+ 246   2                      RGBColorSet(255,128,0);
+ 247   2              }
+ 248   1              else if(color_mode == COLOR_YELLOW)
+ 249   1              {
+ 250   2                      RGBColorSet(255,255,0);
+ 251   2              }
+ 252   1              else if(color_mode == COLOR_GREEN)
+ 253   1              {
+ 254   2                      RGBColorSet(0,255,0);
+ 255   2              }
+ 256   1              else if(color_mode == COLOR_CYAN)
+ 257   1              {
+ 258   2                      RGBColorSet(0,255,255);
+ 259   2              }
+ 260   1              else if(color_mode == COLOR_BLUE)
+ 261   1              {
+ 262   2                      RGBColorSet(0,0,255);
+ 263   2              }
+ 264   1              else if(color_mode == COLOR_PURPLE)
+ 265   1              {
+ 266   2                      RGBColorSet(128,0,255);
+ 267   2              }
+ 268   1              else if(color_mode == COLOR_USER)
+ 269   1              {
+ 270   2                      curR_val=userR_val;
+ 271   2                      curG_val=userG_val;
+ 272   2                      curB_val=userB_val;
+ 273   2                      if((userR_val==255)&&(userG_val==255)&&(userB_val==255))
+ 274   2                      {
+ 275   3                              color_mode=COLOR_WHITE;
+ 276   3                      }
+ 277   2                      else if((userR_val==255)&&(userG_val==0)&&(userB_val==0))
+ 278   2                      {
+ 279   3                              color_mode=COLOR_RED;
+ 280   3                      }
+ 281   2                      else if((userR_val==255)&&(userG_val==128)&&(userB_val==0))
+ 282   2                      {
+ 283   3                              color_mode=COLOR_ORANGE;
+ 284   3                      }
+ 285   2                      else if((userR_val==255)&&(userG_val==255)&&(userB_val==0))
+ 286   2                      {
+ 287   3                              color_mode=COLOR_YELLOW;
+ 288   3                      }
+ 289   2                      else if((userR_val==0)&&(userG_val==255)&&(userB_val==0))
+ 290   2                      {
+ 291   3                              color_mode=COLOR_GREEN;
+ 292   3                      }
+ 293   2                      else if((userR_val==0)&&(userG_val==255)&&(userB_val==255))
+ 294   2                      {
+ 295   3                              color_mode=COLOR_CYAN;
+ 296   3                      }
+ 297   2                      else if((userR_val==0)&&(userG_val==0)&&(userB_val==255))
+ 298   2                      {
+ 299   3                              color_mode=COLOR_BLUE;
+ 300   3                      }
+ 301   2                      else if((userR_val==128)&&(userG_val==0)&&(userB_val==255))
+ 302   2                      {
+C51 COMPILER V9.00   RGB                                                                   08/07/2018 12:04:30 PAGE 6   
 
- 303          
+ 303   3                              color_mode=COLOR_PURPLE;
+ 304   3                      }
+ 305   2              }
+ 306   1              else if(color_mode == COLOR_CHANGE)
+ 307   1              {
+ 308   2                      led_rgb_play(); //颜色自加模式
+ 309   2              }
+ 310   1              if((color_mode==COLOR_OFF)&&(color_mode == COLOR_USER))
+ 311   1              {//按键控制灯光时，把颜色值赋给userR_val
+ 312   2                      userR_val=curR_val;
+ 313   2                      userG_val=curG_val;
+ 314   2                      userB_val=curB_val;
+ 315   2              }
+ 316   1              if(color_mode!=COLOR_OFF)
+ 317   1              {
+ 318   2                      color_mode_bk=color_mode;       
+ 319   2              }
+ 320   1      }
+ 321          
+ 322          
+ 323              
+ 324          
+ 325          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

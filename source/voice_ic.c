@@ -28,12 +28,11 @@ bit	  gbVoice_Work;
 bit   flag_voice_send; //语音发送标志
 bit   enable_SPApause;//为1为暂停
 
-
 /*******************************************************************
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：设置语音音量 
 *******************************************************************/
 void set_voice_vol(uint8_t vol) //设置语音音量 
 {
@@ -44,7 +43,7 @@ void set_voice_vol(uint8_t vol) //设置语音音量
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：语音发送
 *******************************************************************/
 void voice_send(uint8_t key) //语音发送
 {
@@ -54,7 +53,7 @@ void voice_send(uint8_t key) //语音发送
 		voice_send_data = key-1;
 		voice_send_step = 0;
 		voice_50us_cnt =  0;
-		VOIC_DATA(0); //端口点评置位/复位宏定义
+		VOIC_DATA(0); //端口电平置位//复位宏定义
 		voice_50us_cnt_set =200;//change1
 	}
 }
@@ -63,7 +62,7 @@ void voice_send(uint8_t key) //语音发送
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：语音发送时间及顺序
 *******************************************************************/
 void voice_in_timer(void)
 {
@@ -128,7 +127,7 @@ void voice_in_timer(void)
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：被主函数调用
 *******************************************************************/
 void DealWith_Voice(void) //被主函数调用
 {
@@ -231,7 +230,7 @@ void DealWith_Voice(void) //被主函数调用
 					EN_MUTE();
 				 else 
 					DE_MUTE();
-			  }
+				}
 				break;
 		}
 	}	
@@ -252,7 +251,7 @@ void DealWith_Voice(void) //被主函数调用
 			case VOICE_STEP_INITI1:
 				if(++cntSPAOn>20)
 				{
-					cntSPAOn=0;
+					cntSPAOn=0;  
 				  SET_VOICE_POWER();
 					Voice_Step++;
 				}

@@ -1,6 +1,11 @@
 //头文件header file//
 #include "app_main.h"
 
+//宏定义macro definition//
+
+//类型定义byte definition//
+
+//变量定义variable definition//
 uint8_t  idata  Rx_Pointer;
 uint8_t  idata  Uart0_EnableSend;
 uint8_t  idata  Uart0_Tx_Pointer;
@@ -15,6 +20,17 @@ uint8_t  xdata  Uart0_ReceiveBuffer[UART0_RX_LEN_BUFFER];
 uint8_t  idata  Count200ms_3Step;
 uint8_t  idata  Uart0_SendString_3Step;
 
+//标志未定义flags definetion//
+
+//函数声明Function declaration//
+
+//函数定义function definetion//
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void Uart0Transmit_SendString(char *str) 
 {
 	uint8_t i;
@@ -33,6 +49,13 @@ void Uart0Transmit_SendString(char *str)
 	Uart0_Tx_TimeOut=10;	
 	USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
 }
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void Uart0Transmit_SendString_3Step(void) 
 {
 	if(Uart0_SendString_3Step)
@@ -72,6 +95,13 @@ void Uart0Transmit_SendString_3Step(void)
 		}		
 	}
 }
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void Uart0_Receive_Parse(void)
 {
 	uint8_t i;

@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   APP_MAIN                                                              08/06/2018 15:52:16 PAGE 1   
+C51 COMPILER V9.00   APP_MAIN                                                              08/07/2018 12:04:29 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE APP_MAIN
@@ -23,7 +23,7 @@ line level    source
   12          函数原型：
   13          输入参数：
   14          输出参数：
-  15          函数功能：
+  15          函数功能：LED灯的闪烁，恢复出厂设置和清楚wifi列表的LED相关操作
   16          *******************************************************************/
   17          void setLed_Handle(void)//LED灯的相关处理
   18          {
@@ -62,7 +62,7 @@ line level    source
   51   2                      LED_30MIN(1);
   52   2                      LED_60MIN(1);
   53   2              }
-C51 COMPILER V9.00   APP_MAIN                                                              08/06/2018 15:52:16 PAGE 2   
+C51 COMPILER V9.00   APP_MAIN                                                              08/07/2018 12:04:29 PAGE 2   
 
   54   1              else if(Flag_TestMode)//进入测试模式TIMER60LED灯闪烁2s提示
   55   1              {
@@ -113,7 +113,7 @@ line level    source
  100          函数原型：
  101          输入参数：
  102          输出参数：
- 103          函数功能：
+ 103          函数功能：初始化端口和变量的操作
  104          *******************************************************************/
  105          void PowerON_Reset(void)
  106          {
@@ -126,7 +126,7 @@ line level    source
  113   1              EN_MUTE();
  114   1              Uart0_SendString_3Step=3;
  115   1              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
-C51 COMPILER V9.00   APP_MAIN                                                              08/06/2018 15:52:16 PAGE 3   
+C51 COMPILER V9.00   APP_MAIN                                                              08/07/2018 12:04:29 PAGE 3   
 
  116   1              Falg_TimeSync_Allow=1;
  117   1      //      EEPAddress_data_bk=0x0400+64;
@@ -182,7 +182,7 @@ line level    source
  166          函数原型：
  167          输入参数：
  168          输出参数：
- 169          函数功能：
+ 169          函数功能：主函数，被Main()调用，每个AppTickx执行一次是10ms
  170          *******************************************************************/
  171          void app_main(void)
  172          {
@@ -190,7 +190,7 @@ line level    source
  174   1      //              if((PlayMode==PLAY_ON) || (PlayMode==PLAY_BT)) //开机进入
  175   1      //              {
  176   1      //                      enableMute=0;
-C51 COMPILER V9.00   APP_MAIN                                                              08/06/2018 15:52:16 PAGE 4   
+C51 COMPILER V9.00   APP_MAIN                                                              08/07/2018 12:04:29 PAGE 4   
 
  177   1      //                      enable_SPApause=0;
  178   1      //                      PlayMode=PLAY_MUSIC;

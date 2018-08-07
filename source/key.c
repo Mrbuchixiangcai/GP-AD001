@@ -47,7 +47,7 @@ code uint16_t ADKEY_TAB2[ADCKEY_NUM]= //°´¼üÕý³£µçÑ¹ÖµÓëÔÊÐíÎó²îÖµ
 º¯ÊýÔ­ÐÍ£º
 ÊäÈë²ÎÊý£º
 Êä³ö²ÎÊý£º
-º¯Êý¹¦ÄÜ£º
+º¯Êý¹¦ÄÜ£º»ñµÃADÖµ£¬²¢ÅÐ¶ÏÊÇÄÄ¸ö°´¼ü£¬Èç¹ûÊÇµ¥¶ÀµÄ°´¼üºÍADÖµ°´¼ü¸´ºÏÒ²¿ÉÒÔ¼ì²â
 *******************************************************************/
 uint8_t GetKeyValue(void) 
 { 
@@ -81,7 +81,7 @@ uint8_t GetKeyValue(void)
 º¯ÊýÔ­ÐÍ£º
 ÊäÈë²ÎÊý£º
 Êä³ö²ÎÊý£º
-º¯Êý¹¦ÄÜ£º
+º¯Êý¹¦ÄÜ£ºÈ¥¶¶£¬³¤¶Ì°´ÅÐ¶Ï
 *******************************************************************/
 void KeyEventPorc(uint8_t KeyTmp) //±»µ÷ÓÃÊ±½ÓÊÕµÄÊÇGetKeyValue()µÄ·µ»ØÖµ  Ò»°ã¹Ì¶¨£¬²»¸ü¸Ä
 {
@@ -155,9 +155,9 @@ void KeyEventPorc(uint8_t KeyTmp) //±»µ÷ÓÃÊ±½ÓÊÕµÄÊÇGetKeyValue()µÄ·µ»ØÖµ  Ò»°ã¹
 º¯ÊýÔ­ÐÍ£º
 ÊäÈë²ÎÊý£º
 Êä³ö²ÎÊý£º
-º¯Êý¹¦ÄÜ£º
+º¯Êý¹¦ÄÜ£º±»Ö÷º¯Êýµ÷ÓÃ
 *******************************************************************/
-void KeyScan(void) //±»Ö÷º¯Êýµ÷ÓÃ
+void KeyScan(void) 
 {
 	KeyEventPorc(GetKeyValue());
 }
@@ -166,7 +166,7 @@ void KeyScan(void) //±»Ö÷º¯Êýµ÷ÓÃ
 º¯ÊýÔ­ÐÍ£º
 ÊäÈë²ÎÊý£º
 Êä³ö²ÎÊý£º
-º¯Êý¹¦ÄÜ£º
+º¯Êý¹¦ÄÜ£º°´¼üµÄ´¦Àí£¬°üÀ¨³¤¡¢¶Ì°´¼ü£¬Êý¾Ý´¦Àí¼°¹¦ÄÜÊµÏÖ£¬»¹ÓÐÄÖÖÓÏìÊ±°´ÏÂÈÎÒâ°´¼ü¹Ø±ÕÄÖÖÓ²¢¹Ø»ú
 *******************************************************************/
 void KeyComMsg(void) 
 {

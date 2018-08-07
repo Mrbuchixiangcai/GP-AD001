@@ -29,7 +29,7 @@ void Program1_LaterNum();
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：比较获得的控制指令与预先设定的指令对比是否一致，如果一致就执行相关功能，否则无操作
 *******************************************************************/
 uint8_t char_compare( char *source,  char *dest)
 {
@@ -47,7 +47,7 @@ uint8_t char_compare( char *source,  char *dest)
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：把字符转化为代码
 *******************************************************************/
 char char_to_hex(char indata1,char indata2)
 {
@@ -66,7 +66,7 @@ char char_to_hex(char indata1,char indata2)
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：把字符转化为代码
 *******************************************************************/
 char char_to_bcd(char indata1,char indata2)
 {
@@ -85,7 +85,7 @@ char char_to_bcd(char indata1,char indata2)
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：把要发送的协议转化为字符
 *******************************************************************/
 void hex_to_char(uint8_t *p,uint8_t indata)
 {
@@ -107,7 +107,8 @@ void hex_to_char(uint8_t *p,uint8_t indata)
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：开机要发送的命令和相关操作，这个开机是按键按下开机和接收到“turn on”开机，
+          其他app发送颜色并开机时GP389_ON_APP()函数
 *******************************************************************/
 void GP389_ON(void) //
 {
@@ -125,7 +126,8 @@ void GP389_ON(void) //
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：app发送颜色、灯光、音乐给机台（此时机台为关机状态），然后开机，除了音量其他不恢复，
+          只接受新的功能操作(颜色、灯光、音乐)
 *******************************************************************/
 void GP389_ON_APP(void) //
 {
@@ -140,7 +142,7 @@ void GP389_ON_APP(void) //
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：按键关机和app控制关机执行的
 *******************************************************************/
 void GP389_OFF(void) //
 {
@@ -158,11 +160,11 @@ void GP389_OFF(void) //
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：闹钟在响应时操作在APP上调了灯光亮度，音量大小，则关闭闹铃并关机，在app上点了特定
+          颜色的灯光，或者点了特定音乐，或者点了program,那么闹钟停止，响应所点的操作
 *******************************************************************/
 void GP389_OFF_AND_AlarmOFF()
-{//闹钟在响应时操作在APP上调了灯光亮度，音量大小，则关闭闹铃并关机，在app上点了特定
- //颜色的灯光，或者点了特定音乐，或者点了program,那么闹钟停止，响应所点的操作
+{
 	alarm.Runing=0;
 	gbKeyNone=0;
 	GP389_OFF();
@@ -177,9 +179,9 @@ void GP389_OFF_AND_AlarmOFF()
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：申请开关机时调用此函数
 *******************************************************************/
-void ApplicationGP389_ONOFF(uint8_t onoff)//申请开关机时调用此函数
+void ApplicationGP389_ONOFF(uint8_t onoff)
 {//$$${GpSta:[00,00,01,01,FFFFFF,03,0A,00,1E;00,01,00,FFFFFF,03,0A,01,FF,17:3B,FF]}\r\n
  //数组中第数据以逗号分隔，数字以 16 进制表示（这里不写"0x"），从左到右依次每个字段（前10个字段）分别表示：
  //》是否关机,00是开机，01是关机
@@ -256,7 +258,7 @@ void ApplicationGP389_ONOFF(uint8_t onoff)//申请开关机时调用此函数
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：串口接收到的命令协议和预定的协议对比确定是哪个进而执行操作，否则无操作
 *******************************************************************/
 void Wifi_CommandDeal(char *Uart0_Receive)
 {
@@ -520,14 +522,14 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 	{
 		if(char_compare(WIFI_CMD,"{TimeSync")==0)
 		{//$$${TimeSync:[0A/20/00/12/01/01/02]}\r\n
-//			IE3 &= ~0x04;    	// Enable WT interrupt
-//			gRTC_Hour  =char_to_hex(WIFI_CMD[11],WIFI_CMD[12]);
-//			gRTC_Minute=char_to_hex(WIFI_CMD[14],WIFI_CMD[15]);
-//			gRTC_Sec   =char_to_hex(WIFI_CMD[17],WIFI_CMD[18]);
-//			gRTC_Week  =WIFI_CMD[30]-'0';
-//			gRTC_Week  =Week_Table[gRTC_Week];
-//			IE3 |= 0x04;    	// Enable WT interrupt
-//			Falg_TimeSync_Allow=0;//接收到同步信息就不再发送请求同步，所以置为0
+			IE3 &= ~0x04;    	// Enable WT interrupt
+			gRTC_Hour  =char_to_hex(WIFI_CMD[11],WIFI_CMD[12]);
+			gRTC_Minute=char_to_hex(WIFI_CMD[14],WIFI_CMD[15]);
+			gRTC_Sec   =char_to_hex(WIFI_CMD[17],WIFI_CMD[18]);
+			gRTC_Week  =WIFI_CMD[30]-'0';
+			gRTC_Week  =Week_Table[gRTC_Week];
+			IE3 |= 0x04;    	// Enable WT interrupt
+			Falg_TimeSync_Allow=0;//接收到同步信息就不再发送请求同步，所以置为0
 			return;
 		}	
 		else if(char_compare(WIFI_CMD, "Turn off unit")==0) 
@@ -797,7 +799,9 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 函数原型：
 输入参数：
 输出参数：
-函数功能：
+函数功能：在app上发送“状态“功能给机台，状态功能是同时设置好几个操作（音乐，灯光等），然后一起发过来
+          然后机台记录下来第几次发的，把新的一次复制给program1，上一次的program1复制给program2，因为
+		  数据和数据类型都一样，所以可以直接复制
 *******************************************************************/
 void Program1_LaterNum()
 {
