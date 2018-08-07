@@ -238,7 +238,7 @@ void DealWith_Voice(void) //被主函数调用
 	{
 		if(gbVoice_Work!=0)
 		{
-			Voice_Step=VOICE_STEP_START; //为下一次发送做准备
+			Voice_Step=VOICE_STEP_START; //为下一次发送做准备，所以赋值为start
 		}
 		gbVoice_Work=0;
 		switch(Voice_Step)

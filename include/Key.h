@@ -17,7 +17,8 @@
 #define  cKEY_CLICK     5   //单击时间常数
 #define  cKEY_HOLD      50  //按住时间常数
 #define  cKEY_RATE_VOL  20  //连击时间常数
-#define  KeyVolAdd()  (P1&0x20)  //P1.5 音量加键
+#define  KeyVolAdd()    (P1&0x20)  //P1.5 0010_0000 音量加键
+
 
 //类型定义byte definition//
 enum{
