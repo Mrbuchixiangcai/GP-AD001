@@ -22,6 +22,7 @@
 #include <intrins.h>
 #include <string.h>
 #include "Key.h"
+#include "PWM.h"
 
 //app_main.h文件内容在在define.h中
 

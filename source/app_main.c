@@ -181,43 +181,77 @@ void app_main(void)
 //				spa_name=SPA_BRAHM_LULLABY;
 //			}
 //		}
-	while(1)
-	{ 
-    	Uart0_Receive_Parse();		
-		if(AppTick1ms) //3ms
+	while (1)
+	{
+		
+		if (AppTick1ms) //3ms
 		{
-			AppTick1ms=0;
+			AppTick1ms = 0;
 		}
-		if(AppTick0)
+		if (AppTick0)
 		{
-			AppTick0=0;
-			KeyScan();
-			KeyComMsg();
+			AppTick0 = 0;
+			//PWM_Open();
 		}
-		if(AppTick1)
+		if (AppTick1)
 		{
-			AppTick1=0;
-			BlueMode_Handle();
+			AppTick1 = 0;
+			PWM_Shutdown();
 		}
-		if(AppTick2)
+		if (AppTick2)
 		{
-			AppTick2=0;
-			DealWith_Voice();
+			AppTick2 = 0;
+			
 		}
-		if(AppTick3)
+		if (AppTick3)
 		{
-			AppTick3=0;
-			RGB_Handle();
+			AppTick3 = 0;
+			
 		}
-		if(AppTick4)
+		if (AppTick4)
 		{
-			AppTick4=0;
-			setLed_Handle();
-			Uart0Transmit_SendString_3Step(); 
-			Compare_1MinutePorc(); //10ms被调用一次
+			AppTick4 = 0;
+			
 		}
-		 WDT_clear();
+		WDT_clear();
 	}
+//	while(1)
+//	{ 
+//    	Uart0_Receive_Parse();		
+//		if(AppTick1ms) //3ms
+//		{
+//			AppTick1ms=0;
+//		}
+//		if(AppTick0)
+//		{
+//			AppTick0=0;
+//			KeyScan();
+//			KeyComMsg();
+//		}
+//		if(AppTick1)
+//		{
+//			AppTick1=0;
+//			BlueMode_Handle();
+//		}
+//		if(AppTick2)
+//		{
+//			AppTick2=0;
+//			DealWith_Voice();
+//		}
+//		if(AppTick3)
+//		{
+//			AppTick3=0;
+//			RGB_Handle();
+//		}
+//		if(AppTick4)
+//		{
+//			AppTick4=0;
+//			setLed_Handle();
+//			Uart0Transmit_SendString_3Step(); 
+//			Compare_1MinutePorc(); //10ms被调用一次
+//		}
+//		 WDT_clear();
+//	}
 }
 
 

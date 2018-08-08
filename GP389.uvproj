@@ -429,6 +429,11 @@
               <FileType>1</FileType>
               <FilePath>.\source\define.c</FilePath>
             </File>
+            <File>
+              <FileName>PWM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source\PWM.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

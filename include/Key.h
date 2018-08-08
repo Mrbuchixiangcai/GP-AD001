@@ -18,7 +18,8 @@
 #define  cKEY_HOLD      50  //按住时间常数
 #define  cKEY_RATE_VOL  20  //连击时间常数
 #define  KeyVolAdd()    (P1&0x20)  //P1.5 0010_0000 音量加键
-
+#define  FANONOFF()     (P4&0x08)  //P4.3 0000_1000 控制雾化开关
+#define  OLP()          (P0&0x08)  //P0.3 OLP:OVERLOAD-PROTECTION,GP001检测水位的，GP003可不要
 
 //类型定义byte definition//
 enum{

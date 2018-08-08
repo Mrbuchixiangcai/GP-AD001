@@ -1,0 +1,62 @@
+C51 COMPILER V9.00   PWM                                                                   08/08/2018 16:29:12 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE PWM
+OBJECT MODULE PLACED IN .\Objects\PWM.obj
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\PWM.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\includ
+                    -e) DEBUG OBJECTEXTEND PRINT(.\Listings\PWM.lst) OBJECT(.\Objects\PWM.obj)
+
+line level    source
+
+   1          #include "app_main.h"
+   2          
+   3          //宏定义macro definition//
+   4          
+   5          //类型定义byte definition//
+   6          
+   7          //变量定义variable definition//
+   8          
+   9          //标志未定义flags definetion//
+  10          
+  11          //函数声明Function declaration//
+  12          
+  13          //函数定义function definetion//
+  14          /*******************************************************************
+  15          函数原型：
+  16          输入参数：
+  17          输出参数：
+  18          函数功能：开启PWM
+  19          *******************************************************************/
+  20          void PWM_Open()//开启PWM
+  21          {
+  22   1              T4CR |= 0x30;
+  23   1              T4PCR2 |= 0x20;
+  24   1      }
+  25          
+  26          /*******************************************************************
+  27          函数原型：
+  28          输入参数：
+  29          输出参数：
+  30          函数功能：关闭PWM
+  31          *******************************************************************/
+  32          void PWM_Shutdown()
+  33          {
+  34   1              T4CR &= 0xCF;
+  35   1              T4PCR2 &= 0x9F;
+  36   1      }
+  37          
+  38          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     30    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

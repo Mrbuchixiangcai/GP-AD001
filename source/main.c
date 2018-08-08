@@ -15,19 +15,19 @@ void main()
 {
 	while(1)
 	{
-	cli();          	// disable INT. during peripheral setting
-	port_init();    	// initialize ports
-	clock_init();   	// initialize operation clock
-	ADC_init();     	// initialize A/D convertor
-	LCD_init();     	// initialize LCD
-	Timer0_init();  	// initialize Timer0
-	Timer3_init();  	// initialize Timer3
-	UART0_init();    	// initialize UART interface
-	WT_init();      	// initialize Watch timer
-	WDT_init();
-	sei();          	// enable INT.	
-	app_main();
-	BootLoader_handle();
+		cli();          	// disable INT. during peripheral setting
+		port_init();    	// initialize ports
+		clock_init();   	// initialize operation clock
+		ADC_init();     	// initialize A/D convertor
+		LCD_init();     	// initialize LCD
+		Timer0_init();  	// initialize Timer0
+		Timer3_init();  	// initialize Timer3
+		UART0_init();    	// initialize UART interface
+		WT_init();      	// initialize Watch timer
+		WDT_init();
+		sei();          	// enable INT.	
+		app_main();
+		BootLoader_handle();
 	}
 }
 
@@ -168,6 +168,32 @@ void LCD_init()
 	LCDCCR = 0x00;  	// LCD contrast
 }
 
+void Timer4_init()
+{
+	// initialize Timer4
+	// 10bit PWM, period = 1.000000mS ( 1000.000000Hz )
+	//     PWM A duty = 50.000000%
+	//     PWM B duty = 50.000000%
+	//     PWM C duty = 50.000000%
+	T4CR   = 0x24;    	// PWM setting
+	T4PCR1 = 0x80;  	// enable PWM
+	T4PPRL = 0xE7;  	// period Low
+	T4PPRH = 0x03;  	// period High
+	T4ADRL = 0xF3;  	// duty Low
+	T4ADRH = 0x01;  	// duty High
+	T4BDRL = 0xF3;  	// duty Low
+	T4BDRH = 0x01;  	// duty High
+	T4CDRL = 0xF3;  	// duty Low
+	T4CDRH = 0x01;  	// duty High
+	T4PCR2 = 0x10;  	// enable PWM output，只开了PWM4AA，这里的A是测试，因为PCB还没有过来
+	//T4PCR2 = 0x10;  	// enable PWM output，只开了PWM4AB
+	T4PCR3 = 0x00;  	// set PWM output polarity
+	T4DLYA = 0x00;  	// TODO: do yourself, PWM dalay AA & AB
+	T4DLYB = 0x00;  	// TODO: do yourself, PWM dalay BA & BB
+	T4DLYC = 0x00;  	// TODO: do yourself, PWM dalay CA & CB
+	T4MSK  = 0x00;   	// TODO: do yourself, interrupt masking
+	T4CR  |= 0x10;   	// clear counter
+}
 
 void WDT_clear()
 {
@@ -311,7 +337,7 @@ void port_init()
 	//  42 : P52      out 
 	//  43 : SXIN     in  
 	//  44 : SXOUT    out 
-	P0IO = 0x7F;    	// direction
+	P0IO = 0x77;    	// direction  为1为输出，P11输入
 	P0PU = 0x00;    	// pullup
 	P0OD = 0x00;    	// open drain
 	P0DB = 0x00;    	// bit7~6(debounce clock), bit5~0=P07~02 debounce
@@ -332,8 +358,8 @@ void port_init()
 	P3PU = 0x00;    	// pullup
 	P3   = 0x00;    	// port initial value
 
-	P4IO = 0xFE;    	// direction
-	P4PU = 0x00;    	// pullup
+	P4IO = 0xFE;    	// direction P43输出
+	P4PU = 0x08;    	// pullup，P43为上拉
 	P4OD = 0x00;    	// open drain
 	P4   = 0x00;    	// port initial value
 
@@ -343,14 +369,14 @@ void port_init()
 
 	// Set port functions
 	P0FSRH = 0x20;  	// P0 selection High
-	P0FSRL = 0x00;  	// P0 selection Low
+	P0FSRL = 0x18;  	// P0 selection Low F0FSRL4/3为001_1000,开启PWM4AB
 	P1FSRH = 0x00;  	// P1 selection High
 	P1FSRL = 0x03;  	// P1 selection Low
 	P2FSRH = 0x00;  	// P2 selection High
 	P2FSRL = 0x03;  	// P2 selection Low
-	P3FSR = 0x00;   	// P3 selection
-	P4FSR = 0x0A;   	// P4 selection
-	P5FSR = 0x2D;   	// P5 selection
+	P3FSR  = 0x00;   	// P3 selection
+	P4FSR  = 0x0A;   	// P4 selection
+	P5FSR  = 0x2D;   	// P5 selection
 }
 
 

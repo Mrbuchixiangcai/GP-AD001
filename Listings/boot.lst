@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   BOOT                                                                  08/07/2018 13:57:33 PAGE 1   
+C51 COMPILER V9.00   BOOT                                                                  08/08/2018 16:29:10 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE BOOT
@@ -62,7 +62,7 @@ line level    source
   50   3                              _nop_(); 
   51   3                              _nop_();
   52   3                              _nop_();  
-C51 COMPILER V9.00   BOOT                                                                  08/07/2018 13:57:33 PAGE 2   
+C51 COMPILER V9.00   BOOT                                                                  08/08/2018 16:29:10 PAGE 2   
 
   53   3                              _nop_();
   54   3                              FMCR   = 0x02;                                             
@@ -126,7 +126,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA SIZE       =   ----       9
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V9.00   BOOT                                                                  08/07/2018 13:57:33 PAGE 3   
+C51 COMPILER V9.00   BOOT                                                                  08/08/2018 16:29:10 PAGE 3   
 
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
