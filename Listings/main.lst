@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  08/08/2018 16:29:11 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  08/09/2018 17:20:02 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -25,19 +25,19 @@ line level    source
   15          {
   16   1              while(1)
   17   1              {
-  18   2              cli();                  // disable INT. during peripheral setting
-  19   2              port_init();            // initialize ports
-  20   2              clock_init();           // initialize operation clock
-  21   2              ADC_init();             // initialize A/D convertor
-  22   2              LCD_init();             // initialize LCD
-  23   2              Timer0_init();          // initialize Timer0
-  24   2              Timer3_init();          // initialize Timer3
-  25   2              UART0_init();           // initialize UART interface
-  26   2              WT_init();              // initialize Watch timer
-  27   2              WDT_init();
-  28   2              sei();                  // enable INT.  
-  29   2              app_main();
-  30   2              BootLoader_handle();
+  18   2                      cli();                  // disable INT. during peripheral setting
+  19   2                      port_init();            // initialize ports
+  20   2                      clock_init();           // initialize operation clock
+  21   2                      ADC_init();             // initialize A/D convertor
+  22   2                      LCD_init();             // initialize LCD
+  23   2                      Timer0_init();          // initialize Timer0
+  24   2                      Timer3_init();          // initialize Timer3
+  25   2                      UART0_init();           // initialize UART interface
+  26   2                      WT_init();              // initialize Watch timer
+  27   2                      WDT_init();
+  28   2                      sei();                  // enable INT.  
+  29   2                      app_main();
+  30   2                      BootLoader_handle();
   31   2              }
   32   1      }
   33          
@@ -62,7 +62,7 @@ line level    source
   52   1              else
   53   1              {
   54   2                      if(Uart1_Rx_Pointer<UART1_LEN_BUFFER)   
-C51 COMPILER V9.00   MAIN                                                                  08/08/2018 16:29:11 PAGE 2   
+C51 COMPILER V9.00   MAIN                                                                  08/09/2018 17:20:02 PAGE 2   
 
   55   2                              Uart1_ReceiveBuffer_B[Uart1_Rx_Pointer++]=tmp;
   56   2                      if(tmp=='\n')
@@ -126,7 +126,7 @@ line level    source
  114   2                      {
  115   3                              gRTC_Sec=0;
  116   3                              if(++gRTC_Minute>59)
-C51 COMPILER V9.00   MAIN                                                                  08/08/2018 16:29:11 PAGE 3   
+C51 COMPILER V9.00   MAIN                                                                  08/09/2018 17:20:02 PAGE 3   
 
  117   3                              {
  118   4                                      gRTC_Minute=0;
@@ -190,7 +190,7 @@ line level    source
  176   1              //     PWM B duty = 50.000000%
  177   1              //     PWM C duty = 50.000000%
  178   1              T4CR   = 0x24;          // PWM setting
-C51 COMPILER V9.00   MAIN                                                                  08/08/2018 16:29:11 PAGE 4   
+C51 COMPILER V9.00   MAIN                                                                  08/09/2018 17:20:02 PAGE 4   
 
  179   1              T4PCR1 = 0x80;          // enable PWM
  180   1              T4PPRL = 0xE7;          // period Low
@@ -201,8 +201,8 @@ line level    source
  185   1              T4BDRH = 0x01;          // duty High
  186   1              T4CDRL = 0xF3;          // duty Low
  187   1              T4CDRH = 0x01;          // duty High
- 188   1              T4PCR2 = 0x10;          // enable PWM output，只开了PWM4AA，这里的A是测试，因为PCB还没有过来
- 189   1              //T4PCR2 = 0x10;        // enable PWM output，只开了PWM4AB
+ 188   1              //T4PCR2 = 0x10;        // enable PWM output，只开了PWM4AA，这里的A是测试，因为PCB还没有过来
+ 189   1              T4PCR2 = 0x10;          // enable PWM output，只开了PWM4AB
  190   1              T4PCR3 = 0x00;          // set PWM output polarity
  191   1              T4DLYA = 0x00;          // TODO: do yourself, PWM dalay AA & AB
  192   1              T4DLYB = 0x00;          // TODO: do yourself, PWM dalay BA & BB
@@ -254,7 +254,7 @@ line level    source
  238   1              USI0CR3  = 0x00;        // stop bit
  239   1              USI0BD   = 0x0C;        // baud rate
  240   1              IE1     |= 0x18;        // enable UART0 interrupt       
-C51 COMPILER V9.00   MAIN                                                                  08/08/2018 16:29:11 PAGE 5   
+C51 COMPILER V9.00   MAIN                                                                  08/09/2018 17:20:02 PAGE 5   
 
  241   1      }
  242          
@@ -318,7 +318,7 @@ line level    source
  300   1              //   3 : TxD0     out 
  301   1              //   4 : P42      out 
  302   1              //   5 : P43      out 
-C51 COMPILER V9.00   MAIN                                                                  08/08/2018 16:29:11 PAGE 6   
+C51 COMPILER V9.00   MAIN                                                                  08/09/2018 17:20:02 PAGE 6   
 
  303   1              //   6 : P37      out 
  304   1              //   7 : P36      out 
@@ -382,7 +382,7 @@ line level    source
  362   1              P4PU = 0x08;            // pullup，P43为上拉
  363   1              P4OD = 0x00;            // open drain
  364   1              P4   = 0x00;            // port initial value
-C51 COMPILER V9.00   MAIN                                                                  08/08/2018 16:29:11 PAGE 7   
+C51 COMPILER V9.00   MAIN                                                                  08/09/2018 17:20:02 PAGE 7   
 
  365   1      
  366   1              P5IO = 0xFF;            // direction

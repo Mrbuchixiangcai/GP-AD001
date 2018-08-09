@@ -172,17 +172,17 @@ void KeyComMsg(void)
 {
 	if(gbKeyPress)
 	{ 
-		if(alarm.Runing)
-		{
-			alarm.Runing=0;
-			gbKeyNone=1;//修复闹钟模式时某些按键关闭闹钟并关机时关不了的问题，为1让弹起的按键无效
-			//color_mode=COLOR_OFF;
-			Uart0_SendString_3Step=5;
-			GP389_OFF();
-			//ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);	
-			TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 	
-			return;
-		}
+//		if(alarm.Runing)//闹钟功能在001和003中屏蔽了
+//		{
+//			alarm.Runing=0;
+//			gbKeyNone=1;//修复闹钟模式时某些按键关闭闹钟并关机时关不了的问题，为1让弹起的按键无效
+//			//color_mode=COLOR_OFF;
+//			Uart0_SendString_3Step=5;
+//			GP389_OFF();
+//			//ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);	
+//			TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 	
+//			return;
+//		}
 		//Flag_data_bk=1;//数据改变时备份
 	   	switch(KeyValue)
 		{

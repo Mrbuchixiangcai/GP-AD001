@@ -185,8 +185,8 @@ void Timer4_init()
 	T4BDRH = 0x01;  	// duty High
 	T4CDRL = 0xF3;  	// duty Low
 	T4CDRH = 0x01;  	// duty High
-	T4PCR2 = 0x10;  	// enable PWM output，只开了PWM4AA，这里的A是测试，因为PCB还没有过来
-	//T4PCR2 = 0x10;  	// enable PWM output，只开了PWM4AB
+	//T4PCR2 = 0x10;  	// enable PWM output，只开了PWM4AA，这里的A是测试，因为PCB还没有过来
+	T4PCR2 = 0x10;  	// enable PWM output，只开了PWM4AB
 	T4PCR3 = 0x00;  	// set PWM output polarity
 	T4DLYA = 0x00;  	// TODO: do yourself, PWM dalay AA & AB
 	T4DLYB = 0x00;  	// TODO: do yourself, PWM dalay BA & BB

@@ -75,13 +75,14 @@ void Uart0Transmit_SendString_3Step(void)
 	}
 	else
 	{
-		if(Flag_alarm_say_to_IOT)
-		{
-			Flag_alarm_say_to_IOT=0;
-			Uart0_SendString_3Step=3;
-			Uart0Transmit_SendString("$$$Alarm up\r\n");//闹钟响应，通知IoT，以便app操作控制机台
-		}
-		else if(Flag_time_sync)
+//		if(Flag_alarm_say_to_IOT)D:\ProgramFiles
+//		{
+//			Flag_alarm_say_to_IOT=0;
+//			Uart0_SendString_3Step=3;
+//			Uart0Transmit_SendString("$$$Alarm up\r\n");//闹钟响应，通知IoT，以便app操作控制机台
+//		}
+//		else if(Flag_time_sync)
+		if(Flag_time_sync)
 		{
 			Flag_time_sync=0;
 			Uart0_SendString_3Step=3;

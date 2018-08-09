@@ -41,6 +41,7 @@ SOURCE\UPDATE.C(46): warning C280: 'Boot_ROMadr': unreferenced local variable
 compiling voice_ic.c...
 compiling wifi_mode.c...
 compiling define.c...
+SOURCE\DEFINE.C(112): warning C280: 'cntSetVolume': unreferenced local variable
 compiling PWM.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -65,10 +66,12 @@ linking...
     SEGMENT: ?PR?COMPARE_1MINUTEPORC?DEFINE
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?PWM_OPEN?PWM
-Program Size: data=59.5 xdata=699 code=14929
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PWM_SHUTDOWN?PWM
+Program Size: data=59.5 xdata=684 code=12121
 creating hex file from ".\Objects\GP389"...
-".\Objects\GP389" - 0 Error(s), 12 Warning(s).
-Build Time Elapsed:  00:00:04
+".\Objects\GP389" - 0 Error(s), 14 Warning(s).
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

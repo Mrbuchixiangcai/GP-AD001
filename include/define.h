@@ -104,23 +104,23 @@ typedef enum {
 	TIMER_60MIN = 60,
 }TIMER_MODE;
 
-typedef struct {
-	uint8_t Enable; //闹钟总开关
-	uint8_t Week;
-	uint8_t Hour;
-	uint8_t Minute;
-	uint8_t userR_val;
-	uint8_t userG_val;
-	uint8_t userB_val;
-	uint8_t spa_name;
-	uint8_t volume;
-	uint8_t play_pause;
-	uint8_t color_mode;
-	uint8_t Brightness;
-	uint8_t Duration;
-	uint8_t Runing;
-	uint8_t cntTimer;
-}ALRAM_TypeDef;
+//typedef struct {  //闹钟功能在001和003中屏蔽了
+//	uint8_t Enable; //闹钟总开关
+//	uint8_t Week;
+//	uint8_t Hour;
+//	uint8_t Minute;
+//	uint8_t userR_val;
+//	uint8_t userG_val;
+//	uint8_t userB_val;
+//	uint8_t spa_name;
+//	uint8_t volume;
+//	uint8_t play_pause;
+//	uint8_t color_mode;
+//	uint8_t Brightness;
+//	uint8_t Duration;
+//	uint8_t Runing;
+//	uint8_t cntTimer;
+//}ALRAM_TypeDef;
 
 typedef struct {
 	uint8_t spa_name;
@@ -147,7 +147,7 @@ typedef struct {
 //外部调用_类型定义byte definition//
 extern TIMER_MODE TimerMode;
 extern PLAY_MODE PlayMode;
-extern ALRAM_TypeDef alarm;
+//extern ALRAM_TypeDef alarm;
 extern PROGRAM_TypeDef program1; //在接收到“program Play（暂定）”时，播放最后一次接收到的“$$${Program:[00,01,01,00,FFFFFF,03,0A,00,1E]}\r\n”数据
 extern PROGRAM_TypeDef program2;
 extern PROGRAM_TypeDef program3;
@@ -195,10 +195,10 @@ extern uint8_t Falg_TimeSync_Allow; //时间允许标志为，如果为一就一直两分钟请求同
 extern bit Flag_data_bk; //设置了看门狗，在遇到意外重启之后会从0x0000启动，之前的数据都会清除
                   //所以用这个数组在一些数据变动之后5s内
                   //进行备份，如果数据不变动就不备份 变动时把此标志位置一
-extern bit Flag_alarm_say_to_IOT; //闹钟响应时应为要连续发送两条语句各3次，所以第二条要放在uart里面
+//extern bit Flag_alarm_say_to_IOT; //闹钟响应时应为要连续发送两条语句各3次，所以第二条要放在uart里面
 extern bit Flag_time_sync; //时间请求同步时应为要发送语句3次，此时有可能和其他的要送发送的
                     //冲突，所以第二条要放在uart里面
-extern bit Flag_alarm_wake_only;
+//extern bit Flag_alarm_wake_only;//闹钟弄仅本周相应
 
 extern uint8_t cntFlash;
 extern uint8_t Led_Flash;

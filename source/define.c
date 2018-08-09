@@ -4,7 +4,7 @@
 //宏定义macro definition//
 
 //类型定义byte definition//
-ALRAM_TypeDef alarm;
+//ALRAM_TypeDef alarm;D:\ProgramFiles
 PLAY_MODE PlayMode;
 TIMER_MODE TimerMode;
 PROGRAM_TypeDef program1; //在接收到“program Play（暂定）”时，播放最后一次接收到的“$$${Program:[00,01,01,00,FFFFFF,03,0A,00,1E]}\r\n”数据
@@ -115,15 +115,15 @@ void Compare_1MinutePorc(void)
 	{
 		gRTC_Sec_bk = gRTC_Sec;
 		//Uart0Transmit_SendString(MCU_VER);
-		if (alarm.Runing)
-		{
-			if (++cntSetVolume>10)
-			{//当闹钟响应时，初始音量为1，每10s加一级
-				cntSetVolume = 0;
-				if (sys_volume<alarm.volume)
-					sys_volume++;
-			}
-		}
+//		if (alarm.Runing)//闹钟功能在001和003中屏蔽了
+//		{
+//			if (++cntSetVolume>10)
+//			{//当闹钟响应时，初始音量为1，每10s加一级
+//				cntSetVolume = 0;
+//				if (sys_volume<alarm.volume)
+//					sys_volume++;
+//			}
+//		}
 		if (Falg_TimeSync_Allow == 1)
 		{//如果Falg_TimeSync_Allow为1就开始计数10，10s到了就发送请求同步信息
 		 //然后如果没有收到回复的时间信息就每隔两分钟发一次
@@ -197,46 +197,46 @@ void Compare_1MinutePorc(void)
 				GP389_OFF();
 				//color_mode=COLOR_OFF;
 				//TimerMode=cntTimer=TIMER_OFF;// 
-				alarm.Runing = 0;
+//				alarm.Runing = 0;//闹钟功能在001和003中屏蔽了
 				Uart0_SendString_3Step = 3;    // 
 				ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
 			}
-			if ((alarm.cntTimer) && (--alarm.cntTimer == 0))
-			{//先判断alarm.cntTimer是否大于0，然后再判断--alarm.cntTimer是否为0，这样如果alarm.cntTimer为1，那"--alarm.cntTimer"为0
-				GP389_OFF();
-				//color_mode=COLOR_OFF;
-				//TimerMode=cntTimer=TIMER_OFF;// 
-				alarm.Runing = 0;
-				Uart0_SendString_3Step = 5;    // 
-				ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
-			}
-			if ((alarm.Enable == 1) && (gRTC_Hour == alarm.Hour) && (gRTC_Minute == alarm.Minute))
-			{
-				if ((gRTC_Week & alarm.Week) || (Flag_alarm_wake_only))
-				{
-					if (!(alarm.Week & 0x80))//是否每周重复
-						alarm.Week &= ~gRTC_Week;
-					Flag_alarm_wake_only = 0;
-					sys_volume = 1;
-					enableMute = 0;
-					cntSetVolume = 0;
-					alarm.Runing = 1;
-					PlayMode = PLAY_MUSIC;
-					userR_val = alarm.userR_val;
-					userG_val = alarm.userG_val;
-					userB_val = alarm.userB_val;
-					spa_name = alarm.spa_name;
-					enable_SPApause = alarm.play_pause;
-					enableMute = ((enable_SPApause == 0) ? 0 : 1);//无论之前播放还是暂停，只要闹钟响应并且闹钟允许播放就播放
-					spa_cmd = ((enable_SPApause == 0) ? SPA_PALY : SPA_PAUSE);//无论之前播放还是暂停，只要闹钟响应并且闹钟允许播放就播放
-					color_mode = alarm.color_mode;
-					Light_Brightness = alarm.Brightness;
-					TimerMode = cntTimer = alarm.cntTimer = alarm.Duration;
-					ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
-					Uart0_SendString_3Step = 3;
-					Flag_alarm_say_to_IOT = 1;
-				}
-			}
+//			if ((alarm.cntTimer) && (--alarm.cntTimer == 0))//闹钟功能在001和003中屏蔽了
+//			{//先判断alarm.cntTimer是否大于0，然后再判断--alarm.cntTimer是否为0，这样如果alarm.cntTimer为1，那"--alarm.cntTimer"为0
+//				GP389_OFF();
+//				//color_mode=COLOR_OFF;
+//				//TimerMode=cntTimer=TIMER_OFF;// 
+//				alarm.Runing = 0;
+//				Uart0_SendString_3Step = 5;    // 
+//				ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
+//			}
+//			if ((alarm.Enable == 1) && (gRTC_Hour == alarm.Hour) && (gRTC_Minute == alarm.Minute))//闹钟功能在001和003中屏蔽了
+//			{
+//				if ((gRTC_Week & alarm.Week) || (Flag_alarm_wake_only))
+//				{
+//					if (!(alarm.Week & 0x80))//是否每周重复
+//						alarm.Week &= ~gRTC_Week;
+//					Flag_alarm_wake_only = 0;
+//					sys_volume = 1;
+//					enableMute = 0;
+//					cntSetVolume = 0;
+//					alarm.Runing = 1;
+//					PlayMode = PLAY_MUSIC;
+//					userR_val = alarm.userR_val;
+//					userG_val = alarm.userG_val;
+//					userB_val = alarm.userB_val;
+//					spa_name = alarm.spa_name;
+//					enable_SPApause = alarm.play_pause;
+//					enableMute = ((enable_SPApause == 0) ? 0 : 1);//无论之前播放还是暂停，只要闹钟响应并且闹钟允许播放就播放
+//					spa_cmd = ((enable_SPApause == 0) ? SPA_PALY : SPA_PAUSE);//无论之前播放还是暂停，只要闹钟响应并且闹钟允许播放就播放
+//					color_mode = alarm.color_mode;
+//					Light_Brightness = alarm.Brightness;
+//					TimerMode = cntTimer = alarm.cntTimer = alarm.Duration;
+//					ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
+//					Uart0_SendString_3Step = 3;
+//					Flag_alarm_say_to_IOT = 1;
+//				}
+//			}
 			if (Falg_TimeSync_Allow == 2)
 			{//同步时间为
 				timeSync_PowerON_Cnt++;

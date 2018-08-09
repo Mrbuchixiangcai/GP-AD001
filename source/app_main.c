@@ -196,7 +196,7 @@ void app_main(void)
 		if (AppTick1)
 		{
 			AppTick1 = 0;
-			PWM_Shutdown();
+			//PWM_Shutdown();
 		}
 		if (AppTick2)
 		{
