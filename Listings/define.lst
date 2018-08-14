@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DEFINE                                                                08/09/2018 17:20:03 PAGE 1   
+C51 COMPILER V9.00   DEFINE                                                                08/14/2018 17:31:22 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DEFINE
@@ -62,7 +62,7 @@ line level    source
   51          bit setFactory;
   52          bit Flag_Demo_Mode;
   53          bit Flag_TestMode;
-C51 COMPILER V9.00   DEFINE                                                                08/09/2018 17:20:03 PAGE 2   
+C51 COMPILER V9.00   DEFINE                                                                08/14/2018 17:31:22 PAGE 2   
 
   54          uint8_t Falg_TimeSync_Allow; // ±º‰‘ –Ì±Í÷æŒ™£¨»Áπ˚Œ™“ªæÕ“ª÷±¡Ω∑÷÷”«Î«ÛÕ¨≤Ω£¨
   55          bit Flag_data_bk; //…Ë÷√¡Àø¥√≈π∑£¨‘⁄”ˆµΩ“‚Õ‚÷ÿ∆Ù÷Æ∫Ûª·¥”0x0000∆Ù∂Ø£¨÷Æ«∞µƒ ˝æ›∂ºª·«Â≥˝
@@ -122,180 +122,178 @@ line level    source
  109          *******************************************************************/
  110          void Compare_1MinutePorc(void)
  111          {
- 112   1              static uint8_t cntSetVolume;
- 113   1              //uint8_t       code *EEPAddress_data_bk;
- 114   1              if (gRTC_Sec != gRTC_Sec_bk)
- 115   1              {
-C51 COMPILER V9.00   DEFINE                                                                08/09/2018 17:20:03 PAGE 3   
+ 112   1              //uint8_t       code *EEPAddress_data_bk;
+ 113   1              if (gRTC_Sec != gRTC_Sec_bk)
+ 114   1              {
+ 115   2                      gRTC_Sec_bk = gRTC_Sec;
+C51 COMPILER V9.00   DEFINE                                                                08/14/2018 17:31:22 PAGE 3   
 
- 116   2                      gRTC_Sec_bk = gRTC_Sec;
- 117   2                      //Uart0Transmit_SendString(MCU_VER);
- 118   2      //              if (alarm.Runing)//ƒ÷÷”π¶ƒ‹‘⁄001∫Õ003÷–∆¡±Œ¡À
- 119   2      //              {
- 120   2      //                      if (++cntSetVolume>10)
- 121   2      //                      {//µ±ƒ÷÷”œÏ”¶ ±£¨≥ı º“Ù¡øŒ™1£¨√ø10sº”“ªº∂
- 122   2      //                              cntSetVolume = 0;
- 123   2      //                              if (sys_volume<alarm.volume)
- 124   2      //                                      sys_volume++;
- 125   2      //                      }
- 126   2      //              }
- 127   2                      if (Falg_TimeSync_Allow == 1)
- 128   2                      {//»Áπ˚Falg_TimeSync_AllowŒ™1æÕø™ ºº∆ ˝10£¨10sµΩ¡ÀæÕ∑¢ÀÕ«Î«ÛÕ¨≤Ω–≈œ¢
- 129   3                       //»ª∫Û»Áπ˚√ª”– ’µΩªÿ∏¥µƒ ±º‰–≈œ¢æÕ√ø∏Ù¡Ω∑÷÷”∑¢“ª¥Œ
- 130   3                              timeSync_PowerON_Cnt++;
- 131   3                              if (timeSync_PowerON_Cnt >= 10)
- 132   3                              {
- 133   4                                      timeSync_PowerON_Cnt = 0;
- 134   4                                      Uart0_SendString_3Step = 3;
- 135   4                                      Uart0Transmit_SendString("$$$Time sync\r\n");//ø™ª˙10sµΩ¡ÀæÕ∑¢ÀÕ«Î«ÛÕ¨≤Ω ±º‰÷∏¡Ó
- 136   4                                      Falg_TimeSync_Allow = 2;
- 137   4                              }
- 138   3                      }
- 139   2                      //À¢EEPROM£¨√ø¥Œ ˝æ›±‰∂Ø∂º‘⁄5s÷Æƒ⁄À¢–¬“ª¥Œ
- 140   2                      //              if(Flag_data_bk)
- 141   2                      //              {
- 142   2                      //                      if(++data_bk_Cnt>5)
- 143   2                      //                      {
- 144   2                      //                              data_bk_Cnt=0;
- 145   2                      //                              Flag_data_bk=0;
- 146   2                      //                              EEPAddress_data_bk=0x0400+64;
- 147   2                      //                              data_bk[0]  = 0xAA;
- 148   2                      //                              data_bk[1]  = PlayMode;
- 149   2                      //                              data_bk[2]  = spa_name;
- 150   2                      //                              data_bk[3]  = spa_volume;
- 151   2                      //                              data_bk[4]  = enable_SPApause;
- 152   2                      //                              data_bk[5]  = enableMute;
- 153   2                      //                              data_bk[6]  = color_mode;
- 154   2                      //                              data_bk[7]  = userR_val;
- 155   2                      //                              data_bk[8]  = userG_val;
- 156   2                      //                              data_bk[9]  = userB_val;
- 157   2                      //                              data_bk[10] = Light_Brightness;
- 158   2                      //                              data_bk[11] = TimerMode;
- 159   2                      //                              data_bk[12] = cntTimer;
- 160   2                      //                              data_bk[13] = alarm.cntTimer;
- 161   2                      //                              data_bk[14] = alarm.spa_name;
- 162   2                      //                              data_bk[15] = alarm.volume;
- 163   2                      //                              data_bk[16] = alarm.color_mode;
- 164   2                      //                              data_bk[17] = alarm.userR_val;
- 165   2                      //                              data_bk[18] = alarm.userG_val;
- 166   2                      //                              data_bk[19] = alarm.userB_val;
- 167   2                      //                              data_bk[20] = alarm.Brightness;
- 168   2                      //                              data_bk[21] = alarm.Enable;
- 169   2                      //                              data_bk[22] = alarm.Week;
- 170   2                      //                              data_bk[23] = alarm.Hour;
- 171   2                      //                              data_bk[24] = alarm.Minute;
- 172   2                      //                              data_bk[25] = alarm.Duration;
- 173   2                      //                              data_bk[26] = alarm.play_pause;
- 174   2                      //                              data_bk[27] = program1.spa_name;
- 175   2                      //                              data_bk[28] = program1.color_mode;
- 176   2                      //                              data_bk[29] = program1.userR_val;
- 177   2                      //                              data_bk[30] = program1.userG_val;
-C51 COMPILER V9.00   DEFINE                                                                08/09/2018 17:20:03 PAGE 4   
+ 116   2                      //Uart0Transmit_SendString(MCU_VER);
+ 117   2      //              if (alarm.Runing)//ƒ÷÷”π¶ƒ‹‘⁄001∫Õ003÷–∆¡±Œ¡À
+ 118   2      //              {
+ 119   2      //                      if (++cntSetVolume>10)
+ 120   2      //                      {//µ±ƒ÷÷”œÏ”¶ ±£¨≥ı º“Ù¡øŒ™1£¨√ø10sº”“ªº∂
+ 121   2      //                              cntSetVolume = 0;
+ 122   2      //                              if (sys_volume<alarm.volume)
+ 123   2      //                                      sys_volume++;
+ 124   2      //                      }
+ 125   2      //              }
+ 126   2                      if (Falg_TimeSync_Allow == 1)
+ 127   2                      {//»Áπ˚Falg_TimeSync_AllowŒ™1æÕø™ ºº∆ ˝10£¨10sµΩ¡ÀæÕ∑¢ÀÕ«Î«ÛÕ¨≤Ω–≈œ¢
+ 128   3                       //»ª∫Û»Áπ˚√ª”– ’µΩªÿ∏¥µƒ ±º‰–≈œ¢æÕ√ø∏Ù¡Ω∑÷÷”∑¢“ª¥Œ
+ 129   3                              timeSync_PowerON_Cnt++;
+ 130   3                              if (timeSync_PowerON_Cnt >= 10)
+ 131   3                              {
+ 132   4                                      timeSync_PowerON_Cnt = 0;
+ 133   4                                      Uart0_SendString_3Step = 3;
+ 134   4                                      Uart0Transmit_SendString("$$$Time sync\r\n");//ø™ª˙10sµΩ¡ÀæÕ∑¢ÀÕ«Î«ÛÕ¨≤Ω ±º‰÷∏¡Ó
+ 135   4                                      Falg_TimeSync_Allow = 2;
+ 136   4                              }
+ 137   3                      }
+ 138   2                      //À¢EEPROM£¨√ø¥Œ ˝æ›±‰∂Ø∂º‘⁄5s÷Æƒ⁄À¢–¬“ª¥Œ
+ 139   2                      //              if(Flag_data_bk)
+ 140   2                      //              {
+ 141   2                      //                      if(++data_bk_Cnt>5)
+ 142   2                      //                      {
+ 143   2                      //                              data_bk_Cnt=0;
+ 144   2                      //                              Flag_data_bk=0;
+ 145   2                      //                              EEPAddress_data_bk=0x0400+64;
+ 146   2                      //                              data_bk[0]  = 0xAA;
+ 147   2                      //                              data_bk[1]  = PlayMode;
+ 148   2                      //                              data_bk[2]  = spa_name;
+ 149   2                      //                              data_bk[3]  = spa_volume;
+ 150   2                      //                              data_bk[4]  = enable_SPApause;
+ 151   2                      //                              data_bk[5]  = enableMute;
+ 152   2                      //                              data_bk[6]  = color_mode;
+ 153   2                      //                              data_bk[7]  = userR_val;
+ 154   2                      //                              data_bk[8]  = userG_val;
+ 155   2                      //                              data_bk[9]  = userB_val;
+ 156   2                      //                              data_bk[10] = Light_Brightness;
+ 157   2                      //                              data_bk[11] = TimerMode;
+ 158   2                      //                              data_bk[12] = cntTimer;
+ 159   2                      //                              data_bk[13] = alarm.cntTimer;
+ 160   2                      //                              data_bk[14] = alarm.spa_name;
+ 161   2                      //                              data_bk[15] = alarm.volume;
+ 162   2                      //                              data_bk[16] = alarm.color_mode;
+ 163   2                      //                              data_bk[17] = alarm.userR_val;
+ 164   2                      //                              data_bk[18] = alarm.userG_val;
+ 165   2                      //                              data_bk[19] = alarm.userB_val;
+ 166   2                      //                              data_bk[20] = alarm.Brightness;
+ 167   2                      //                              data_bk[21] = alarm.Enable;
+ 168   2                      //                              data_bk[22] = alarm.Week;
+ 169   2                      //                              data_bk[23] = alarm.Hour;
+ 170   2                      //                              data_bk[24] = alarm.Minute;
+ 171   2                      //                              data_bk[25] = alarm.Duration;
+ 172   2                      //                              data_bk[26] = alarm.play_pause;
+ 173   2                      //                              data_bk[27] = program1.spa_name;
+ 174   2                      //                              data_bk[28] = program1.color_mode;
+ 175   2                      //                              data_bk[29] = program1.userR_val;
+ 176   2                      //                              data_bk[30] = program1.userG_val;
+ 177   2                      //                              data_bk[31] = program1.userB_val;
+C51 COMPILER V9.00   DEFINE                                                                08/14/2018 17:31:22 PAGE 4   
 
- 178   2                      //                              data_bk[31] = program1.userB_val;
- 179   2                      //                              data_bk[32] = program1.Light_Brightness;
- 180   2                      //                              data_bk[33] = program1.sys_volume;
- 181   2                      //                              data_bk[34] = program1.PlayMode;
- 182   2                      //                              data_bk[35] = program1.enable_SPApause;
- 183   2                      //                              eeprom_page_write_data(EEPAddress_data_bk,&data_bk);
- 184   2                      //                      }
- 185   2                      //              }
- 186   2                      //              else
- 187   2                      //              {
- 188   2                      //                      data_bk_Cnt=0;
- 189   2                      //              }
+ 178   2                      //                              data_bk[32] = program1.Light_Brightness;
+ 179   2                      //                              data_bk[33] = program1.sys_volume;
+ 180   2                      //                              data_bk[34] = program1.PlayMode;
+ 181   2                      //                              data_bk[35] = program1.enable_SPApause;
+ 182   2                      //                              eeprom_page_write_data(EEPAddress_data_bk,&data_bk);
+ 183   2                      //                      }
+ 184   2                      //              }
+ 185   2                      //              else
+ 186   2                      //              {
+ 187   2                      //                      data_bk_Cnt=0;
+ 188   2                      //              }
+ 189   2      
  190   2      
- 191   2      
- 192   2                      if (gRTC_Minute != gRTC_Minute_bk)
- 193   2                      {
- 194   3                              gRTC_Minute_bk = gRTC_Minute;
- 195   3                              if ((cntTimer) && (--cntTimer == 0))
- 196   3                              {//œ»≈–∂œcntTimer «∑Ò¥Û”⁄0£¨»ª∫Û‘Ÿ≈–∂œ--cntTimer «∑ÒŒ™0£¨’‚—˘»Áπ˚cntTimerŒ™1£¨ƒ«"--cntTime"Œ™0
- 197   4                                      GP389_OFF();
- 198   4                                      //color_mode=COLOR_OFF;
- 199   4                                      //TimerMode=cntTimer=TIMER_OFF;// 
- 200   4      //                              alarm.Runing = 0;//ƒ÷÷”π¶ƒ‹‘⁄001∫Õ003÷–∆¡±Œ¡À
- 201   4                                      Uart0_SendString_3Step = 3;    // 
- 202   4                                      ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
- 203   4                              }
- 204   3      //                      if ((alarm.cntTimer) && (--alarm.cntTimer == 0))//ƒ÷÷”π¶ƒ‹‘⁄001∫Õ003÷–∆¡±Œ¡À
- 205   3      //                      {//œ»≈–∂œalarm.cntTimer «∑Ò¥Û”⁄0£¨»ª∫Û‘Ÿ≈–∂œ--alarm.cntTimer «∑ÒŒ™0£¨’‚—˘»Áπ˚alarm.cntTimerŒ™1£¨ƒ«"--
+ 191   2                      if (gRTC_Minute != gRTC_Minute_bk)
+ 192   2                      {
+ 193   3                              gRTC_Minute_bk = gRTC_Minute;
+ 194   3                              if ((cntTimer) && (--cntTimer == 0))
+ 195   3                              {//œ»≈–∂œcntTimer «∑Ò¥Û”⁄0£¨»ª∫Û‘Ÿ≈–∂œ--cntTimer «∑ÒŒ™0£¨’‚—˘»Áπ˚cntTimerŒ™1£¨ƒ«"--cntTime"Œ™0
+ 196   4                                      GP389_OFF();
+ 197   4                                      //color_mode=COLOR_OFF;
+ 198   4                                      //TimerMode=cntTimer=TIMER_OFF;// 
+ 199   4      //                              alarm.Runing = 0;//ƒ÷÷”π¶ƒ‹‘⁄001∫Õ003÷–∆¡±Œ¡À
+ 200   4                                      Uart0_SendString_3Step = 3;    // 
+ 201   4                                      ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
+ 202   4                              }
+ 203   3      //                      if ((alarm.cntTimer) && (--alarm.cntTimer == 0))//ƒ÷÷”π¶ƒ‹‘⁄001∫Õ003÷–∆¡±Œ¡À
+ 204   3      //                      {//œ»≈–∂œalarm.cntTimer «∑Ò¥Û”⁄0£¨»ª∫Û‘Ÿ≈–∂œ--alarm.cntTimer «∑ÒŒ™0£¨’‚—˘»Áπ˚alarm.cntTimerŒ™1£¨ƒ«"--
              -alarm.cntTimer"Œ™0
- 206   3      //                              GP389_OFF();
- 207   3      //                              //color_mode=COLOR_OFF;
- 208   3      //                              //TimerMode=cntTimer=TIMER_OFF;// 
- 209   3      //                              alarm.Runing = 0;
- 210   3      //                              Uart0_SendString_3Step = 5;    // 
- 211   3      //                              ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
- 212   3      //                      }
- 213   3      //                      if ((alarm.Enable == 1) && (gRTC_Hour == alarm.Hour) && (gRTC_Minute == alarm.Minute))//ƒ÷÷”π¶ƒ‹‘⁄001
+ 205   3      //                              GP389_OFF();
+ 206   3      //                              //color_mode=COLOR_OFF;
+ 207   3      //                              //TimerMode=cntTimer=TIMER_OFF;// 
+ 208   3      //                              alarm.Runing = 0;
+ 209   3      //                              Uart0_SendString_3Step = 5;    // 
+ 210   3      //                              ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
+ 211   3      //                      }
+ 212   3      //                      if ((alarm.Enable == 1) && (gRTC_Hour == alarm.Hour) && (gRTC_Minute == alarm.Minute))//ƒ÷÷”π¶ƒ‹‘⁄001
              -∫Õ003÷–∆¡±Œ¡À
- 214   3      //                      {
- 215   3      //                              if ((gRTC_Week & alarm.Week) || (Flag_alarm_wake_only))
- 216   3      //                              {
- 217   3      //                                      if (!(alarm.Week & 0x80))// «∑Ò√ø÷‹÷ÿ∏¥
- 218   3      //                                              alarm.Week &= ~gRTC_Week;
- 219   3      //                                      Flag_alarm_wake_only = 0;
- 220   3      //                                      sys_volume = 1;
- 221   3      //                                      enableMute = 0;
- 222   3      //                                      cntSetVolume = 0;
- 223   3      //                                      alarm.Runing = 1;
- 224   3      //                                      PlayMode = PLAY_MUSIC;
- 225   3      //                                      userR_val = alarm.userR_val;
- 226   3      //                                      userG_val = alarm.userG_val;
- 227   3      //                                      userB_val = alarm.userB_val;
- 228   3      //                                      spa_name = alarm.spa_name;
- 229   3      //                                      enable_SPApause = alarm.play_pause;
- 230   3      //                                      enableMute = ((enable_SPApause == 0) ? 0 : 1);//Œﬁ¬€÷Æ«∞≤•∑≈ªπ «‘›Õ££¨÷ª“™ƒ÷÷”œÏ”¶≤¢«“ƒ÷÷”‘ –Ì≤•∑≈æ
+ 213   3      //                      {
+ 214   3      //                              if ((gRTC_Week & alarm.Week) || (Flag_alarm_wake_only))
+ 215   3      //                              {
+ 216   3      //                                      if (!(alarm.Week & 0x80))// «∑Ò√ø÷‹÷ÿ∏¥
+ 217   3      //                                              alarm.Week &= ~gRTC_Week;
+ 218   3      //                                      Flag_alarm_wake_only = 0;
+ 219   3      //                                      sys_volume = 1;
+ 220   3      //                                      enableMute = 0;
+ 221   3      //                                      cntSetVolume = 0;
+ 222   3      //                                      alarm.Runing = 1;
+ 223   3      //                                      PlayMode = PLAY_MUSIC;
+ 224   3      //                                      userR_val = alarm.userR_val;
+ 225   3      //                                      userG_val = alarm.userG_val;
+ 226   3      //                                      userB_val = alarm.userB_val;
+ 227   3      //                                      spa_name = alarm.spa_name;
+ 228   3      //                                      enable_SPApause = alarm.play_pause;
+ 229   3      //                                      enableMute = ((enable_SPApause == 0) ? 0 : 1);//Œﬁ¬€÷Æ«∞≤•∑≈ªπ «‘›Õ££¨÷ª“™ƒ÷÷”œÏ”¶≤¢«“ƒ÷÷”‘ –Ì≤•∑≈æ
              -Õ≤•∑≈
- 231   3      //                                      spa_cmd = ((enable_SPApause == 0) ? SPA_PALY : SPA_PAUSE);//Œﬁ¬€÷Æ«∞≤•∑≈ªπ «‘›Õ££¨÷ª“™ƒ÷÷”œÏ”¶≤¢«“ƒ
+ 230   3      //                                      spa_cmd = ((enable_SPApause == 0) ? SPA_PALY : SPA_PAUSE);//Œﬁ¬€÷Æ«∞≤•∑≈ªπ «‘›Õ££¨÷ª“™ƒ÷÷”œÏ”¶≤¢«“ƒ
              -÷÷”‘ –Ì≤•∑≈æÕ≤•∑≈
- 232   3      //                                      color_mode = alarm.color_mode;
- 233   3      //                                      Light_Brightness = alarm.Brightness;
- 234   3      //                                      TimerMode = cntTimer = alarm.cntTimer = alarm.Duration;
- 235   3      //                                      ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
-C51 COMPILER V9.00   DEFINE                                                                08/09/2018 17:20:03 PAGE 5   
+ 231   3      //                                      color_mode = alarm.color_mode;
+ 232   3      //                                      Light_Brightness = alarm.Brightness;
+ 233   3      //                                      TimerMode = cntTimer = alarm.cntTimer = alarm.Duration;
+ 234   3      //                                      ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
+ 235   3      //                                      Uart0_SendString_3Step = 3;
+C51 COMPILER V9.00   DEFINE                                                                08/14/2018 17:31:22 PAGE 5   
 
- 236   3      //                                      Uart0_SendString_3Step = 3;
- 237   3      //                                      Flag_alarm_say_to_IOT = 1;
- 238   3      //                              }
- 239   3      //                      }
- 240   3                              if (Falg_TimeSync_Allow == 2)
- 241   3                              {//Õ¨≤Ω ±º‰Œ™
- 242   4                                      timeSync_PowerON_Cnt++;
- 243   4                                      if (timeSync_PowerON_Cnt >= 2)
- 244   4                                      {
- 245   5                                              timeSync_PowerON_Cnt = 0;
- 246   5                                              Flag_time_sync = 1;
- 247   5                                      }
- 248   4                              }
- 249   3      
- 250   3                              if (gRTC_Hour != gRTC_Hour_bk)
- 251   3                              {
- 252   4                                      gRTC_Hour_bk = gRTC_Hour;
- 253   4                                      gRTC_Hour_bk_24++;
- 254   4                                      if (gRTC_Hour_bk_24 >= 24)
- 255   4                                      {
- 256   5                                              gRTC_Hour_bk_24 = 0;
- 257   5                                              Falg_TimeSync_Allow = 2;
- 258   5                                              Flag_time_sync = 1;
- 259   5                                      }
- 260   4                              }
- 261   3                      }
- 262   2              }
- 263   1      }
-*** WARNING C280 IN LINE 112 OF SOURCE\DEFINE.C: 'cntSetVolume': unreferenced local variable
+ 236   3      //                                      Flag_alarm_say_to_IOT = 1;
+ 237   3      //                              }
+ 238   3      //                      }
+ 239   3                              if (Falg_TimeSync_Allow == 2)
+ 240   3                              {//Õ¨≤Ω ±º‰Œ™
+ 241   4                                      timeSync_PowerON_Cnt++;
+ 242   4                                      if (timeSync_PowerON_Cnt >= 2)
+ 243   4                                      {
+ 244   5                                              timeSync_PowerON_Cnt = 0;
+ 245   5                                              Flag_time_sync = 1;
+ 246   5                                      }
+ 247   4                              }
+ 248   3      
+ 249   3                              if (gRTC_Hour != gRTC_Hour_bk)
+ 250   3                              {
+ 251   4                                      gRTC_Hour_bk = gRTC_Hour;
+ 252   4                                      gRTC_Hour_bk_24++;
+ 253   4                                      if (gRTC_Hour_bk_24 >= 24)
+ 254   4                                      {
+ 255   5                                              gRTC_Hour_bk_24 = 0;
+ 256   5                                              Falg_TimeSync_Allow = 2;
+ 257   5                                              Flag_time_sync = 1;
+ 258   5                                      }
+ 259   4                              }
+ 260   3                      }
+ 261   2              }
+ 262   1      }
+ 263          
  264          
  265          
  266          
  267          
- 268          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =    246    ----
    CONSTANT SIZE    =     15    ----
-   XDATA SIZE       =     42    ----
+   XDATA SIZE       =     41    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =     13    ----
@@ -303,4 +301,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

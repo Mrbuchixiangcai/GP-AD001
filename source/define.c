@@ -109,7 +109,6 @@ void sys_tick(void)
 *******************************************************************/
 void Compare_1MinutePorc(void)
 {
-	static uint8_t cntSetVolume;
 	//uint8_t	code *EEPAddress_data_bk;
 	if (gRTC_Sec != gRTC_Sec_bk)
 	{

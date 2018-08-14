@@ -27,6 +27,7 @@
 //外部调用_函数定义function definetion//
 void PWM_Open();
 void PWM_Shutdown();
+void PWM_DutyCycle_Change();
 
 
 #endif

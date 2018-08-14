@@ -88,6 +88,7 @@
         do {                \
             P3 &= ~0x02;    \
         } while (0)
+#define PWM_REVERSE 0xFF
 
 //类型定义byte definition//
 typedef enum { 

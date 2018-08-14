@@ -12,6 +12,7 @@ void WDT_init();
 void WDT_clear();
 void Timer0_init();           	// initialize Timer0
 void Timer3_init();           	// initialize Timer3
+void Timer4_init();
 void UART0_init();             	// initialize UART interface
 void UART1_init();             	// initialize UART interface
 //void UART0_def_init();

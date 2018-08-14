@@ -11,6 +11,13 @@
 #include "MC96F6432.h"
 #include "func_def.h"
 
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void main()
 {
 	while(1)
@@ -22,6 +29,7 @@ void main()
 		LCD_init();     	// initialize LCD
 		Timer0_init();  	// initialize Timer0
 		Timer3_init();  	// initialize Timer3
+		Timer4_init();  	// initialize Timer4
 		UART0_init();    	// initialize UART interface
 		WT_init();      	// initialize Watch timer
 		WDT_init();
@@ -31,7 +39,12 @@ void main()
 	}
 }
 
-
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void INT_USI1_Rx() interrupt 3
 {
 	uint8_t tmp;
@@ -61,6 +74,13 @@ void INT_USI1_Rx() interrupt 3
 		}
 	}
 }
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void INT_USI1_Tx() interrupt 4
 {
 	USI1ST1&=~0x80;
@@ -72,6 +92,13 @@ void INT_USI1_Tx() interrupt 4
 			Uart1_EnableSend=0;
 	}
 }
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void INT_USI0_Rx() interrupt 9
 {
 	uint8_t tmp;
@@ -82,6 +109,12 @@ void INT_USI0_Rx() interrupt 9
 		mUart0_Rx_Pointer=0;
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void INT_USI0_Tx() interrupt 10
 {
 	USI0ST1&=~0x80;
@@ -94,17 +127,57 @@ void INT_USI0_Tx() interrupt 10
 	}
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void INT_Timer0() interrupt 13
 {
 	sys_tick(); 
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void INT_Timer3() interrupt 16
 {
 	led_rgb_drive();
 	voice_in_timer();
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
+void INT_Timer4() interrupt 17
+{
+	// Timer4 interrupt
+	// TODO: add your code here
+	if (T4ISR & 0x80) 
+		T4ISR &= ~0x80;	// clear IOVR
+	if (T4ISR & 0x40) 
+		T4ISR &= ~0x40;	// clear IBTM
+	if (T4ISR & 0x20) 
+		T4ISR &= ~0x20;	// clear ICMA
+	if (T4ISR & 0x10) 
+		T4ISR &= ~0x10;	// clear ICMB
+	if (T4ISR & 0x08) 
+		T4ISR &= ~0x08;	// clear ICMC
+}
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void INT_WT() interrupt 20
 {
 	gbHalfSecond=(!gbHalfSecond);
@@ -138,6 +211,13 @@ void INT_WT() interrupt 20
 //		}
 	}
 }
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 unsigned int ADC_read()
 {
 	unsigned int adcVal;
@@ -145,6 +225,12 @@ unsigned int ADC_read()
 	return	adcVal;
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void ADC_init()
 {
 	// initialize A/D convertor
@@ -152,6 +238,12 @@ void ADC_init()
 	ADCCRH = 0x07;  	// trigger source, alignment, frequency
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void ADC_start(unsigned char ch)
 {
 	// start A/D convertor
@@ -159,6 +251,12 @@ void ADC_start(unsigned char ch)
 	ADCCRL |= 0x40; 	// start ADC
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void LCD_init()
 {
 	// initialize LCD
@@ -168,38 +266,59 @@ void LCD_init()
 	LCDCCR = 0x00;  	// LCD contrast
 }
 
+
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void Timer4_init()
 {
-	// initialize Timer4
+		// initialize Timer4
 	// 10bit PWM, period = 1.000000mS ( 1000.000000Hz )
 	//     PWM A duty = 50.000000%
 	//     PWM B duty = 50.000000%
 	//     PWM C duty = 50.000000%
-	T4CR   = 0x24;    	// PWM setting
-	T4PCR1 = 0x80;  	// enable PWM
-	T4PPRL = 0xE7;  	// period Low
-	T4PPRH = 0x03;  	// period High
-	T4ADRL = 0xF3;  	// duty Low
-	T4ADRH = 0x01;  	// duty High
+	T4CR = 0x24;    	// PWM setting
+	T4PCR1 = 0x88;  	// enable PWM
+	T4PPRL = 0xE7;  	// period Low *
+	T4PPRH = 0x03;  	// period High *
+	T4ADRL = 0xF3;  	// duty Low *
+	T4ADRH = 0x01;  	// duty High *
 	T4BDRL = 0xF3;  	// duty Low
 	T4BDRH = 0x01;  	// duty High
 	T4CDRL = 0xF3;  	// duty Low
 	T4CDRH = 0x01;  	// duty High
-	//T4PCR2 = 0x10;  	// enable PWM output，只开了PWM4AA，这里的A是测试，因为PCB还没有过来
-	T4PCR2 = 0x10;  	// enable PWM output，只开了PWM4AB
-	T4PCR3 = 0x00;  	// set PWM output polarity
+	T4PCR2 = 0x08;  	// enable PWM output，只开了PWM4BA，这里的A是测试，因为PCB还没有过来
+	//T4PCR2 = 0x10;  	// enable PWM output
+	T4PCR3 = 0X00;// 0x08;  	// set PWM output polarity
 	T4DLYA = 0x00;  	// TODO: do yourself, PWM dalay AA & AB
 	T4DLYB = 0x00;  	// TODO: do yourself, PWM dalay BA & BB
 	T4DLYC = 0x00;  	// TODO: do yourself, PWM dalay CA & CB
-	T4MSK  = 0x00;   	// TODO: do yourself, interrupt masking
+	T4MSK  = 0x90;   	// TODO: do yourself, interrupt masking
+	IE2   |= 0x20;    	// Enable Timer4 interrupt
 	T4CR  |= 0x10;   	// clear counter
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void WDT_clear()
 {
 	WDTCR |= 0x20;  	// Clear Watch-dog timer
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void WDT_init()
 {
 	// initialize Watch-dog timer
@@ -208,6 +327,13 @@ void WDT_init()
 	WDTCR |= 0x02;	// Use WDTRC
 	WDT_clear();
 }
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void Timer0_init()
 {
 	// initialize Timer0
@@ -218,6 +344,12 @@ void Timer0_init()
 	T0CR |= 0x01;   	// clear counter
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void Timer3_init()
 {
 	// initialize Timer3
@@ -228,6 +360,12 @@ void Timer3_init()
 	T3CR |= 0x01;   	// clear counter
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void UART0_init()
 {
 	// initialize UART interface
@@ -240,6 +378,12 @@ void UART0_init()
 	IE1     |= 0x18;    	// enable UART0 interrupt	
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 bit enUart1=0;
 void UART1_init()
 {
@@ -256,7 +400,12 @@ void UART1_init()
 	enUart1=1;
 }
 
-
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void UART1_def_init()
 {
 	// UART1 : ASync. 9615bps N 8 1
@@ -272,6 +421,12 @@ void UART1_def_init()
 	enUart1=0;
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void WT_init()
 {
 	// initialize Watch timer
@@ -281,6 +436,12 @@ void WT_init()
 	IE3 |= 0x04;    	// Enable WT interrupt
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void clock_init()
 {
 	// external clock
@@ -290,8 +451,16 @@ void clock_init()
 	while((BITCR & 0x80) == 0);	// Ext. OSC stabilizing time
 	SCCR   = 0x01;    	// Change to Ext. OSC
 	OSCCR |= 0x05;  	// Disable Int. OSC
+
+	IE |= 0x80;//总中断打开
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
 void port_init()
 {
 	// initialize ports
@@ -368,8 +537,8 @@ void port_init()
 	P5   = 0x00;    	// port initial value
 
 	// Set port functions
-	P0FSRH = 0x20;  	// P0 selection High
-	P0FSRL = 0x18;  	// P0 selection Low F0FSRL4/3为001_1000,开启PWM4AB
+	P0FSRH = 0x23;  	// P0 selection High F0FSRL1/0为0010_0011,开启PWM4BB
+	P0FSRL = 0x60;  	// P0 selection Low F0FSRL6/5为0110_0000,开启PWM4BA
 	P1FSRH = 0x00;  	// P1 selection High
 	P1FSRL = 0x03;  	// P1 selection Low
 	P2FSRH = 0x00;  	// P2 selection High

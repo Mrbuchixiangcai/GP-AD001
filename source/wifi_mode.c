@@ -220,7 +220,7 @@ void ApplicationGP389_ONOFF(uint8_t onoff)
 	//Uart0_SendString_3Step=0;
 	for(i=0;i<UART0_LEN_BUFFER;i++)
 		Uart0_TransmitBuffer[i]=0x00;
-	for(i=0;i<82;i++)//闹钟功能在001和003中屏蔽了
+	//for(i=0;i<82;i++)//闹钟功能在001和003中屏蔽了
 	for(i=0;i<41;i++)
 		Uart0_TransmitBuffer[i]=respGP389_AllSta[i];
 	hex_to_char(&Uart0_TransmitBuffer[11],onoff);
