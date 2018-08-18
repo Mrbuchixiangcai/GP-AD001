@@ -281,19 +281,19 @@ void Timer4_init()
 	//     PWM A duty = 50.000000%
 	//     PWM B duty = 50.000000%
 	//     PWM C duty = 50.000000%
-	T4CR = 0x24;    	// PWM setting
+	T4CR   = 0x24;    	// PWM setting
 	T4PCR1 = 0x88;  	// enable PWM
-	T4PPRL = 0xE7;  	// period Low *
-	T4PPRH = 0x03;  	// period High *
-	T4ADRL = 0xF3;  	// duty Low *
-	T4ADRH = 0x01;  	// duty High *
+	T4PPRL = 0xE7;  	// period Low 
+	T4PPRH = 0x03;  	// period High 
+	T4ADRL = 0xF3;  	// duty Low 
+	T4ADRH = 0x01;  	// duty High 
 	T4BDRL = 0xF3;  	// duty Low
 	T4BDRH = 0x01;  	// duty High
 	T4CDRL = 0xF3;  	// duty Low
 	T4CDRH = 0x01;  	// duty High
-	T4PCR2 = 0x08;  	// enable PWM output，只开了PWM4BA，这里的A是测试，因为PCB还没有过来
+	T4PCR2 = 0x20;  	// enable PWM output，只开了PWM4AA，
 	//T4PCR2 = 0x10;  	// enable PWM output
-	T4PCR3 = 0X00;// 0x08;  	// set PWM output polarity
+	T4PCR3 = 0X00;  	// set PWM output polarity
 	T4DLYA = 0x00;  	// TODO: do yourself, PWM dalay AA & AB
 	T4DLYB = 0x00;  	// TODO: do yourself, PWM dalay BA & BB
 	T4DLYC = 0x00;  	// TODO: do yourself, PWM dalay CA & CB
@@ -506,7 +506,7 @@ void port_init()
 	//  42 : P52      out 
 	//  43 : SXIN     in  
 	//  44 : SXOUT    out 
-	P0IO = 0x77;    	// direction  为1为输出，P11输入
+	P0IO = 0x7F;    	// direction  为1为输出，P11输入
 	P0PU = 0x00;    	// pullup
 	P0OD = 0x00;    	// open drain
 	P0DB = 0x00;    	// bit7~6(debounce clock), bit5~0=P07~02 debounce
@@ -527,7 +527,7 @@ void port_init()
 	P3PU = 0x00;    	// pullup
 	P3   = 0x00;    	// port initial value
 
-	P4IO = 0xFE;    	// direction P43输出
+	P4IO = 0xFA;    	// direction P43输出,P42输入
 	P4PU = 0x08;    	// pullup，P43为上拉
 	P4OD = 0x00;    	// open drain
 	P4   = 0x00;    	// port initial value
@@ -537,8 +537,8 @@ void port_init()
 	P5   = 0x00;    	// port initial value
 
 	// Set port functions
-	P0FSRH = 0x23;  	// P0 selection High F0FSRL1/0为0010_0011,开启PWM4BB
-	P0FSRL = 0x60;  	// P0 selection Low F0FSRL6/5为0110_0000,开启PWM4BA
+	P0FSRH = 0x00;  	// P0 selection High 
+	P0FSRL = 0x1E;  	// P0 selection Low F0FSRL4/3、2/1为0001_1110,开启PWM4AB、A
 	P1FSRH = 0x00;  	// P1 selection High
 	P1FSRL = 0x03;  	// P1 selection Low
 	P2FSRH = 0x00;  	// P2 selection High

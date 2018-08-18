@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   PWM                                                                   08/14/2018 17:31:22 PAGE 1   
+C51 COMPILER V9.00   PWM                                                                   08/18/2018 08:42:53 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE PWM
@@ -51,19 +51,22 @@ line level    source
   41          *******************************************************************/
   42          void PWM_DutyCycle_Change()
   43          {
-  44   1              T4BDRL = PWM_REVERSE - 0xC7;    // duty Low
-  45   1              T4BDRH = PWM_REVERSE - 0x00;    // duty High
-  46   1      }
-  47          
+  44   1              T4ADRL = PWM_REVERSE - 0xF3;    // duty Low
+  45   1              T4ADRH = PWM_REVERSE - 0x01;    // duty High
+  46   1              MOTOR(1);
+  47   1      }
+  48          
+  49          
+  50          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     29    ----
+   CODE SIZE        =     32    ----
+C51 COMPILER V9.00   PWM                                                                   08/18/2018 08:42:53 PAGE 2   
+
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-C51 COMPILER V9.00   PWM                                                                   08/14/2018 17:31:22 PAGE 2   
-
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----

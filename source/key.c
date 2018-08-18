@@ -2,10 +2,10 @@
 #include "app_main.h"
 
 //宏定义macro definition//
-#define   ADCKEY_NUM  8
+#define   ADCKEY_NUM  9
 
 //类型定义byte definition//
-
+ATOMIZATION_MODE AtomizationMode1;
 //变量定义variable definition//
 uint8_t   gbKeyPress; //按键按下
 uint8_t   gbKeyNone;  //没有按键按下
@@ -20,24 +20,26 @@ uint8_t   KeyLastValue;//按键电压上一次的值
 code uint16_t ADKEY_TAB1[ADCKEY_NUM]= //按键正常电压值与允许误差值
 {
 	0x0000     ,//power power键正常电压值
-	0x0510-0x50,//sound sound键正常电压值
+	0x0519-0x50,//sound sound键正常电压值
 	0x0651-0x50,//v+//已经失效
-	0x08B7-0x50,//v-
-	0x0AE0-0x50,//timer
-	0x0C35-0x50,//light
-	0x0DA6-0x50,//BT
-	0x0E00,
+	0x08Ae-0x50,//v-
+	0x0AE8-0x50,//timer
+	0x0C24-0x50,//light
+	0x0D9D-0x50,//BT
+	0x0E44-0x50,//MIST
+	0x0EE5,
 };
 code uint16_t ADKEY_TAB2[ADCKEY_NUM]= //按键正常电压值与允许误差值
 {
 	0x0000+0x50,//power
-	0x0510+0x50,//sound
+	0x0519+0x50,//sound
 	0x0651+0x50,//v+//已经失效
-	0x08B7+0x50,//v-
-	0x0AE0+0x50,//timer
-	0x0C35+0x50,//light
-	0x0DA6+0x50,//BT
-	0x0E00,
+	0x08AE+0x50,//v-
+	0x0AE8+0x50,//timer
+	0x0C24+0x50,//light
+	0x0D9D+0x50,//BT
+	0x0E44+0x50,//MIST
+	0x0EE5,
 };
 
 //标志未定义flags definetion//
@@ -306,21 +308,18 @@ void KeyComMsg(void)
 				}
 				case KU(T_LIGHT): //value70
 				{
-					if(PlayMode!=PLAY_OFF)
+					if(color_mode==COLOR_USER) 
+						color_mode=COLOR_WHITE; //实现循环
+					else if(Light_Brightness==0)
+						Light_Brightness=1;
+					else if(++color_mode>COLOR_CHANGE)
+						color_mode=COLOR_WHITE;
+					if(color_mode==COLOR_CHANGE)
 					{
-						if(color_mode==COLOR_USER) 
-							color_mode=COLOR_WHITE; //实现循环
-						else if(Light_Brightness==0)
-							Light_Brightness=1;
-						else if(++color_mode>COLOR_CHANGE)
-							color_mode=COLOR_WHITE;
-						if(color_mode==COLOR_CHANGE)
-						{
-							play_rgb_index=0;
-							curR_val=0;
-							curG_val=0;
-							curB_val=0;
-						}
+						play_rgb_index=0;
+						curR_val=0;
+						curG_val=0;
+						curB_val=0;
 					}
 					break;
 				}
@@ -333,19 +332,26 @@ void KeyComMsg(void)
 				}
 				case KU(T_BT): 
 				{
-					if(PlayMode!=PLAY_OFF)
-					{
-						if(PlayMode!=PLAY_BT)
-							PlayMode=PLAY_BT;
-					 //else 
-						//bt_cmd=BT_PAUSE;
-					}
+					if(PlayMode!=PLAY_BT)
+						PlayMode=PLAY_BT;
 					break;
 				}
 				case KH(T_BT):
 				{
 					if(PlayMode==PLAY_BT)
 						bt_cmd=BT_PARIR; 
+					break;
+				}
+				case KU(T_MIST):
+				{
+					if (AtomizationMode1 == ATOMIZATION_OFF)
+						AtomizationMode1 = ATOMIZATION_ONE;
+					else if (AtomizationMode1 == ATOMIZATION_ONE)
+						AtomizationMode1 = ATOMIZATION_TWO;
+					else if (AtomizationMode1 == ATOMIZATION_TWO)
+						AtomizationMode1 = ATOMIZATION_THREE;
+					else if (AtomizationMode1 == ATOMIZATION_THREE)
+						AtomizationMode1 = ATOMIZATION_OFF;
 					break;
 				}
 				case KR(T_DEFAULT): //组合键，长按10s“音量加和音量减”两个键恢复出厂设置

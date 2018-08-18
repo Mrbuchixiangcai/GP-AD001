@@ -95,7 +95,7 @@ typedef enum {
 	PLAY_OFF = 0, 
 	PLAY_ON, 
 	PLAY_BT, 
-	PLAY_MUSIC 
+	PLAY_MUSIC,
 }PLAY_MODE;
 typedef enum {
 	TIMER_OFF = 0,

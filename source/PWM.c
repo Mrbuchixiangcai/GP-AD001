@@ -41,7 +41,10 @@ void PWM_Shutdown()
 *******************************************************************/
 void PWM_DutyCycle_Change()
 {
-	T4BDRL = PWM_REVERSE - 0xC7;  	// duty Low
-	T4BDRH = PWM_REVERSE - 0x00;  	// duty High
+	T4ADRL = PWM_REVERSE - 0xF3;  	// duty Low   Õ¼¿Õ±È£º
+	T4ADRH = PWM_REVERSE - 0x01;  	// duty High
+	MOTOR(1);
 }
+
+
 

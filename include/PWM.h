@@ -5,7 +5,11 @@
 #include "app_main.h"
 
 //宏定义macro definition//
-
+#define MOTOR(a)            \
+        if (a)              \
+            P4 |= 0x08;     \
+        else                \
+            P4 &= ~0x08;
 //类型定义byte definition//
 
 //变量定义variable definition//

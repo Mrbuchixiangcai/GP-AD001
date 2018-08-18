@@ -23,18 +23,26 @@
 
 //类型定义byte definition//
 enum{
-    T_NC    ,
-    T_POWER ,
-    T_MUSIC , //SOUND键
-    T_VOLINC, //volume increasing音量加
-    T_VOLDEC, //volume decline音量减
-    T_TIMER ,	
-    T_LIGHT ,
-    T_BT    ,
+    T_NC    , //0
+    T_POWER , //1
+    T_MUSIC , //2 //SOUND键
+    T_VOLINC, //3 //volume increasing音量加
+    T_VOLDEC, //4 //volume decline音量减
+    T_TIMER , //5
+    T_LIGHT , //6
+    T_BT    , //7
+	T_MIST  , //8
     T_DEFAULT,//同时按下音量+和音量减
 	T_CLEAR ,
-	T_TESTMODE,//同事按下“音量+”和“SOUND”键进入测试模式
+	T_TESTMODE,//同时按下“音量+”和“SOUND”键进入测试模式
 };
+typedef enum {
+	ATOMIZATION_OFF  =0,
+	ATOMIZATION_ONE   ,
+	ATOMIZATION_TWO   ,
+	ATOMIZATION_THREE ,
+}ATOMIZATION_MODE;
+
 extern uint8_t	gbKeyNone;
 extern uint8_t  gbKeyPress;
 extern uint8_t  KeyValue;
