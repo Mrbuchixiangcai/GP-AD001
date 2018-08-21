@@ -43,6 +43,7 @@ code uint16_t ADKEY_TAB2[ADCKEY_NUM]= //按键正常电压值与允许误差值
 };
 
 //标志未定义flags definetion//
+bit Flas_Anhydrous;
 
 //函数定义function definetion//
 /*******************************************************************
@@ -68,14 +69,19 @@ uint8_t GetKeyValue(void)
 		}
 	}
   	ADC_start(5);
-	if((KeyNum==T_VOLDEC)&&(!KeyVolAdd())) //同时按下“音量-”和“音量+”10s重置整个设备
-		KeyNum=T_DEFAULT;
-	else if((KeyNum==T_POWER)&&(!KeyVolAdd())) //同时按下“音量-”和“音量+”10s重置整个设备
-		KeyNum=T_CLEAR;
-	else if((KeyNum==T_MUSIC)&&(!KeyVolAdd())) //同时按下“音乐键”和“音量+”10s进入测试模式
-		KeyNum=T_TESTMODE;
-	else if(!KeyVolAdd())
-		KeyNum=T_VOLINC;
+	if ((KeyNum == T_VOLDEC) && (!KeyVolAdd())) //同时按下“音量-”和“音量+”10s重置整个设备
+		KeyNum = T_DEFAULT;
+	else if ((KeyNum == T_POWER) && (!KeyVolAdd())) //同时按下“音量-”和“音量+”10s重置整个设备
+		KeyNum = T_CLEAR;
+	else if ((KeyNum == T_MUSIC) && (!KeyVolAdd())) //同时按下“音乐键”和“音量+”10s进入测试模式
+		KeyNum = T_TESTMODE;
+	else if (!KeyVolAdd())
+		KeyNum = T_VOLINC;
+
+//	if (!OLP())//如果无水就拉低了,去取反之后就是高，为1
+//		Flas_Anhydrous = 1;
+//	else
+//		Flas_Anhydrous = 0;
 	return KeyNum; //返回按键
 }
 

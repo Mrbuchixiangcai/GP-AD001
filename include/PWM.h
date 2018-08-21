@@ -14,7 +14,7 @@
 
 //变量定义variable definition//
 
-//标志未定义flags definetion//
+//标志位定义flags definetion//
 
 //函数声明Function declaration//
 
@@ -26,7 +26,7 @@
 
 //外部调用_变量定义variable definition//
 
-//外部调用_标志未定义flags definetion//
+//外部调用_标志位定义flags definetion//
 
 //外部调用_函数定义function definetion//
 void PWM_Open();

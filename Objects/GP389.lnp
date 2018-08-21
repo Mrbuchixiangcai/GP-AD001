@@ -10,7 +10,6 @@
 ".\Objects\update.obj",
 ".\Objects\voice_ic.obj",
 ".\Objects\wifi_mode.obj",
-".\Objects\define.obj",
 ".\Objects\PWM.obj" 
 TO ".\Objects\GP389" 
 PRINT(".\Listings\GP389.m51") RAMSIZE(256) 

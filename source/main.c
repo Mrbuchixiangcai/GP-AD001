@@ -28,6 +28,7 @@ void main()
 		ADC_init();     	// initialize A/D convertor
 		LCD_init();     	// initialize LCD
 		Timer0_init();  	// initialize Timer0
+		Timer2_init();  	// initialize Timer2
 		Timer3_init();  	// initialize Timer3
 		Timer4_init();  	// initialize Timer4
 		UART0_init();    	// initialize UART interface
@@ -136,6 +137,18 @@ void INT_USI0_Tx() interrupt 10
 void INT_Timer0() interrupt 13
 {
 	sys_tick(); 
+}
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
+void INT_Timer2() interrupt 15
+{
+	// Timer2 interrupt
+	// TODO: add your code here
 }
 
 /*******************************************************************
@@ -266,7 +279,28 @@ void LCD_init()
 	LCDCCR = 0x00;  	// LCD contrast
 }
 
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
+函数功能：
+*******************************************************************/
+void Timer2_init()
+{
+	// initialize Timer2
+	// 16bit PWM, period = 1.000000mS ( 1000.000000Hz )
+	//     PWM duty = 50.000000%
+	T2CRH = 0x30;   	// PWM setting High, 1 shot mode
+						//T2CRH |= 0x30;	// PWM repeat mode
+	T2CRL = 0xD1;   	// PWM setting Low
+	T2BDRH = 0x01;  	// duty High 占空比
+	T2BDRL = 0xF3;  	// duty Low
+	T2ADRH = 0x03;  	// period count High  周期
+	T2ADRL = 0xE7;  	// period count Low
+	IE2 |= 0x08;    	// Enable Timer2 interrupt
+	//T2CRH |= 0x80;  	// enable counter
 
+}
 
 /*******************************************************************
 函数原型：
@@ -512,7 +546,7 @@ void port_init()
 	P0DB = 0x00;    	// bit7~6(debounce clock), bit5~0=P07~02 debounce
 	P0   = 0x00;    	// port initial value
 
-	P1IO = 0x98;    	// direction
+	P1IO = 0x9A;    	// direction
 	P1PU = 0x20;    	// pullup
 	P1OD = 0x00;    	// open drain
 	P15DB = 0x00;   	// debounce : P54, 52, 17, 16, 12, 11
@@ -537,10 +571,10 @@ void port_init()
 	P5   = 0x00;    	// port initial value
 
 	// Set port functions
-	P0FSRH = 0x00;  	// P0 selection High 
+	P0FSRH = 0x20;  	// P0 selection High 
 	P0FSRL = 0x1E;  	// P0 selection Low F0FSRL4/3、2/1为0001_1110,开启PWM4AB、A
 	P1FSRH = 0x00;  	// P1 selection High
-	P1FSRL = 0x03;  	// P1 selection Low
+	P1FSRL = 0x0F;  	// P1 selection Low
 	P2FSRH = 0x00;  	// P2 selection High
 	P2FSRL = 0x03;  	// P2 selection Low
 	P3FSR  = 0x00;   	// P3 selection

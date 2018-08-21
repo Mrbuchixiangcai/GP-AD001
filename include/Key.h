@@ -23,29 +23,49 @@
 
 //类型定义byte definition//
 enum{
-    T_NC    , //0
-    T_POWER , //1
-    T_MUSIC , //2 //SOUND键
-    T_VOLINC, //3 //volume increasing音量加
-    T_VOLDEC, //4 //volume decline音量减
-    T_TIMER , //5
-    T_LIGHT , //6
-    T_BT    , //7
-	T_MIST  , //8
-    T_DEFAULT,//同时按下音量+和音量减
-	T_CLEAR ,
-	T_TESTMODE,//同时按下“音量+”和“SOUND”键进入测试模式
+    T_NC       , //0‘
+    T_POWER    , //1
+    T_MUSIC    , //2 //SOUND键
+    T_VOLINC   , //3 //volume increasing音量加
+    T_VOLDEC   , //4 //volume decline音量减
+    T_TIMER    , //5
+    T_LIGHT    , //6
+    T_BT       , //7
+	T_MIST     , //8
+    T_DEFAULT  ,//同时按下音量+和音量减
+	T_CLEAR    ,
+	T_TESTMODE ,//同时按下“音量+”和“SOUND”键进入测试模式
 };
 typedef enum {
 	ATOMIZATION_OFF  =0,
-	ATOMIZATION_ONE   ,
-	ATOMIZATION_TWO   ,
-	ATOMIZATION_THREE ,
+	ATOMIZATION_ONE    , //雾化1挡最大
+	ATOMIZATION_TWO    ,
+	ATOMIZATION_THREE  ,
 }ATOMIZATION_MODE;
 
+//变量定义variable definition//
+
+//标志位定义flags definetion//
+
+
+//函数声明Function declaration//
+
+//函数定义function definetion//
+
+//外部调用_宏定义macro definition//
+
+//外部调用_类型定义byte definition//
+extern ATOMIZATION_MODE AtomizationMode1;
+
+//外部调用_变量定义variable definition//
 extern uint8_t	gbKeyNone;
 extern uint8_t  gbKeyPress;
 extern uint8_t  KeyValue;
+
+//外部调用_标志位定义flags definetion//
+extern bit Flas_Anhydrous;
+
+//外部调用_函数定义function definetion//
 extern void  KeyScan(void);
 extern void  KeyComMsg(void);
 

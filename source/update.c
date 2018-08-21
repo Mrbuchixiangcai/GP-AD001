@@ -43,7 +43,7 @@ void update_handle(void)
 	uint8_t  TimeOut_M;	
 	uint8_t  TimeOut_H;	
 	uint8_t	 code *curEEPAddress;
-	uint8_t	 code *Boot_ROMadr;
+	//uint8_t	 code *Boot_ROMadr;
 	WDTDR = 0x00;   	// period
 	WDTCR = 0x00;   	// setting	
 	IE3 &=~0x04;   // dsable WT interrupt

@@ -139,7 +139,7 @@
           <Target>
             <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>1</RunToMain>
+            <RunToMain>0</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -163,7 +163,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>D:\ProgramFiles\ABOV Semiconductor\OCD2_debugger64\ABOV_OCD.DLL</Driver>
+            <Driver>C:\ProgramFiles2\ABOV Semiconductor\OCD2_debugger64\ABOV_OCD.DLL</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -176,7 +176,7 @@
             <DriverSelection>4101</DriverSelection>
           </Flash1>
           <bUseTDR>0</bUseTDR>
-          <Flash2>BIN\ABOV_OCD.DLL</Flash2>
+          <Flash2>C:\ProgramFiles2\ABOV Semiconductor\OCD2_debugger64\ABOV_OCD.DLL</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -423,11 +423,6 @@
               <FileName>wifi_mode.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source\wifi_mode.c</FilePath>
-            </File>
-            <File>
-              <FileName>define.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\source\define.c</FilePath>
             </File>
             <File>
               <FileName>PWM.c</FileName>

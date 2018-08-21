@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\Objects\main.obj
-COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inclu
-                    -de) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) OBJECT(.\Objects\main.obj)
+COMPILER INVOKED BY: C:\ProgramFiles2\Keil_v5\C51\BIN\C51.EXE source\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\incl
+                    -ude) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) OBJECT(.\Objects\main.obj)
 
 line level    source
 
@@ -38,207 +38,207 @@ line level    source
   28   2                      ADC_init();             // initialize A/D convertor
   29   2                      LCD_init();             // initialize LCD
   30   2                      Timer0_init();          // initialize Timer0
-  31   2                      Timer3_init();          // initialize Timer3
-  32   2                      Timer4_init();          // initialize Timer4
-  33   2                      UART0_init();           // initialize UART interface
-  34   2                      WT_init();              // initialize Watch timer
-  35   2                      WDT_init();
-  36   2                      sei();                  // enable INT.  
-  37   2                      app_main();
-  38   2                      BootLoader_handle();
-  39   2              }
-  40   1      }
-  41          
-  42          /*******************************************************************
-  43          函数原型：
-  44          输入参数：
-  45          输出参数：
-  46          函数功能：
-  47          *******************************************************************/
-  48          void INT_USI1_Rx() interrupt 3
-  49          {
-  50   1              uint8_t tmp;
-  51   1              tmp=USI1DR;     
-  52   1              USI1ST1&=~0x20;
-  53   1              Uart1_Rx_TimeOut=10;
-  54   1              if(Uart1_ReceiveBuffer_A_B)
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 2   
+  31   2                      Timer2_init();          // initialize Timer2
+  32   2                      Timer3_init();          // initialize Timer3
+  33   2                      Timer4_init();          // initialize Timer4
+  34   2                      UART0_init();           // initialize UART interface
+  35   2                      WT_init();              // initialize Watch timer
+  36   2                      WDT_init();
+  37   2                      sei();                  // enable INT.  
+  38   2                      app_main();
+  39   2                      BootLoader_handle();
+  40   2              }
+  41   1      }
+  42          
+  43          /*******************************************************************
+  44          函数原型：
+  45          输入参数：
+  46          输出参数：
+  47          函数功能：
+  48          *******************************************************************/
+  49          void INT_USI1_Rx() interrupt 3
+  50          {
+  51   1              uint8_t tmp;
+  52   1              tmp=USI1DR;     
+  53   1              USI1ST1&=~0x20;
+  54   1              Uart1_Rx_TimeOut=10;
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 2   
 
-  55   1              {
-  56   2                      if(Uart1_Rx_Pointer<UART1_LEN_BUFFER)   
-  57   2                              Uart1_ReceiveBuffer_A[Uart1_Rx_Pointer++]=tmp;
-  58   2                      if(tmp=='\n')
-  59   2                      {
-  60   3                              Uart1_Rx_Pointer =0;
-  61   3                              Uart1_RX_Finish_A=1;
-  62   3                              Uart1_ReceiveBuffer_A_B=~Uart1_ReceiveBuffer_A_B;
-  63   3                      }
-  64   2              }
-  65   1              else
-  66   1              {
-  67   2                      if(Uart1_Rx_Pointer<UART1_LEN_BUFFER)   
-  68   2                              Uart1_ReceiveBuffer_B[Uart1_Rx_Pointer++]=tmp;
-  69   2                      if(tmp=='\n')
-  70   2                      {
-  71   3                              Uart1_Rx_Pointer =0;
-  72   3                              Uart1_RX_Finish_B=1;
-  73   3                              Uart1_ReceiveBuffer_A_B=~Uart1_ReceiveBuffer_A_B;
-  74   3                      }
-  75   2              }
-  76   1      }
-  77          
-  78          /*******************************************************************
-  79          函数原型：
-  80          输入参数：
-  81          输出参数：
-  82          函数功能：
-  83          *******************************************************************/
-  84          void INT_USI1_Tx() interrupt 4
-  85          {
-  86   1              USI1ST1&=~0x80;
-  87   1              if(Uart1_EnableSend)
-  88   1              {                
-  89   2                      Uart1_Tx_TimeOut=10;
-  90   2                      USI1DR=Uart1_TransmitBuffer[Uart1_Tx_Pointer++];
-  91   2                      if(Uart1_TransmitBuffer[Uart1_Tx_Pointer]=='\0')
-  92   2                              Uart1_EnableSend=0;
-  93   2              }
-  94   1      }
-  95          
-  96          /*******************************************************************
-  97          函数原型：
-  98          输入参数：
-  99          输出参数：
- 100          函数功能：
- 101          *******************************************************************/
- 102          void INT_USI0_Rx() interrupt 9
- 103          {
- 104   1              uint8_t tmp;
- 105   1              tmp=USI0DR;     
- 106   1              USI0ST1&=~0x20;
- 107   1              Uart0_ReceiveBuffer[mUart0_Rx_Pointer]=tmp;
- 108   1              if(++mUart0_Rx_Pointer>=(UART0_RX_LEN_BUFFER-1))        
- 109   1                      mUart0_Rx_Pointer=0;
- 110   1      }
- 111          
- 112          /*******************************************************************
- 113          函数原型：
- 114          输入参数：
- 115          输出参数：
- 116          函数功能：
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 3   
+  55   1              if(Uart1_ReceiveBuffer_A_B)
+  56   1              {
+  57   2                      if(Uart1_Rx_Pointer<UART1_LEN_BUFFER)   
+  58   2                              Uart1_ReceiveBuffer_A[Uart1_Rx_Pointer++]=tmp;
+  59   2                      if(tmp=='\n')
+  60   2                      {
+  61   3                              Uart1_Rx_Pointer =0;
+  62   3                              Uart1_RX_Finish_A=1;
+  63   3                              Uart1_ReceiveBuffer_A_B=~Uart1_ReceiveBuffer_A_B;
+  64   3                      }
+  65   2              }
+  66   1              else
+  67   1              {
+  68   2                      if(Uart1_Rx_Pointer<UART1_LEN_BUFFER)   
+  69   2                              Uart1_ReceiveBuffer_B[Uart1_Rx_Pointer++]=tmp;
+  70   2                      if(tmp=='\n')
+  71   2                      {
+  72   3                              Uart1_Rx_Pointer =0;
+  73   3                              Uart1_RX_Finish_B=1;
+  74   3                              Uart1_ReceiveBuffer_A_B=~Uart1_ReceiveBuffer_A_B;
+  75   3                      }
+  76   2              }
+  77   1      }
+  78          
+  79          /*******************************************************************
+  80          函数原型：
+  81          输入参数：
+  82          输出参数：
+  83          函数功能：
+  84          *******************************************************************/
+  85          void INT_USI1_Tx() interrupt 4
+  86          {
+  87   1              USI1ST1&=~0x80;
+  88   1              if(Uart1_EnableSend)
+  89   1              {                
+  90   2                      Uart1_Tx_TimeOut=10;
+  91   2                      USI1DR=Uart1_TransmitBuffer[Uart1_Tx_Pointer++];
+  92   2                      if(Uart1_TransmitBuffer[Uart1_Tx_Pointer]=='\0')
+  93   2                              Uart1_EnableSend=0;
+  94   2              }
+  95   1      }
+  96          
+  97          /*******************************************************************
+  98          函数原型：
+  99          输入参数：
+ 100          输出参数：
+ 101          函数功能：
+ 102          *******************************************************************/
+ 103          void INT_USI0_Rx() interrupt 9
+ 104          {
+ 105   1              uint8_t tmp;
+ 106   1              tmp=USI0DR;     
+ 107   1              USI0ST1&=~0x20;
+ 108   1              Uart0_ReceiveBuffer[mUart0_Rx_Pointer]=tmp;
+ 109   1              if(++mUart0_Rx_Pointer>=(UART0_RX_LEN_BUFFER-1))        
+ 110   1                      mUart0_Rx_Pointer=0;
+ 111   1      }
+ 112          
+ 113          /*******************************************************************
+ 114          函数原型：
+ 115          输入参数：
+ 116          输出参数：
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 3   
 
- 117          *******************************************************************/
- 118          void INT_USI0_Tx() interrupt 10
- 119          {
- 120   1              USI0ST1&=~0x80;
- 121   1              if(Uart0_EnableSend)
- 122   1              {                
- 123   2                      Uart0_Tx_TimeOut=10;
- 124   2                      USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
- 125   2                      if(Uart0_TransmitBuffer[Uart0_Tx_Pointer]=='\0')
- 126   2                              Uart0_EnableSend=0;
- 127   2              }
- 128   1      }
- 129          
- 130          /*******************************************************************
- 131          函数原型：
- 132          输入参数：
- 133          输出参数：
- 134          函数功能：
- 135          *******************************************************************/
- 136          void INT_Timer0() interrupt 13
- 137          {
- 138   1              sys_tick(); 
- 139   1      }
- 140          
- 141          /*******************************************************************
- 142          函数原型：
- 143          输入参数：
- 144          输出参数：
- 145          函数功能：
- 146          *******************************************************************/
- 147          void INT_Timer3() interrupt 16
- 148          {
- 149   1              led_rgb_drive();
- 150   1              voice_in_timer();
- 151   1      }
- 152          
- 153          /*******************************************************************
- 154          函数原型：
- 155          输入参数：
- 156          输出参数：
- 157          函数功能：
- 158          *******************************************************************/
- 159          void INT_Timer4() interrupt 17
- 160          {
- 161   1              // Timer4 interrupt
- 162   1              // TODO: add your code here
- 163   1              if (T4ISR & 0x80) 
- 164   1                      T4ISR &= ~0x80; // clear IOVR
- 165   1              if (T4ISR & 0x40) 
- 166   1                      T4ISR &= ~0x40; // clear IBTM
- 167   1              if (T4ISR & 0x20) 
- 168   1                      T4ISR &= ~0x20; // clear ICMA
- 169   1              if (T4ISR & 0x10) 
- 170   1                      T4ISR &= ~0x10; // clear ICMB
- 171   1              if (T4ISR & 0x08) 
- 172   1                      T4ISR &= ~0x08; // clear ICMC
- 173   1      }
- 174          
- 175          /*******************************************************************
- 176          函数原型：
- 177          输入参数：
- 178          输出参数：
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 4   
+ 117          函数功能：
+ 118          *******************************************************************/
+ 119          void INT_USI0_Tx() interrupt 10
+ 120          {
+ 121   1              USI0ST1&=~0x80;
+ 122   1              if(Uart0_EnableSend)
+ 123   1              {                
+ 124   2                      Uart0_Tx_TimeOut=10;
+ 125   2                      USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
+ 126   2                      if(Uart0_TransmitBuffer[Uart0_Tx_Pointer]=='\0')
+ 127   2                              Uart0_EnableSend=0;
+ 128   2              }
+ 129   1      }
+ 130          
+ 131          /*******************************************************************
+ 132          函数原型：
+ 133          输入参数：
+ 134          输出参数：
+ 135          函数功能：
+ 136          *******************************************************************/
+ 137          void INT_Timer0() interrupt 13
+ 138          {
+ 139   1              sys_tick(); 
+ 140   1      }
+ 141          
+ 142          /*******************************************************************
+ 143          函数原型：
+ 144          输入参数：
+ 145          输出参数：
+ 146          函数功能：
+ 147          *******************************************************************/
+ 148          void INT_Timer2() interrupt 15
+ 149          {
+ 150   1              // Timer2 interrupt
+ 151   1              // TODO: add your code here
+ 152   1      }
+ 153          
+ 154          /*******************************************************************
+ 155          函数原型：
+ 156          输入参数：
+ 157          输出参数：
+ 158          函数功能：
+ 159          *******************************************************************/
+ 160          void INT_Timer3() interrupt 16
+ 161          {
+ 162   1              led_rgb_drive();
+ 163   1              voice_in_timer();
+ 164   1      }
+ 165          
+ 166          /*******************************************************************
+ 167          函数原型：
+ 168          输入参数：
+ 169          输出参数：
+ 170          函数功能：
+ 171          *******************************************************************/
+ 172          void INT_Timer4() interrupt 17
+ 173          {
+ 174   1              // Timer4 interrupt
+ 175   1              // TODO: add your code here
+ 176   1              if (T4ISR & 0x80) 
+ 177   1                      T4ISR &= ~0x80; // clear IOVR
+ 178   1              if (T4ISR & 0x40) 
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 4   
 
- 179          函数功能：
- 180          *******************************************************************/
- 181          void INT_WT() interrupt 20
- 182          {
- 183   1              gbHalfSecond=(!gbHalfSecond);
- 184   1              if(gbHalfSecond)
- 185   1              {
- 186   2                      if(++gRTC_Sec>59) 
- 187   2                      {
- 188   3                              gRTC_Sec=0;
- 189   3                              if(++gRTC_Minute>59)
- 190   3                              {
- 191   4                                      gRTC_Minute=0;
- 192   4                                      if(++gRTC_Hour>23)
- 193   4                                      {       
- 194   5                                              gRTC_Hour=0;
- 195   5                                              gRTC_Week<<=1;
- 196   5                                              if(gRTC_Week==0x80)
- 197   5                                                      gRTC_Week=0x01;
- 198   5                                      }
- 199   4                              }
- 200   3                      }
- 201   2      //              if(++gRTC_Minute>59)
- 202   2      //              {
- 203   2      //                      gRTC_Minute=0;
- 204   2      //                      if(++gRTC_Hour>23)
- 205   2      //                      {       
- 206   2      //                              gRTC_Hour=0;
- 207   2      //                              gRTC_Week<<=1;
- 208   2      //                              if(gRTC_Week==0x80)
- 209   2      //                                      gRTC_Week=0x01;
- 210   2      //                      }
- 211   2      //              }
- 212   2              }
- 213   1      }
- 214          
- 215          /*******************************************************************
- 216          函数原型：
- 217          输入参数：
- 218          输出参数：
- 219          函数功能：
- 220          *******************************************************************/
- 221          unsigned int ADC_read()
- 222          {
- 223   1              unsigned int adcVal;
- 224   1              adcVal = ((ADCDRH << 8) | ADCDRL);      
- 225   1              return  adcVal;
+ 179   1                      T4ISR &= ~0x40; // clear IBTM
+ 180   1              if (T4ISR & 0x20) 
+ 181   1                      T4ISR &= ~0x20; // clear ICMA
+ 182   1              if (T4ISR & 0x10) 
+ 183   1                      T4ISR &= ~0x10; // clear ICMB
+ 184   1              if (T4ISR & 0x08) 
+ 185   1                      T4ISR &= ~0x08; // clear ICMC
+ 186   1      }
+ 187          
+ 188          /*******************************************************************
+ 189          函数原型：
+ 190          输入参数：
+ 191          输出参数：
+ 192          函数功能：
+ 193          *******************************************************************/
+ 194          void INT_WT() interrupt 20
+ 195          {
+ 196   1              gbHalfSecond=(!gbHalfSecond);
+ 197   1              if(gbHalfSecond)
+ 198   1              {
+ 199   2                      if(++gRTC_Sec>59) 
+ 200   2                      {
+ 201   3                              gRTC_Sec=0;
+ 202   3                              if(++gRTC_Minute>59)
+ 203   3                              {
+ 204   4                                      gRTC_Minute=0;
+ 205   4                                      if(++gRTC_Hour>23)
+ 206   4                                      {       
+ 207   5                                              gRTC_Hour=0;
+ 208   5                                              gRTC_Week<<=1;
+ 209   5                                              if(gRTC_Week==0x80)
+ 210   5                                                      gRTC_Week=0x01;
+ 211   5                                      }
+ 212   4                              }
+ 213   3                      }
+ 214   2      //              if(++gRTC_Minute>59)
+ 215   2      //              {
+ 216   2      //                      gRTC_Minute=0;
+ 217   2      //                      if(++gRTC_Hour>23)
+ 218   2      //                      {       
+ 219   2      //                              gRTC_Hour=0;
+ 220   2      //                              gRTC_Week<<=1;
+ 221   2      //                              if(gRTC_Week==0x80)
+ 222   2      //                                      gRTC_Week=0x01;
+ 223   2      //                      }
+ 224   2      //              }
+ 225   2              }
  226   1      }
  227          
  228          /*******************************************************************
@@ -247,14 +247,14 @@ line level    source
  231          输出参数：
  232          函数功能：
  233          *******************************************************************/
- 234          void ADC_init()
+ 234          unsigned int ADC_read()
  235          {
- 236   1              // initialize A/D convertor
- 237   1              ADCCRL = 0x80;          // setting
- 238   1              ADCCRH = 0x07;          // trigger source, alignment, frequency
+ 236   1              unsigned int adcVal;
+ 237   1              adcVal = ((ADCDRH << 8) | ADCDRL);      
+ 238   1              return  adcVal;
  239   1      }
  240          
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 5   
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 5   
 
  241          /*******************************************************************
  242          函数原型：
@@ -262,11 +262,11 @@ line level    source
  244          输出参数：
  245          函数功能：
  246          *******************************************************************/
- 247          void ADC_start(unsigned char ch)
+ 247          void ADC_init()
  248          {
- 249   1              // start A/D convertor
- 250   1              ADCCRL  = (ADCCRL & 0xf0) | (ch & 0x0f);        // select channel
- 251   1              ADCCRL |= 0x40;         // start ADC
+ 249   1              // initialize A/D convertor
+ 250   1              ADCCRL = 0x80;          // setting
+ 251   1              ADCCRH = 0x07;          // trigger source, alignment, frequency
  252   1      }
  253          
  254          /*******************************************************************
@@ -275,50 +275,50 @@ line level    source
  257          输出参数：
  258          函数功能：
  259          *******************************************************************/
- 260          void LCD_init()
+ 260          void ADC_start(unsigned char ch)
  261          {
- 262   1              // initialize LCD
- 263   1              // Frame freq. = 16.000000Hz
- 264   1              LCDCRH = 0x00;          // LCD control High
- 265   1              LCDCRL = 0x00;          // LCD control Low
- 266   1              LCDCCR = 0x00;          // LCD contrast
- 267   1      }
- 268          
- 269          
- 270          
- 271          /*******************************************************************
- 272          函数原型：
- 273          输入参数：
- 274          输出参数：
- 275          函数功能：
- 276          *******************************************************************/
- 277          void Timer4_init()
- 278          {
- 279   1                      // initialize Timer4
- 280   1              // 10bit PWM, period = 1.000000mS ( 1000.000000Hz )
- 281   1              //     PWM A duty = 50.000000%
- 282   1              //     PWM B duty = 50.000000%
- 283   1              //     PWM C duty = 50.000000%
- 284   1              T4CR   = 0x24;          // PWM setting
- 285   1              T4PCR1 = 0x88;          // enable PWM
- 286   1              T4PPRL = 0xE7;          // period Low *
- 287   1              T4PPRH = 0x03;          // period High *
- 288   1              T4ADRL = 0xF3;          // duty Low *
- 289   1              T4ADRH = 0x01;          // duty High *
- 290   1              T4BDRL = 0xF3;          // duty Low
- 291   1              T4BDRH = 0x01;          // duty High
- 292   1              T4CDRL = 0xF3;          // duty Low
- 293   1              T4CDRH = 0x01;          // duty High
- 294   1              T4PCR2 = 0x20;          // enable PWM output，只开了PWM4AA，
- 295   1              //T4PCR2 = 0x10;        // enable PWM output
- 296   1              T4PCR3 = 0X00;          // set PWM output polarity
- 297   1              T4DLYA = 0x00;          // TODO: do yourself, PWM dalay AA & AB
- 298   1              T4DLYB = 0x00;          // TODO: do yourself, PWM dalay BA & BB
- 299   1              T4DLYC = 0x00;          // TODO: do yourself, PWM dalay CA & CB
- 300   1              T4MSK  = 0x90;          // TODO: do yourself, interrupt masking
- 301   1              IE2   |= 0x20;          // Enable Timer4 interrupt
- 302   1              T4CR  |= 0x10;          // clear counter
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 6   
+ 262   1              // start A/D convertor
+ 263   1              ADCCRL  = (ADCCRL & 0xf0) | (ch & 0x0f);        // select channel
+ 264   1              ADCCRL |= 0x40;         // start ADC
+ 265   1      }
+ 266          
+ 267          /*******************************************************************
+ 268          函数原型：
+ 269          输入参数：
+ 270          输出参数：
+ 271          函数功能：
+ 272          *******************************************************************/
+ 273          void LCD_init()
+ 274          {
+ 275   1              // initialize LCD
+ 276   1              // Frame freq. = 16.000000Hz
+ 277   1              LCDCRH = 0x00;          // LCD control High
+ 278   1              LCDCRL = 0x00;          // LCD control Low
+ 279   1              LCDCCR = 0x00;          // LCD contrast
+ 280   1      }
+ 281          
+ 282          /*******************************************************************
+ 283          函数原型：
+ 284          输入参数：
+ 285          输出参数：
+ 286          函数功能：
+ 287          *******************************************************************/
+ 288          void Timer2_init()
+ 289          {
+ 290   1              // initialize Timer2
+ 291   1              // 16bit PWM, period = 1.000000mS ( 1000.000000Hz )
+ 292   1              //     PWM duty = 50.000000%
+ 293   1              T2CRH = 0x30;           // PWM setting High, 1 shot mode
+ 294   1                                                      //T2CRH |= 0x30;        // PWM repeat mode
+ 295   1              T2CRL = 0xD1;           // PWM setting Low
+ 296   1              T2BDRH = 0x01;          // duty High 占空比
+ 297   1              T2BDRL = 0xF3;          // duty Low
+ 298   1              T2ADRH = 0x03;          // period count High  周期
+ 299   1              T2ADRL = 0xE7;          // period count Low
+ 300   1              IE2 |= 0x08;            // Enable Timer2 interrupt
+ 301   1              //T2CRH |= 0x80;        // enable counter
+ 302   1      
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 6   
 
  303   1      }
  304          
@@ -328,76 +328,76 @@ line level    source
  308          输出参数：
  309          函数功能：
  310          *******************************************************************/
- 311          void WDT_clear()
+ 311          void Timer4_init()
  312          {
- 313   1              WDTCR |= 0x20;          // Clear Watch-dog timer
- 314   1      }
- 315          
- 316          /*******************************************************************
- 317          函数原型：
- 318          输入参数：
- 319          输出参数：
- 320          函数功能：
- 321          *******************************************************************/
- 322          void WDT_init()
- 323          {
- 324   1              // initialize Watch-dog timer
- 325   1              WDTDR = 0x01;           // period
- 326   1              WDTCR = 0xC0;           // setting
- 327   1              WDTCR |= 0x02;  // Use WDTRC
- 328   1              WDT_clear();
- 329   1      }
- 330          
- 331          /*******************************************************************
- 332          函数原型：
- 333          输入参数：
- 334          输出参数：
- 335          函数功能：
- 336          *******************************************************************/
- 337          void Timer0_init()
- 338          {
- 339   1              // initialize Timer0
- 340   1              // 8bit timer, period = 1.002667mS
- 341   1              T0CR  = 0x88;           // timer setting
- 342   1              T0DR  = 0x5D;           // period count
- 343   1              IE2  |= 0x02;           // Enable Timer0 interrupt
- 344   1              T0CR |= 0x01;           // clear counter
- 345   1      }
- 346          
- 347          /*******************************************************************
- 348          函数原型：
- 349          输入参数：
- 350          输出参数：
- 351          函数功能：
- 352          *******************************************************************/
- 353          void Timer3_init()
- 354          {
- 355   1              // initialize Timer3
- 356   1              // 8bit timer, period = 0.050000mS
- 357   1              T3CR  = 0x8A;           // timer setting
- 358   1              T3DR  = 0x4A;           // period count
- 359   1              IE2  |= 0x10;           // Enable Timer3 interrupt
- 360   1              T3CR |= 0x01;           // clear counter
- 361   1      }
- 362          
- 363          /*******************************************************************
- 364          函数原型：
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 7   
+ 313   1                      // initialize Timer4
+ 314   1              // 10bit PWM, period = 1.000000mS ( 1000.000000Hz )
+ 315   1              //     PWM A duty = 50.000000%
+ 316   1              //     PWM B duty = 50.000000%
+ 317   1              //     PWM C duty = 50.000000%
+ 318   1              T4CR   = 0x24;          // PWM setting
+ 319   1              T4PCR1 = 0x88;          // enable PWM
+ 320   1              T4PPRL = 0xE7;          // period Low 
+ 321   1              T4PPRH = 0x03;          // period High 
+ 322   1              T4ADRL = 0xF3;          // duty Low 
+ 323   1              T4ADRH = 0x01;          // duty High 
+ 324   1              T4BDRL = 0xF3;          // duty Low
+ 325   1              T4BDRH = 0x01;          // duty High
+ 326   1              T4CDRL = 0xF3;          // duty Low
+ 327   1              T4CDRH = 0x01;          // duty High
+ 328   1              T4PCR2 = 0x20;          // enable PWM output，只开了PWM4AA，
+ 329   1              //T4PCR2 = 0x10;        // enable PWM output
+ 330   1              T4PCR3 = 0X00;          // set PWM output polarity
+ 331   1              T4DLYA = 0x00;          // TODO: do yourself, PWM dalay AA & AB
+ 332   1              T4DLYB = 0x00;          // TODO: do yourself, PWM dalay BA & BB
+ 333   1              T4DLYC = 0x00;          // TODO: do yourself, PWM dalay CA & CB
+ 334   1              T4MSK  = 0x90;          // TODO: do yourself, interrupt masking
+ 335   1              IE2   |= 0x20;          // Enable Timer4 interrupt
+ 336   1              T4CR  |= 0x10;          // clear counter
+ 337   1      }
+ 338          
+ 339          /*******************************************************************
+ 340          函数原型：
+ 341          输入参数：
+ 342          输出参数：
+ 343          函数功能：
+ 344          *******************************************************************/
+ 345          void WDT_clear()
+ 346          {
+ 347   1              WDTCR |= 0x20;          // Clear Watch-dog timer
+ 348   1      }
+ 349          
+ 350          /*******************************************************************
+ 351          函数原型：
+ 352          输入参数：
+ 353          输出参数：
+ 354          函数功能：
+ 355          *******************************************************************/
+ 356          void WDT_init()
+ 357          {
+ 358   1              // initialize Watch-dog timer
+ 359   1              WDTDR = 0x01;           // period
+ 360   1              WDTCR = 0xC0;           // setting
+ 361   1              WDTCR |= 0x02;  // Use WDTRC
+ 362   1              WDT_clear();
+ 363   1      }
+ 364          
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 7   
 
- 365          输入参数：
- 366          输出参数：
- 367          函数功能：
- 368          *******************************************************************/
- 369          void UART0_init()
- 370          {
- 371   1              // initialize UART interface
- 372   1              // UART0 : ASync. 57692bps N 8 1
- 373   1              USI0CR2  = 0x02;        // activate USI0
- 374   1              USI0CR1  = 0x06;        // Async/Sync, bit count, parity
- 375   1              USI0CR2 |= 0xEC;        // interrupt, speed
- 376   1              USI0CR3  = 0x00;        // stop bit
- 377   1              USI0BD   = 0x0C;        // baud rate
- 378   1              IE1     |= 0x18;        // enable UART0 interrupt       
+ 365          /*******************************************************************
+ 366          函数原型：
+ 367          输入参数：
+ 368          输出参数：
+ 369          函数功能：
+ 370          *******************************************************************/
+ 371          void Timer0_init()
+ 372          {
+ 373   1              // initialize Timer0
+ 374   1              // 8bit timer, period = 1.002667mS
+ 375   1              T0CR  = 0x88;           // timer setting
+ 376   1              T0DR  = 0x5D;           // period count
+ 377   1              IE2  |= 0x02;           // Enable Timer0 interrupt
+ 378   1              T0CR |= 0x01;           // clear counter
  379   1      }
  380          
  381          /*******************************************************************
@@ -406,77 +406,77 @@ line level    source
  384          输出参数：
  385          函数功能：
  386          *******************************************************************/
- 387          bit enUart1=0;
- 388          void UART1_init()
- 389          {
- 390   1              // UART1 : ASync. 9615bps N 8 1
- 391   1              if(!enUart1)
- 392   1              {
- 393   2                      USI1CR2  = 0x02;        // activate USI1
- 394   2                      USI1CR1  = 0x06;        // Async/Sync, bit count, parity
- 395   2                      USI1CR2 |= 0xEC;        // interrupt, speed
- 396   2                      USI1CR3  = 0x00;        // stop bit
- 397   2                      USI1BD   = 0x4D;        // baud rate
- 398   2                      IE      |= 0x18;        // enable UART1 interrupt
- 399   2              }
- 400   1              enUart1=1;
- 401   1      }
- 402          
- 403          /*******************************************************************
- 404          函数原型：
- 405          输入参数：
- 406          输出参数：
- 407          函数功能：
- 408          *******************************************************************/
- 409          void UART1_def_init()
- 410          {
- 411   1              // UART1 : ASync. 9615bps N 8 1
- 412   1              if(enUart1)
- 413   1              {
- 414   2                      USI1CR2 = 0x00;         // activate USI1
- 415   2                      USI1CR1 = 0x00;         // Async/Sync, bit count, parity
- 416   2                      USI1CR2 = 0x00;   // interrupt, speed
- 417   2                      USI1CR3 = 0x00;         // stop bit
- 418   2                      USI1BD  = 0x00;         // baud rate
- 419   2                      IE     &=~0x18;  // enable UART1 interrupt
- 420   2              }
- 421   1              enUart1=0;
- 422   1      }
- 423          
- 424          /*******************************************************************
- 425          函数原型：
- 426          输入参数：
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 8   
+ 387          void Timer3_init()
+ 388          {
+ 389   1              // initialize Timer3
+ 390   1              // 8bit timer, period = 0.050000mS
+ 391   1              T3CR  = 0x8A;           // timer setting
+ 392   1              T3DR  = 0x4A;           // period count
+ 393   1              IE2  |= 0x10;           // Enable Timer3 interrupt
+ 394   1              T3CR |= 0x01;           // clear counter
+ 395   1      }
+ 396          
+ 397          /*******************************************************************
+ 398          函数原型：
+ 399          输入参数：
+ 400          输出参数：
+ 401          函数功能：
+ 402          *******************************************************************/
+ 403          void UART0_init()
+ 404          {
+ 405   1              // initialize UART interface
+ 406   1              // UART0 : ASync. 57692bps N 8 1
+ 407   1              USI0CR2  = 0x02;        // activate USI0
+ 408   1              USI0CR1  = 0x06;        // Async/Sync, bit count, parity
+ 409   1              USI0CR2 |= 0xEC;        // interrupt, speed
+ 410   1              USI0CR3  = 0x00;        // stop bit
+ 411   1              USI0BD   = 0x0C;        // baud rate
+ 412   1              IE1     |= 0x18;        // enable UART0 interrupt       
+ 413   1      }
+ 414          
+ 415          /*******************************************************************
+ 416          函数原型：
+ 417          输入参数：
+ 418          输出参数：
+ 419          函数功能：
+ 420          *******************************************************************/
+ 421          bit enUart1=0;
+ 422          void UART1_init()
+ 423          {
+ 424   1              // UART1 : ASync. 9615bps N 8 1
+ 425   1              if(!enUart1)
+ 426   1              {
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 8   
 
- 427          输出参数：
- 428          函数功能：
- 429          *******************************************************************/
- 430          void WT_init()
- 431          {
- 432   1              // initialize Watch timer
- 433   1              WTCR = 0x88;            // setting
- 434   1              WTDR = 0x01;            // set duty
- 435   1              WTDR = 0x81;            // clear WT
- 436   1              IE3 |= 0x04;            // Enable WT interrupt
- 437   1      }
- 438          
- 439          /*******************************************************************
- 440          函数原型：
- 441          输入参数：
- 442          输出参数：
- 443          函数功能：
- 444          *******************************************************************/
- 445          void clock_init()
- 446          {
- 447   1              // external clock
- 448   1              XTFLSR = 0xA8;          // MC96F6432A only, others ignore this line
- 449   1              OSCCR  = 0x0A;          // Enable int. 1MHz and Ext. OSC
- 450   1              BITCR  = 0x09;          // Set waiting time : 16ms@1MHz
- 451   1              while((BITCR & 0x80) == 0);     // Ext. OSC stabilizing time
- 452   1              SCCR   = 0x01;          // Change to Ext. OSC
- 453   1              OSCCR |= 0x05;          // Disable Int. OSC
- 454   1      
- 455   1              IE |= 0x80;//总中断打开
+ 427   2                      USI1CR2  = 0x02;        // activate USI1
+ 428   2                      USI1CR1  = 0x06;        // Async/Sync, bit count, parity
+ 429   2                      USI1CR2 |= 0xEC;        // interrupt, speed
+ 430   2                      USI1CR3  = 0x00;        // stop bit
+ 431   2                      USI1BD   = 0x4D;        // baud rate
+ 432   2                      IE      |= 0x18;        // enable UART1 interrupt
+ 433   2              }
+ 434   1              enUart1=1;
+ 435   1      }
+ 436          
+ 437          /*******************************************************************
+ 438          函数原型：
+ 439          输入参数：
+ 440          输出参数：
+ 441          函数功能：
+ 442          *******************************************************************/
+ 443          void UART1_def_init()
+ 444          {
+ 445   1              // UART1 : ASync. 9615bps N 8 1
+ 446   1              if(enUart1)
+ 447   1              {
+ 448   2                      USI1CR2 = 0x00;         // activate USI1
+ 449   2                      USI1CR1 = 0x00;         // Async/Sync, bit count, parity
+ 450   2                      USI1CR2 = 0x00;   // interrupt, speed
+ 451   2                      USI1CR3 = 0x00;         // stop bit
+ 452   2                      USI1BD  = 0x00;         // baud rate
+ 453   2                      IE     &=~0x18;  // enable UART1 interrupt
+ 454   2              }
+ 455   1              enUart1=0;
  456   1      }
  457          
  458          /*******************************************************************
@@ -485,105 +485,139 @@ line level    source
  461          输出参数：
  462          函数功能：
  463          *******************************************************************/
- 464          void port_init()
+ 464          void WT_init()
  465          {
- 466   1              // initialize ports
- 467   1              //   1 : P55      out 
- 468   1              //   2 : RxD0     in  
- 469   1              //   3 : TxD0     out 
- 470   1              //   4 : P42      out 
- 471   1              //   5 : P43      out 
- 472   1              //   6 : P37      out 
- 473   1              //   7 : P36      out 
- 474   1              //   8 : P35      out 
- 475   1              //   9 : P34      out 
- 476   1              //  10 : P33      out 
- 477   1              //  11 : P32      out 
- 478   1              //  12 : P31      out 
- 479   1              //  13 : P30      in  
- 480   1              //  14 : P27      out 
- 481   1              //  15 : P26      in  
- 482   1              //  16 : P25      out 
- 483   1              //  17 : P24      out 
- 484   1              //  18 : P23      out 
- 485   1              //  19 : P22      out 
- 486   1              //  20 : P21      out 
- 487   1              //  21 : TxD1     out 
- 488   1              //  22 : RxD1     in  
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 9   
+ 466   1              // initialize Watch timer
+ 467   1              WTCR = 0x88;            // setting
+ 468   1              WTDR = 0x01;            // set duty
+ 469   1              WTDR = 0x81;            // clear WT
+ 470   1              IE3 |= 0x04;            // Enable WT interrupt
+ 471   1      }
+ 472          
+ 473          /*******************************************************************
+ 474          函数原型：
+ 475          输入参数：
+ 476          输出参数：
+ 477          函数功能：
+ 478          *******************************************************************/
+ 479          void clock_init()
+ 480          {
+ 481   1              // external clock
+ 482   1              XTFLSR = 0xA8;          // MC96F6432A only, others ignore this line
+ 483   1              OSCCR  = 0x0A;          // Enable int. 1MHz and Ext. OSC
+ 484   1              BITCR  = 0x09;          // Set waiting time : 16ms@1MHz
+ 485   1              while((BITCR & 0x80) == 0);     // Ext. OSC stabilizing time
+ 486   1              SCCR   = 0x01;          // Change to Ext. OSC
+ 487   1              OSCCR |= 0x05;          // Disable Int. OSC
+ 488   1      
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 9   
 
- 489   1              //  23 : P11      out 
- 490   1              //  24 : P12      in  
- 491   1              //  25 : P13      out 
- 492   1              //  26 : P14      out 
- 493   1              //  27 : P15      out 
- 494   1              //  28 : P16      in  
- 495   1              //  29 : P17      out 
- 496   1              //  30 : AN5      in  
- 497   1              //  31 : P06      out 
- 498   1              //  32 : P05      out 
- 499   1              //  33 : P04      out 
- 500   1              //  34 : P03      out 
- 501   1              //  35 : P02      out 
- 502   1              //  36 : P01      out 
- 503   1              //  37 : P00      out 
- 504   1              //  40 : P50      out 
- 505   1              //  41 : P51      out 
- 506   1              //  42 : P52      out 
- 507   1              //  43 : SXIN     in  
- 508   1              //  44 : SXOUT    out 
- 509   1              P0IO = 0x7F;            // direction  为1为输出，P11输入
- 510   1              P0PU = 0x00;            // pullup
- 511   1              P0OD = 0x00;            // open drain
- 512   1              P0DB = 0x00;            // bit7~6(debounce clock), bit5~0=P07~02 debounce
- 513   1              P0   = 0x00;            // port initial value
- 514   1      
- 515   1              P1IO = 0x98;            // direction
- 516   1              P1PU = 0x20;            // pullup
- 517   1              P1OD = 0x00;            // open drain
- 518   1              P15DB = 0x00;           // debounce : P54, 52, 17, 16, 12, 11
- 519   1              P1   = 0x00;            // port initial value
- 520   1      
- 521   1              P2IO = 0xFF;            // direction
- 522   1              P2PU = 0x00;            // pullup
- 523   1              P2OD = 0x02;            // open drain
- 524   1              P2   = 0x00;            // port initial value
- 525   1      
- 526   1              P3IO = 0xFE;            // direction
- 527   1              P3PU = 0x00;            // pullup
- 528   1              P3   = 0x00;            // port initial value
- 529   1      
- 530   1              P4IO = 0xFA;            // direction P43输出,P42输入
- 531   1              P4PU = 0x08;            // pullup，P43为上拉
- 532   1              P4OD = 0x00;            // open drain
- 533   1              P4   = 0x00;            // port initial value
- 534   1      
- 535   1              P5IO = 0xFF;            // direction
- 536   1              P5PU = 0x00;            // pullup
- 537   1              P5   = 0x00;            // port initial value
- 538   1      
- 539   1              // Set port functions
- 540   1              P0FSRH = 0x00;          // P0 selection High 
- 541   1              P0FSRL = 0x1E;          // P0 selection Low F0FSRL4/3、2/1为0001_1110,开启PWM4AB、A
- 542   1              P1FSRH = 0x00;          // P1 selection High
- 543   1              P1FSRL = 0x03;          // P1 selection Low
- 544   1              P2FSRH = 0x00;          // P2 selection High
- 545   1              P2FSRL = 0x03;          // P2 selection Low
- 546   1              P3FSR  = 0x00;          // P3 selection
- 547   1              P4FSR  = 0x0A;          // P4 selection
- 548   1              P5FSR  = 0x2D;          // P5 selection
- 549   1      }
- 550          
-C51 COMPILER V9.00   MAIN                                                                  08/18/2018 08:42:52 PAGE 10  
+ 489   1              IE |= 0x80;//总中断打开
+ 490   1      }
+ 491          
+ 492          /*******************************************************************
+ 493          函数原型：
+ 494          输入参数：
+ 495          输出参数：
+ 496          函数功能：
+ 497          *******************************************************************/
+ 498          void port_init()
+ 499          {
+ 500   1              // initialize ports
+ 501   1              //   1 : P55      out 
+ 502   1              //   2 : RxD0     in  
+ 503   1              //   3 : TxD0     out 
+ 504   1              //   4 : P42      out 
+ 505   1              //   5 : P43      out 
+ 506   1              //   6 : P37      out 
+ 507   1              //   7 : P36      out 
+ 508   1              //   8 : P35      out 
+ 509   1              //   9 : P34      out 
+ 510   1              //  10 : P33      out 
+ 511   1              //  11 : P32      out 
+ 512   1              //  12 : P31      out 
+ 513   1              //  13 : P30      in  
+ 514   1              //  14 : P27      out 
+ 515   1              //  15 : P26      in  
+ 516   1              //  16 : P25      out 
+ 517   1              //  17 : P24      out 
+ 518   1              //  18 : P23      out 
+ 519   1              //  19 : P22      out 
+ 520   1              //  20 : P21      out 
+ 521   1              //  21 : TxD1     out 
+ 522   1              //  22 : RxD1     in  
+ 523   1              //  23 : P11      out 
+ 524   1              //  24 : P12      in  
+ 525   1              //  25 : P13      out 
+ 526   1              //  26 : P14      out 
+ 527   1              //  27 : P15      out 
+ 528   1              //  28 : P16      in  
+ 529   1              //  29 : P17      out 
+ 530   1              //  30 : AN5      in  
+ 531   1              //  31 : P06      out 
+ 532   1              //  32 : P05      out 
+ 533   1              //  33 : P04      out 
+ 534   1              //  34 : P03      out 
+ 535   1              //  35 : P02      out 
+ 536   1              //  36 : P01      out 
+ 537   1              //  37 : P00      out 
+ 538   1              //  40 : P50      out 
+ 539   1              //  41 : P51      out 
+ 540   1              //  42 : P52      out 
+ 541   1              //  43 : SXIN     in  
+ 542   1              //  44 : SXOUT    out 
+ 543   1              P0IO = 0x7F;            // direction  为1为输出，P11输入
+ 544   1              P0PU = 0x00;            // pullup
+ 545   1              P0OD = 0x00;            // open drain
+ 546   1              P0DB = 0x00;            // bit7~6(debounce clock), bit5~0=P07~02 debounce
+ 547   1              P0   = 0x00;            // port initial value
+ 548   1      
+ 549   1              P1IO = 0x9A;            // direction
+ 550   1              P1PU = 0x20;            // pullup
+C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 10  
 
- 551          
- 552          
- 553          
- 554          
+ 551   1              P1OD = 0x00;            // open drain
+ 552   1              P15DB = 0x00;           // debounce : P54, 52, 17, 16, 12, 11
+ 553   1              P1   = 0x00;            // port initial value
+ 554   1      
+ 555   1              P2IO = 0xFF;            // direction
+ 556   1              P2PU = 0x00;            // pullup
+ 557   1              P2OD = 0x02;            // open drain
+ 558   1              P2   = 0x00;            // port initial value
+ 559   1      
+ 560   1              P3IO = 0xFE;            // direction
+ 561   1              P3PU = 0x00;            // pullup
+ 562   1              P3   = 0x00;            // port initial value
+ 563   1      
+ 564   1              P4IO = 0xFA;            // direction P43输出,P42输入
+ 565   1              P4PU = 0x08;            // pullup，P43为上拉
+ 566   1              P4OD = 0x00;            // open drain
+ 567   1              P4   = 0x00;            // port initial value
+ 568   1      
+ 569   1              P5IO = 0xFF;            // direction
+ 570   1              P5PU = 0x00;            // pullup
+ 571   1              P5   = 0x00;            // port initial value
+ 572   1      
+ 573   1              // Set port functions
+ 574   1              P0FSRH = 0x20;          // P0 selection High 
+ 575   1              P0FSRL = 0x1E;          // P0 selection Low F0FSRL4/3、2/1为0001_1110,开启PWM4AB、A
+ 576   1              P1FSRH = 0x00;          // P1 selection High
+ 577   1              P1FSRL = 0x0F;          // P1 selection Low
+ 578   1              P2FSRH = 0x00;          // P2 selection High
+ 579   1              P2FSRL = 0x03;          // P2 selection Low
+ 580   1              P3FSR  = 0x00;          // P3 selection
+ 581   1              P4FSR  = 0x0A;          // P4 selection
+ 582   1              P5FSR  = 0x2D;          // P5 selection
+ 583   1      }
+ 584          
+ 585          
+ 586          
+ 587          
+ 588          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    996    ----
+   CODE SIZE        =   1023    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

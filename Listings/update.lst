@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   UPDATE                                                                08/18/2018 08:42:52 PAGE 1   
+C51 COMPILER V9.00   UPDATE                                                                08/21/2018 17:18:30 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE UPDATE
 OBJECT MODULE PLACED IN .\Objects\update.obj
-COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\update.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inc
-                    -lude) DEBUG OBJECTEXTEND PRINT(.\Listings\update.lst) OBJECT(.\Objects\update.obj)
+COMPILER INVOKED BY: C:\ProgramFiles2\Keil_v5\C51\BIN\C51.EXE source\update.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\in
+                    -clude) DEBUG OBJECTEXTEND PRINT(.\Listings\update.lst) OBJECT(.\Objects\update.obj)
 
 line level    source
 
@@ -53,7 +53,7 @@ line level    source
   43   1              uint8_t  TimeOut_M;     
   44   1              uint8_t  TimeOut_H;     
   45   1              uint8_t  code *curEEPAddress;
-  46   1              uint8_t  code *Boot_ROMadr;
+  46   1              //uint8_t        code *Boot_ROMadr;
   47   1              WDTDR = 0x00;           // period
   48   1              WDTCR = 0x00;           // setting      
   49   1              IE3 &=~0x04;   // dsable WT interrupt
@@ -62,7 +62,7 @@ line level    source
   52   1              IE2 &=~0x10;   // dsable Timer3 interrupt
   53   1              update_step=0;
   54   1              Update_Rx_Pointer=0;    
-C51 COMPILER V9.00   UPDATE                                                                08/18/2018 08:42:52 PAGE 2   
+C51 COMPILER V9.00   UPDATE                                                                08/21/2018 17:18:30 PAGE 2   
 
   55   1              Update_PacketCurrent=0; 
   56   1              TimeOut_L=0;            
@@ -126,7 +126,7 @@ line level    source
  114   4                                              Update_PacketCurrent=Packet_P;
  115   4                                              curEEPAddress=EEP_ADDRESS_START+(Update_PacketCurrent*256);
  116   4                                              if(curEEPAddress>EEP_ADDRESS_END)
-C51 COMPILER V9.00   UPDATE                                                                08/18/2018 08:42:52 PAGE 3   
+C51 COMPILER V9.00   UPDATE                                                                08/21/2018 17:18:30 PAGE 3   
 
  117   4                                              {
  118   5                                                      return; 
@@ -190,7 +190,7 @@ line level    source
  176   3      //                              curEEPAddress=EEP_ADDRESS_START+BOOT_ADDRESS_START;
  177   3      //                              while(Boot_ROMadr<BOOT_ADDRESS_END)
  178   3      //                              {
-C51 COMPILER V9.00   UPDATE                                                                08/18/2018 08:42:52 PAGE 4   
+C51 COMPILER V9.00   UPDATE                                                                08/21/2018 17:18:30 PAGE 4   
 
  179   3      //                                      for(i=0;i<64;i++)
  180   3      //                                      {Update_ReceiveBuffer[i]=eeprom_byte_read_data(curEEPAddress+i);WDT_clear();}
@@ -226,7 +226,6 @@ line level    source
  210   3                      }
  211   2              }
  212   1      }
-*** WARNING C280 IN LINE 46 OF SOURCE\UPDATE.C: 'Boot_ROMadr': unreferenced local variable
  213          
  214          
  215          
@@ -237,7 +236,7 @@ line level    source
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   1122    ----
    CONSTANT SIZE    =     22    ----
-   XDATA SIZE       =      2      14
+   XDATA SIZE       =      2      12
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =     11    ----
@@ -245,4 +244,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

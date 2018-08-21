@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   DEFINE                                                                08/18/2018 08:42:53 PAGE 1   
+C51 COMPILER V9.00   DEFINE                                                                08/21/2018 11:45:29 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DEFINE
 OBJECT MODULE PLACED IN .\Objects\define.obj
-COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\define.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inc
-                    -lude) DEBUG OBJECTEXTEND PRINT(.\Listings\define.lst) OBJECT(.\Objects\define.obj)
+COMPILER INVOKED BY: C:\ProgramFiles2\Keil_v5\C51\BIN\C51.EXE source\define.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\in
+                    -clude) DEBUG OBJECTEXTEND PRINT(.\Listings\define.lst) OBJECT(.\Objects\define.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   51          bit setFactory;
   52          bit Flag_Demo_Mode;
   53          bit Flag_TestMode;
-C51 COMPILER V9.00   DEFINE                                                                08/18/2018 08:42:53 PAGE 2   
+C51 COMPILER V9.00   DEFINE                                                                08/21/2018 11:45:29 PAGE 2   
 
   54          uint8_t Falg_TimeSync_Allow; //时间允许标志为，如果为一就一直两分钟请求同步，
   55          bit Flag_data_bk; //设置了看门狗，在遇到意外重启之后会从0x0000启动，之前的数据都会清除
@@ -126,7 +126,7 @@ line level    source
  113   1              if (gRTC_Sec != gRTC_Sec_bk)
  114   1              {
  115   2                      gRTC_Sec_bk = gRTC_Sec;
-C51 COMPILER V9.00   DEFINE                                                                08/18/2018 08:42:53 PAGE 3   
+C51 COMPILER V9.00   DEFINE                                                                08/21/2018 11:45:29 PAGE 3   
 
  116   2                      //Uart0Transmit_SendString(MCU_VER);
  117   2      //              if (alarm.Runing)//闹钟功能在001和003中屏蔽了
@@ -190,7 +190,7 @@ line level    source
  175   2                      //                              data_bk[29] = program1.userR_val;
  176   2                      //                              data_bk[30] = program1.userG_val;
  177   2                      //                              data_bk[31] = program1.userB_val;
-C51 COMPILER V9.00   DEFINE                                                                08/18/2018 08:42:53 PAGE 4   
+C51 COMPILER V9.00   DEFINE                                                                08/21/2018 11:45:29 PAGE 4   
 
  178   2                      //                              data_bk[32] = program1.Light_Brightness;
  179   2                      //                              data_bk[33] = program1.sys_volume;
@@ -254,7 +254,7 @@ line level    source
  233   3      //                                      TimerMode = cntTimer = alarm.cntTimer = alarm.Duration;
  234   3      //                                      ApplicationGP389_ONOFF((PlayMode == PLAY_OFF) ? 1 : 0);
  235   3      //                                      Uart0_SendString_3Step = 3;
-C51 COMPILER V9.00   DEFINE                                                                08/18/2018 08:42:53 PAGE 5   
+C51 COMPILER V9.00   DEFINE                                                                08/21/2018 11:45:29 PAGE 5   
 
  236   3      //                                      Flag_alarm_say_to_IOT = 1;
  237   3      //                              }
