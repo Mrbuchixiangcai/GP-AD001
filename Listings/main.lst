@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   52   1              tmp=USI1DR;     
   53   1              USI1ST1&=~0x20;
   54   1              Uart1_Rx_TimeOut=10;
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 2   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 2   
 
   55   1              if(Uart1_ReceiveBuffer_A_B)
   56   1              {
@@ -126,7 +126,7 @@ line level    source
  114          函数原型：
  115          输入参数：
  116          输出参数：
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 3   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 3   
 
  117          函数功能：
  118          *******************************************************************/
@@ -190,7 +190,7 @@ line level    source
  176   1              if (T4ISR & 0x80) 
  177   1                      T4ISR &= ~0x80; // clear IOVR
  178   1              if (T4ISR & 0x40) 
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 4   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 4   
 
  179   1                      T4ISR &= ~0x40; // clear IBTM
  180   1              if (T4ISR & 0x20) 
@@ -254,7 +254,7 @@ line level    source
  238   1              return  adcVal;
  239   1      }
  240          
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 5   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 5   
 
  241          /*******************************************************************
  242          函数原型：
@@ -318,7 +318,7 @@ line level    source
  300   1              IE2 |= 0x08;            // Enable Timer2 interrupt
  301   1              //T2CRH |= 0x80;        // enable counter
  302   1      
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 6   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 6   
 
  303   1      }
  304          
@@ -382,7 +382,7 @@ line level    source
  362   1              WDT_clear();
  363   1      }
  364          
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 7   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 7   
 
  365          /*******************************************************************
  366          函数原型：
@@ -446,7 +446,7 @@ line level    source
  424   1              // UART1 : ASync. 9615bps N 8 1
  425   1              if(!enUart1)
  426   1              {
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 8   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 8   
 
  427   2                      USI1CR2  = 0x02;        // activate USI1
  428   2                      USI1CR1  = 0x06;        // Async/Sync, bit count, parity
@@ -510,7 +510,7 @@ line level    source
  486   1              SCCR   = 0x01;          // Change to Ext. OSC
  487   1              OSCCR |= 0x05;          // Disable Int. OSC
  488   1      
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 9   
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 9   
 
  489   1              IE |= 0x80;//总中断打开
  490   1      }
@@ -574,7 +574,7 @@ line level    source
  548   1      
  549   1              P1IO = 0x9A;            // direction
  550   1              P1PU = 0x20;            // pullup
-C51 COMPILER V9.00   MAIN                                                                  08/21/2018 17:18:30 PAGE 10  
+C51 COMPILER V9.00   MAIN                                                                  08/23/2018 10:55:37 PAGE 10  
 
  551   1              P1OD = 0x00;            // open drain
  552   1              P15DB = 0x00;           // debounce : P54, 52, 17, 16, 12, 11
@@ -585,7 +585,7 @@ line level    source
  557   1              P2OD = 0x02;            // open drain
  558   1              P2   = 0x00;            // port initial value
  559   1      
- 560   1              P3IO = 0xFE;            // direction
+ 560   1              P3IO = 0xBE;            // direction
  561   1              P3PU = 0x00;            // pullup
  562   1              P3   = 0x00;            // port initial value
  563   1      

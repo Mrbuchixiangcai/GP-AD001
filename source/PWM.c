@@ -39,41 +39,44 @@ void PWM_Shutdown()
 输出参数：
 函数功能：PWM占空比改变,因为是高电平启动(禁止时低电平，要这个低电平)，所以占空比要反着
 *******************************************************************/
-void PWM_DutyCycle_Change()
-{
-	T4ADRL = PWM_REVERSE - 0xE0;  	// duty Low   占空比：
-	T4ADRH = PWM_REVERSE - 0x06;  	// duty High
-	MOTOR(1);
-}
-
 //void PWM_DutyCycle_Change()
 //{
-//	if ((AtomizationMode1 == ATOMIZATION_OFF) || (Flas_Anhydrous))
-//	{
-//		AtomizationMode1 == ATOMIZATION_OFF
-//		T4ADRL = PWM_REVERSE - 0x00;// duty Low   占空比：
-//		T4ADRH = PWM_REVERSE - 0x00;// duty High
-//		T4PCR2 &= ~0x08;			//禁止输出PWM
-//		return;
-//	}
-//	else if (AtomizationMode1 == ATOMIZATION_ONE)
-//	{
-//		T4ADRL = PWM_REVERSE - 0xFF;// duty Low   占空比：100%
-//		T4ADRH = PWM_REVERSE - 0xFF;// duty High
-//	}
-//	else if (AtomizationMode1 == ATOMIZATION_TWO)
-//	{
-//		T4ADRL = PWM_REVERSE - 0xED;// duty Low   占空比：75%
-//		T4ADRH = PWM_REVERSE - 0x02;// duty High
-//	}
-//	else if (AtomizationMode1 == ATOMIZATION_THREE)
-//	{
-//		T4ADRL = PWM_REVERSE - 0xF3;// duty Low   占空比：50%
-//		T4ADRH = PWM_REVERSE - 0x01;// duty High
-//	}
-//	MOTOR(AtomizationMode1);//风扇停或者开看Atomization的枚举值
-//	
+//	//L:2B,H:01 duty:30%
+//	//L:C1,H:01 duty:45%
+//	//L:57,H:02 dyty:60%
+//	T4ADRL = PWM_REVERSE - 0x57;  	// duty Low   占空比：
+//	T4ADRH = PWM_REVERSE - 0x02;  	// duty High
+//	MOTOR(1);
 //}
+
+void PWM_DutyCycle_Change()
+{
+	if ((AtomizationMode1 == ATOMIZATION_OFF) || (Flas_Anhydrous))
+	{
+		AtomizationMode1 = ATOMIZATION_OFF;
+		T4ADRL = PWM_REVERSE - 0x00;// duty Low   占空比：0%
+		T4ADRH = PWM_REVERSE - 0x00;// duty High
+		T4PCR2 &= ~0x08;			//禁止输出PWM
+		return;
+	}
+	else if (AtomizationMode1 == ATOMIZATION_THREE) //一档是最小档位
+	{
+		T4ADRL = PWM_REVERSE - 0xFF;// duty Low   占空比：100%
+		T4ADRH = PWM_REVERSE - 0xFF;// duty High
+	}
+	else if (AtomizationMode1 == ATOMIZATION_TWO)
+	{
+		T4ADRL = PWM_REVERSE - 0xED;// duty Low   占空比：75%
+		T4ADRH = PWM_REVERSE - 0x02;// duty High
+	}
+	else if (AtomizationMode1 == ATOMIZATION_ONE)
+	{
+		T4ADRL = PWM_REVERSE - 0xF3;// duty Low   占空比：50%
+		T4ADRH = PWM_REVERSE - 0x01;// duty High
+	}
+	MOTOR(AtomizationMode1);//风扇停或者开看Atomization的枚举值
+	
+}
 
 
 

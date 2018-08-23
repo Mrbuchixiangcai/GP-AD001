@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   KEY                                                                   08/21/2018 17:18:30 PAGE 1   
+C51 COMPILER V9.00   KEY                                                                   08/23/2018 10:55:37 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE KEY
@@ -62,7 +62,7 @@ line level    source
   52          输出参数：
   53          函数功能：获得AD值，并判断是哪个按键，如果是单独的按键和AD值按键复合也可以检测
   54          *******************************************************************/
-C51 COMPILER V9.00   KEY                                                                   08/21/2018 17:18:30 PAGE 2   
+C51 COMPILER V9.00   KEY                                                                   08/23/2018 10:55:37 PAGE 2   
 
   55          uint8_t GetKeyValue(void) 
   56          { 
@@ -90,10 +90,10 @@ line level    source
   78   1              else if (!KeyVolAdd())
   79   1                      KeyNum = T_VOLINC;
   80   1      
-  81   1      //      if (!OLP())//如果无水就拉低了,去取反之后就是高，为1
-  82   1      //              Flas_Anhydrous = 1;
-  83   1      //      else
-  84   1      //              Flas_Anhydrous = 0;
+  81   1              if (OLP())//如果无水就拉高了,为1，正常有水为低，为0
+  82   1                      Flas_Anhydrous = 1;
+  83   1              else
+  84   1                      Flas_Anhydrous = 0;
   85   1              return KeyNum; //返回按键
   86   1      }
   87          
@@ -126,7 +126,7 @@ line level    source
  113   3                                      gbKeyPress=1;
  114   3                              switch(KeyEvent)
  115   3                              {
-C51 COMPILER V9.00   KEY                                                                   08/21/2018 17:18:30 PAGE 3   
+C51 COMPILER V9.00   KEY                                                                   08/23/2018 10:55:37 PAGE 3   
 
  116   4                                      case 0:
  117   4                                              KeyEvent=1;
@@ -190,7 +190,7 @@ line level    source
  175          输入参数：
  176          输出参数：
  177          函数功能：按键的处理，包括长、短按键，数据处理及功能实现，还有闹钟响时按下任意按键关闭闹钟并关机
-C51 COMPILER V9.00   KEY                                                                   08/21/2018 17:18:30 PAGE 4   
+C51 COMPILER V9.00   KEY                                                                   08/23/2018 10:55:37 PAGE 4   
 
  178          *******************************************************************/
  179          void KeyComMsg(void) 
@@ -248,13 +248,13 @@ line level    source
  231   6                                                      enableMute=0;
  232   6                                                      enable_SPApause=0;
  233   6                                                      PlayMode=PLAY_MUSIC;
- 234   6                                                      if(spa_name==SPA_NONE) //spa_name为枚举变量类型，SPA_WHITENOISE为枚举变量元素
+ 234   6                                                      if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
  235   6                                                      {
- 236   7                                                              spa_name=SPA_BRAHM_LULLABY;
+ 236   7                                                              spa_name=SPA_BROOK;
  237   7                                                      }
  238   6                                              }
  239   5                                              else if(PlayMode==PLAY_MUSIC) //第二次进入
-C51 COMPILER V9.00   KEY                                                                   08/21/2018 17:18:30 PAGE 5   
+C51 COMPILER V9.00   KEY                                                                   08/23/2018 10:55:37 PAGE 5   
 
  240   5                                              {
  241   6                                                      enableMute=0;
@@ -265,13 +265,13 @@ line level    source
  246   7                                                              break;
  247   7                                                      }
  248   6                                                      enable_SPApause=0;
- 249   6                                                      if(++spa_name>SPA_WHITENOISE)
+ 249   6                                                      if(++spa_name>SPA_ZEN)
  250   6                                                      {
- 251   7                                                              spa_name=SPA_BRAHM_LULLABY;
+ 251   7                                                              spa_name= SPA_OFF;
  252   7              //                                              if(color_mode==COLOR_OFF)
  253   7              //                                                      TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF;    
  254   7              //                                          PlayMode=PLAY_ON;
- 255   7              //                                              spa_name=SPA_NONE;
+ 255   7              //                                              spa_name=SPA_OFF;
  256   7              //                                              enable_SPApause=1;
  257   7                                                      }
  258   6                                              }
@@ -318,16 +318,16 @@ line level    source
  299   5                                      } 
  300   4                                      case KU(T_TIMER): //value37 弹起执行
  301   4                                      {
-C51 COMPILER V9.00   KEY                                                                   08/21/2018 17:18:30 PAGE 6   
+C51 COMPILER V9.00   KEY                                                                   08/23/2018 10:55:37 PAGE 6   
 
  302   5                                              if((PlayMode>PLAY_ON)||(color_mode!=COLOR_OFF)) 
  303   5                                              {
  304   6                                                      if(TimerMode==TIMER_OFF) 
- 305   6                                                              TimerMode=cntTimer=TIMER_15MIN;
- 306   6                                                      else if(TimerMode==TIMER_15MIN)
- 307   6                                                              TimerMode=cntTimer=TIMER_30MIN;
- 308   6                                                      else if(TimerMode==TIMER_30MIN)
- 309   6                                                              TimerMode=cntTimer=TIMER_60MIN;
+ 305   6                                                              TimerMode=cntTimer=TIMER_30MIN;
+ 306   6                                                      else if(TimerMode==TIMER_30MIN)
+ 307   6                                                              TimerMode=cntTimer=TIMER_60MIN; 
+ 308   6                                                      else if(TimerMode==TIMER_60MIN)
+ 309   6                                                              TimerMode=cntTimer=TIMER_90MIN;
  310   6                                                      else 
  311   6                                                              TimerMode=cntTimer=TIMER_OFF;
  312   6                                              }
@@ -369,74 +369,75 @@ line level    source
  348   5                                                      bt_cmd=BT_PARIR; 
  349   5                                              break;
  350   5                                      }
- 351   4                                      case KU(T_MIST):
- 352   4                                      {
- 353   5                                              if (AtomizationMode1 == ATOMIZATION_OFF)
- 354   5                                                      AtomizationMode1 = ATOMIZATION_ONE;
- 355   5                                              else if (AtomizationMode1 == ATOMIZATION_ONE)
- 356   5                                                      AtomizationMode1 = ATOMIZATION_TWO;
- 357   5                                              else if (AtomizationMode1 == ATOMIZATION_TWO)
- 358   5                                                      AtomizationMode1 = ATOMIZATION_THREE;
- 359   5                                              else if (AtomizationMode1 == ATOMIZATION_THREE)
- 360   5                                                      AtomizationMode1 = ATOMIZATION_OFF;
- 361   5                                              break;
- 362   5                                      }
- 363   4                                      case KR(T_DEFAULT): //组合键，长按10s“音量加和音量减”两个键恢复出厂设置
-C51 COMPILER V9.00   KEY                                                                   08/21/2018 17:18:30 PAGE 7   
+ 351   4                                      case KU (T_MIST):
+ 352   4                                      case KLU(T_MIST):
+ 353   4                                      {
+ 354   5                                              if (AtomizationMode1 == ATOMIZATION_OFF)
+ 355   5                                                      AtomizationMode1 = ATOMIZATION_THREE;
+ 356   5                                              else if (AtomizationMode1 == ATOMIZATION_THREE)
+ 357   5                                                      AtomizationMode1 = ATOMIZATION_TWO;
+ 358   5                                              else if (AtomizationMode1 == ATOMIZATION_TWO)
+ 359   5                                                      AtomizationMode1 = ATOMIZATION_ONE;
+ 360   5                                              else if (AtomizationMode1 == ATOMIZATION_ONE)
+ 361   5                                                      AtomizationMode1 = ATOMIZATION_OFF;
+ 362   5                                              break;
+ 363   5                                      }
+C51 COMPILER V9.00   KEY                                                                   08/23/2018 10:55:37 PAGE 7   
 
- 364   4                                      {
- 365   5                                              if(cntKeylong==50)
- 366   5                                              {                                        
- 367   6                                                      cntFlash=0;
- 368   6                                                      Led_Flash=0;
- 369   6                                                      setFactory=1;//置一让三个timer灯常亮三秒
- 370   6                                                      PlayMode=PLAY_ON;
- 371   6                                                      
- 372   6                                                      Uart0_SendString_3Step=5;
- 373   6                                                      Uart0Transmit_SendString("$$$Factory setting\r\n");
- 374   6                                                      bt_send_cmd(BT_CLEAR_LIST);//清除蓝牙列表列表
- 375   6                                              }
- 376   5                                              break;
- 377   5                                      }
- 378   4                                      case KR(T_CLEAR):  //组合键，长按10s“power和音量加”两个键清除wifi列表
- 379   4                                      {
- 380   5                                              if(cntKeylong==50)
- 381   5                                              {                                        
- 382   6                                                      setReset=1;     //置一让三个timer灯闪烁三秒
- 383   6                                                      cntFlash=0;
- 384   6                                                      Led_Flash=0;
- 385   6                                                      Uart0_SendString_3Step=5;
- 386   6                                                      Uart0Transmit_SendString("$$$Wifi reset\r\n");
- 387   6                                              }
- 388   5                                              break;
- 389   5                                      }
- 390   4                                      case KR(T_TESTMODE):  //组合键，长按10s“SOUND”和“音量加”两个键进入测试模式
- 391   4                                      {
- 392   5                                              if(cntKeylong==25)
- 393   5                                              {//长按10进入测试模式，然后通过wifi模块发送命令
- 394   6                                                      Flag_TestMode=1;
- 395   6                                                      cntFlash=0;
- 396   6                                                      Led_Flash=0;
- 397   6                                                      Uart0_SendString_3Step=3;
- 398   6                                                      Uart0Transmit_SendString(Key_MCU_VER);
- 399   6                                              }
- 400   5                                              break;
- 401   5                                      }
- 402   4                                      default:
- 403   4                                              break;
- 404   4                              }
- 405   3                      }
- 406   2              }
- 407   1      }
- 408          
+ 364   4                                      case KR(T_DEFAULT): //组合键，长按10s“音量加和音量减”两个键恢复出厂设置
+ 365   4                                      {
+ 366   5                                              if(cntKeylong==50)
+ 367   5                                              {                                        
+ 368   6                                                      cntFlash=0;
+ 369   6                                                      Led_Flash=0;
+ 370   6                                                      setFactory=1;//置一让三个timer灯常亮三秒
+ 371   6                                                      PlayMode=PLAY_ON;
+ 372   6                                                      
+ 373   6                                                      Uart0_SendString_3Step=5;
+ 374   6                                                      Uart0Transmit_SendString("$$$Factory setting\r\n");
+ 375   6                                                      bt_send_cmd(BT_CLEAR_LIST);//清除蓝牙列表列表
+ 376   6                                              }
+ 377   5                                              break;
+ 378   5                                      }
+ 379   4                                      case KR(T_CLEAR):  //组合键，长按10s“power和音量加”两个键清除wifi列表
+ 380   4                                      {
+ 381   5                                              if(cntKeylong==50)
+ 382   5                                              {                                        
+ 383   6                                                      setReset=1;     //置一让三个timer灯闪烁三秒
+ 384   6                                                      cntFlash=0;
+ 385   6                                                      Led_Flash=0;
+ 386   6                                                      Uart0_SendString_3Step=5;
+ 387   6                                                      Uart0Transmit_SendString("$$$Wifi reset\r\n");
+ 388   6                                              }
+ 389   5                                              break;
+ 390   5                                      }
+ 391   4                                      case KR(T_TESTMODE):  //组合键，长按10s“SOUND”和“音量加”两个键进入测试模式
+ 392   4                                      {
+ 393   5                                              if(cntKeylong==25)
+ 394   5                                              {//长按10进入测试模式，然后通过wifi模块发送命令
+ 395   6                                                      Flag_TestMode=1;
+ 396   6                                                      cntFlash=0;
+ 397   6                                                      Led_Flash=0;
+ 398   6                                                      Uart0_SendString_3Step=3;
+ 399   6                                                      Uart0Transmit_SendString(Key_MCU_VER);
+ 400   6                                              }
+ 401   5                                              break;
+ 402   5                                      }
+ 403   4                                      default:
+ 404   4                                              break;
+ 405   4                              }
+ 406   3                      }
+ 407   2              }
+ 408   1      }
  409          
  410          
  411          
  412          
+ 413          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1060    ----
+   CODE SIZE        =   1074    ----
    CONSTANT SIZE    =    108    ----
    XDATA SIZE       =     12       1
    PDATA SIZE       =   ----    ----

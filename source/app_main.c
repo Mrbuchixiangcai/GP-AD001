@@ -284,9 +284,9 @@ void setLed_Handle(void)//LED灯的相关处理
 		 if(++Led_Flash>24)//3s 快闪，4次/s
 		  setReset=0;
 		}
-		LED_15MIN(Led_Flash%2);//Led_Flash为1(因为上面先加不会为0)时余数为1亮，为2时灭
-		LED_30MIN(Led_Flash%2);
+		LED_30MIN(Led_Flash%2);//Led_Flash为1(因为上面先加不会为0)时余数为1亮，为2时灭
 		LED_60MIN(Led_Flash%2);
+		LED_90MIN(Led_Flash%2);
 	}
 	else if(setFactory)//恢复出厂设置常亮三秒
 	{
@@ -307,9 +307,9 @@ void setLed_Handle(void)//LED灯的相关处理
 			}
 
 		}
-		LED_15MIN(1);
 		LED_30MIN(1);
 		LED_60MIN(1);
+		LED_90MIN(1);
 	}
 	else if(Flag_TestMode)//进入测试模式TIMER60LED灯闪烁2s提示
 	{
@@ -319,40 +319,40 @@ void setLed_Handle(void)//LED灯的相关处理
 		 if(++Led_Flash>16)//2s 快闪，4次/s
 		  Flag_TestMode=0;
 		}
-		//LED_15MIN(Led_Flash%2);//Led_Flash为1(因为上面先加不会为0)时余数为1亮，为2时灭
-		//LED_30MIN(Led_Flash%2);
-		LED_60MIN(Led_Flash%2);
+		//LED_30MIN(Led_Flash%2);//Led_Flash为1(因为上面先加不会为0)时余数为1亮，为2时灭
+		//LED_60MIN(Led_Flash%2);
+		LED_90MIN(Led_Flash%2);
 	}
 	else if((PlayMode<=PLAY_ON)&&(color_mode==COLOR_OFF)) 
 	{
-		LED_15MIN(0);
 		LED_30MIN(0);
 		LED_60MIN(0);
+		LED_90MIN(0);
 		TimerMode=cntTimer=TIMER_OFF;
 	}	
-	else if(TimerMode==TIMER_15MIN)
-	{
-	  	LED_15MIN(1);
-		LED_30MIN(0);
-		LED_60MIN(0);
-	}
 	else if(TimerMode==TIMER_30MIN)
 	{
-		LED_15MIN(0);
-		LED_30MIN(1);
+	  	LED_30MIN(1);
 		LED_60MIN(0);
-	}	
+		LED_90MIN(0);
+	}
 	else if(TimerMode==TIMER_60MIN)
 	{
-		LED_15MIN(0);
 		LED_30MIN(0);
 		LED_60MIN(1);
+		LED_90MIN(0);
+	}	
+	else if(TimerMode==TIMER_90MIN)
+	{
+		LED_30MIN(0);
+		LED_60MIN(0);
+		LED_90MIN(1);
 	}
 	else 
 	{
-		LED_15MIN(0);
 		LED_30MIN(0);
 		LED_60MIN(0);
+		LED_90MIN(0);
 	}	
 }
 
@@ -367,7 +367,7 @@ void PowerON_Reset(void)
 	//uint8_t i;
 	//uint8_t	code *EEPAddress_data_bk;
 	sys_volume=2; //默认音量是第5级
-	Light_Brightness=1;
+	Light_Brightness=1;  
 	PlayMode=PLAY_ON; //初始化上电为开机
 	enableMute=1;//整体静音与其他参数逻辑与，为1静音，为0解除静音 
 	EN_MUTE();
@@ -436,81 +436,82 @@ void app_main(void)
 //			enableMute=0;
 //			enable_SPApause=0;
 //			PlayMode=PLAY_MUSIC;
-//			if(spa_name==SPA_NONE) //spa_name为枚举变量类型，SPA_WHITENOISE为枚举变量元素
+//			if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
 //			{
-//				spa_name=SPA_BRAHM_LULLABY;
+//				spa_name=SPA_BROOK;
 //			}
 //		}
-	while (1)
-	{
-		
-		if (AppTick1ms) //3ms
-		{
-			AppTick1ms = 0;
-		}
-		if (AppTick0)
-		{
-			AppTick0 = 0;
-		}
-		if (AppTick1)
-		{
-			AppTick1 = 0;
-			PWM_DutyCycle_Change();
-		}
-		if (AppTick2)
-		{
-			AppTick2 = 0;
-			
-		}
-		if (AppTick3)
-		{
-			AppTick3 = 0;
-			
-		}
-		if (AppTick4)
-		{
-			AppTick4 = 0;
-			
-		}
-		WDT_clear();
-	}
-//	while(1)
-//	{ 
-//    	Uart0_Receive_Parse();		
-//		if(AppTick1ms) //3ms
+//	while (1)
+//	{
+//		
+//		if (AppTick1ms) //3ms
 //		{
-//			AppTick1ms=0;
+//			AppTick1ms = 0;
 //		}
-//		if(AppTick0)
+//		if (AppTick0)
 //		{
-//			AppTick0=0;
-//			KeyScan();
-//			KeyComMsg();
+//			AppTick0 = 0;
 //		}
-//		if(AppTick1)
+//		if (AppTick1)
 //		{
-//			AppTick1=0;
-//			BlueMode_Handle();
+//			AppTick1 = 0;
+//			PWM_DutyCycle_Change();
 //		}
-//		if(AppTick2)
+//		if (AppTick2)
 //		{
-//			AppTick2=0;
-//			DealWith_Voice();
+//			AppTick2 = 0;
+//			
 //		}
-//		if(AppTick3)
+//		if (AppTick3)
 //		{
-//			AppTick3=0;
-//			RGB_Handle();
+//			AppTick3 = 0;
+//			
 //		}
-//		if(AppTick4)
+//		if (AppTick4)
 //		{
-//			AppTick4=0;
-//			setLed_Handle();
-//			Uart0Transmit_SendString_3Step(); 
-//			Compare_1MinutePorc(); //10ms被调用一次
+//			AppTick4 = 0;
+//			
 //		}
-//		 WDT_clear();
+//		WDT_clear();
 //	}
+	while(1)
+	{ 
+    	Uart0_Receive_Parse();		
+		if(AppTick1ms) //3ms
+		{
+			AppTick1ms=0;
+		}
+		if(AppTick0)
+		{
+			AppTick0=0;
+			KeyScan();
+			KeyComMsg();
+		}
+		if(AppTick1)
+		{
+			AppTick1=0;
+			PWM_DutyCycle_Change();
+			BlueMode_Handle();
+		}
+		if(AppTick2)
+		{
+			AppTick2=0;
+			DealWith_Voice();
+		}
+		if(AppTick3)
+		{
+			AppTick3=0;
+			RGB_Handle();
+		}
+		if(AppTick4)
+		{
+			AppTick4=0;
+			setLed_Handle();
+			Uart0Transmit_SendString_3Step(); 
+			Compare_1MinutePorc(); //10ms被调用一次
+		}
+		 WDT_clear();
+	}
 }
 
 

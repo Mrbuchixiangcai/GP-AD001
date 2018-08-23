@@ -78,10 +78,10 @@ uint8_t GetKeyValue(void)
 	else if (!KeyVolAdd())
 		KeyNum = T_VOLINC;
 
-//	if (!OLP())//如果无水就拉低了,去取反之后就是高，为1
-//		Flas_Anhydrous = 1;
-//	else
-//		Flas_Anhydrous = 0;
+	if (OLP())//如果无水就拉高了,为1，正常有水为低，为0
+		Flas_Anhydrous = 1;
+	else
+		Flas_Anhydrous = 0;
 	return KeyNum; //返回按键
 }
 
@@ -231,9 +231,9 @@ void KeyComMsg(void)
 						enableMute=0;
 						enable_SPApause=0;
 						PlayMode=PLAY_MUSIC;
-						if(spa_name==SPA_NONE) //spa_name为枚举变量类型，SPA_WHITENOISE为枚举变量元素
+						if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
 						{
-							spa_name=SPA_BRAHM_LULLABY;
+							spa_name=SPA_BROOK;
 						}
 					}
 					else if(PlayMode==PLAY_MUSIC) //第二次进入
@@ -246,13 +246,13 @@ void KeyComMsg(void)
 							break;
 						}
 						enable_SPApause=0;
-						if(++spa_name>SPA_WHITENOISE)
+						if(++spa_name>SPA_ZEN)
 						{
-							spa_name=SPA_BRAHM_LULLABY;
+							spa_name= SPA_OFF;
 	//						if(color_mode==COLOR_OFF)
 	//							TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 	
 	//					    PlayMode=PLAY_ON;
-	//						spa_name=SPA_NONE;
+	//						spa_name=SPA_OFF;
 	//						enable_SPApause=1;
 						}
 					}
@@ -302,11 +302,11 @@ void KeyComMsg(void)
 					if((PlayMode>PLAY_ON)||(color_mode!=COLOR_OFF)) 
 					{
 						if(TimerMode==TIMER_OFF) 
-							TimerMode=cntTimer=TIMER_15MIN;
-						else if(TimerMode==TIMER_15MIN)
 							TimerMode=cntTimer=TIMER_30MIN;
 						else if(TimerMode==TIMER_30MIN)
-							TimerMode=cntTimer=TIMER_60MIN;
+							TimerMode=cntTimer=TIMER_60MIN; 
+						else if(TimerMode==TIMER_60MIN)
+							TimerMode=cntTimer=TIMER_90MIN;
 						else 
 							TimerMode=cntTimer=TIMER_OFF;
 					}
@@ -348,15 +348,16 @@ void KeyComMsg(void)
 						bt_cmd=BT_PARIR; 
 					break;
 				}
-				case KU(T_MIST):
+				case KU (T_MIST):
+				case KLU(T_MIST):
 				{
 					if (AtomizationMode1 == ATOMIZATION_OFF)
-						AtomizationMode1 = ATOMIZATION_ONE;
-					else if (AtomizationMode1 == ATOMIZATION_ONE)
-						AtomizationMode1 = ATOMIZATION_TWO;
-					else if (AtomizationMode1 == ATOMIZATION_TWO)
 						AtomizationMode1 = ATOMIZATION_THREE;
 					else if (AtomizationMode1 == ATOMIZATION_THREE)
+						AtomizationMode1 = ATOMIZATION_TWO;
+					else if (AtomizationMode1 == ATOMIZATION_TWO)
+						AtomizationMode1 = ATOMIZATION_ONE;
+					else if (AtomizationMode1 == ATOMIZATION_ONE)
 						AtomizationMode1 = ATOMIZATION_OFF;
 					break;
 				}

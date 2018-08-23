@@ -5,6 +5,7 @@
 
 //类型定义byte definition//
 SPA_NAME      spa_name; //枚举变量类型
+SPA_NAME      spa_name_bk;
 VOICE_STEP    Voice_Step; //语音步骤枚举变量类型
 
 
@@ -190,13 +191,13 @@ void DealWith_Voice(void) //被主函数调用
 					if(!flag_voice_send) 
 					{
 						cur_spa_name=spa_name;
-						if((spa_name==SPA_NONE)||(spa_name==SPA_PAUSE))
+						if((spa_name==SPA_OFF)||(spa_name==SPA_PAUSE))
 						{
 							enable_SPApause=1;
 							cur_spa_name=SPA_PAUSE;
 							Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
 						}
-					  else if((spa_name<=SPA_WHITENOISE))
+					  else if((spa_name<=SPA_ZEN))
 						{
 							Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);
 						}

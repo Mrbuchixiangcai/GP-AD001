@@ -557,7 +557,7 @@ void port_init()
 	P2OD = 0x02;    	// open drain
 	P2   = 0x00;    	// port initial value
 
-	P3IO = 0xFE;    	// direction
+	P3IO = 0xBE;    	// direction
 	P3PU = 0x00;    	// pullup
 	P3   = 0x00;    	// port initial value
 

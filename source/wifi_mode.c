@@ -10,14 +10,14 @@ uint8_t  code Week_Table[]={0x01,0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
 
 char  code SPASongs_Num_Table[7][24]= 
 {
-	"$$${MusicStatus:[07]}\r\n",
-	"$$${MusicStatus:[01]}\r\n",
+	"$$${MusicStatus:[07]}\r\n",//没有播放，
+	"$$${MusicStatus:[01]}\r\n",//第一首
 	"$$${MusicStatus:[02]}\r\n",
 	"$$${MusicStatus:[03]}\r\n",
 	"$$${MusicStatus:[04]}\r\n",
 	"$$${MusicStatus:[05]}\r\n",
 	"$$${MusicStatus:[06]}\r\n",
-};
+};  
 
 //标志未定义flags definetion//
 
@@ -182,7 +182,7 @@ void GP389_OFF(void) //
 函数功能：申请开关机时调用此函数
 *******************************************************************/
 void ApplicationGP389_ONOFF(uint8_t onoff)
-{//$$${GpSta:[00,00,01,01,FFFFFF,03,0A,00,1E;00,01,00,FFFFFF,03,0A,01,FF,17:3B,FF]}\r\n
+{//$$${GpSta:[00,00,01,01,FFFFFF,03,0A,00,01E;00,01,00,FFFFFF,03,0A,01,FF,17:3B,FF,02]}\r\n"
  //数组中第数据以逗号分隔，数字以 16 进制表示（这里不写"0x"），从左到右依次每个字段（前10个字段）分别表示：
  //》是否关机,00是开机，01是关机
  //》代表第几首歌（01 - 06）
@@ -214,7 +214,7 @@ void ApplicationGP389_ONOFF(uint8_t onoff)
  //》代表响铃时间（char类型1个字节）00-FF (单位:分钟)
 	char i;
 //	char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,00;00,00,00,000000,00,00,00,00,00:00,00]}\r\n"};
-	char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,00]}\r\n"};//闹钟功能在001和003中屏蔽了
+	char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,000;00,00,00,000000,]}\r\n"};//闹钟功能在001和003中屏蔽了
 	do{WDT_clear();} while(Uart0_EnableSend);
 	Count200ms_3Step=0;
 	//Uart0_SendString_3Step=0;
@@ -265,6 +265,7 @@ void ApplicationGP389_ONOFF(uint8_t onoff)
 void Wifi_CommandDeal(char *Uart0_Receive)
 {
 	uint8_t i;
+	uint8_t temp_time;//临时用的变量，在接受定时时间哪里
 	char *WIFI_CMD;
 	WIFI_CMD=&Uart0_Receive[3];
 //	if(char_compare(WIFI_CMD,"{AlarmSet")==0)//ok  //闹钟功能在001和003中屏蔽了
@@ -434,8 +435,8 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			PlayMode=PLAY_MUSIC;
 			enableMute=0;     //解除静音
 			enable_SPApause=0;//为0表示播放
-			if(spa_name==SPA_NONE) //spa_name为枚举变量类型，SPA_WHITENOISE为枚举变量元素
-				spa_name=SPA_BRAHM_LULLABY;
+			if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
+				spa_name=SPA_BROOK;
 			else
 				spa_cmd=SPA_PALY;			
 			/*if(PlayMode==PLAY_BT)
@@ -471,6 +472,33 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			TimerMode=program1.TimerMode;
 			return;
 		} 
+		else if (char_compare(WIFI_CMD, "Turn on Humidifier") == 0)
+		{//$$$Turn on/off Humidifier\r\n
+			Uart0Transmit_SendString(Uart0_Receive);
+			if (PlayMode == PLAY_OFF)
+				GP389_ON_APP();
+			//			if(alarm.Runing) //闹钟功能在001和003中屏蔽了
+			//			{
+			//				alarm.Runing=0;
+			//				TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+			//			}
+			if(AtomizationMode1==ATOMIZATION_OFF) //这一条是怕在雾化器已经开启并且不再最小档位，然后又接收到开机命令被强行更改为最小二设立的
+				AtomizationMode1 = ATOMIZATION_THREE;
+			return;
+		}
+		else if (char_compare(WIFI_CMD, "Turn off Humidifier") == 0)
+		{//$$$Turn on/off Humidifier\r\n
+			Uart0Transmit_SendString(Uart0_Receive);
+			if (PlayMode == PLAY_OFF)
+				GP389_ON_APP();
+			//			if(alarm.Runing) //闹钟功能在001和003中屏蔽了
+			//			{
+			//				alarm.Runing=0;
+			//				TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+			//			}
+			AtomizationMode1 = ATOMIZATION_OFF;
+			return;
+		}
 //		else if(char_compare(WIFI_CMD,"{Program")==0)//关机状态下打开
 //		{//$$${Program:[00,01,01,00,FFFFFF,03,0A,00,1E]}\r\n
 //			Uart0Transmit_SendString(Uart0_Receive);
@@ -555,6 +583,28 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 		{//$$$Turn on BT\r\n
 			PlayMode=PLAY_BT;
 		}
+		else if (char_compare(WIFI_CMD, "previous song\r\n") == 0)
+		{//$$$previous song\r\n 上一首歌  
+			spa_cmd = SPA_PALY;
+			if ((spa_name > SPA_OFF) && (spa_name <= SPA_ZEN))
+				spa_name--;
+			else
+				if (spa_name == SPA_OFF)//形成循环
+					spa_name = SPA_ZEN;
+			Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//每次更改音乐就发给app同步
+			return;
+		}
+		else if (char_compare(WIFI_CMD, "next song\r\n") == 0)
+		{//$$$next song\r\n 下一首歌
+			spa_cmd = SPA_PALY;
+			if ((spa_name >= SPA_OFF) && (spa_name < SPA_ZEN))
+				spa_name++;
+			else
+				if (spa_name == SPA_ZEN) //形成循环
+					spa_name = SPA_OFF;
+			Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//每次更改音乐就发给app同步
+			return;
+		}
 		else if(char_compare(WIFI_CMD, "music pause")==0)
 		{//$$$music pause\r\n
 			if(PlayMode==PLAY_MUSIC)
@@ -576,7 +626,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			return;
 		}
 		else if(char_compare(WIFI_CMD, "Adjust Output Volume")==0)
-		{//$$$Adjust Output Volume01\r\n
+		{//$$$Adjust Output Volumexx\r\n，xx代表01-10
 //			if(alarm.Runing)  //闹钟功能在001和003中屏蔽了
 //			{
 //				GP389_OFF_AND_AlarmOFF();
@@ -616,13 +666,14 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			return;
 		}
 		else if(char_compare(WIFI_CMD, "Set Timer")==0)//ok
-		{//$$$Set Timer 15\r\n(15/30/60)
+		{//$$$Set Timer XXX\r\n(30/60/90)
 //			if(alarm.Runing)  //闹钟功能在001和003中屏蔽了
 //			{
 //				GP389_OFF_AND_AlarmOFF();
 //				return;
 //			}
-			TimerMode=cntTimer=char_to_bcd(WIFI_CMD[10],WIFI_CMD[11]);
+			temp_time=char_to_bcd(WIFI_CMD[10], WIFI_CMD[11]);//只检测前两个数字，再判断
+			TimerMode=cntTimer= (temp_time == 90) ? 90 : ((temp_time == 60) ? 60 : ((temp_time == 30) ? 30 : 0));
 		}
 		else if(char_compare(WIFI_CMD, "Turn off Timer")==0)//ok
 		{//$$$Turn off Timer\r\n
@@ -670,6 +721,15 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 //				return;
 //			}
 			Light_Brightness=char_to_bcd(WIFI_CMD[24],WIFI_CMD[25]);
+		}
+		else if (char_compare(WIFI_CMD, "Adjust moist mode") == 0)
+		{//$$$Adjust moist mode XX\r\n (01-03)
+		 //			if(alarm.Runing)  //闹钟功能在001和003中屏蔽了
+		 //			{
+		 //				GP389_OFF_AND_AlarmOFF();
+		 //				return;
+		 //			}
+			AtomizationMode1 = char_to_bcd(WIFI_CMD[18], WIFI_CMD[19]);
 		}
 //		else if(char_compare(WIFI_CMD,"AlaGpSta\r\n")==0) //闹钟功能在001和003中屏蔽了
 //		{//W-G:"$$$AlaGpSta\r\n"
@@ -721,8 +781,8 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 //		}
 		else if(char_compare(WIFI_CMD,"NorGpSta\r\n")==0)
 		{//W-G:"$$$NorGpSta\r\n"
-		 //G-W:"$$${NorGpSta:[00,00,01,01,FFFFFF,03,0A,00,1E]}\r\n"
-			char  code respNorGpSta[]={"$$${NorGpSta:[00,00,00,00,000000,00,00,00,00]}\r\n"};
+		 //G-W:"$$${NorGpSta:[00,00,01,01,FFFFFF,03,0A,00,01E,02]}\r\n"
+			char  code respNorGpSta[]={"$$${NorGpSta:[00,00,00,00,000000,00,00,00,000,00]}\r\n"};
 			for(i=0;i<UART0_LEN_BUFFER;i++)
 				Uart0_Receive[i]=0x00;
 			for(i=0;i<48;i++)
@@ -738,6 +798,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			hex_to_char(&Uart0_Receive[36],sys_volume);
 			hex_to_char(&Uart0_Receive[39],enable_SPApause);
 			hex_to_char(&Uart0_Receive[42],cntTimer);
+			hex_to_char(&Uart0_Receive[46],AtomizationMode1);
 			Uart0_SendString_3Step=2;
 		}
 		else if(char_compare(WIFI_CMD," update")==0) 

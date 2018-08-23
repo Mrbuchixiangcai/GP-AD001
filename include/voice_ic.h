@@ -8,17 +8,17 @@
 //类型定义byte definition//
 typedef enum
 {
-	SPA_NONE             =0X00,
-    SPA_BRAHM_LULLABY    =0X01,	//勃拉姆斯摇篮曲
-    SPA_OCEAN            =0X02, //海洋
-    SPA_OUTDOOR          =0X03, //野外的
-    SPA_RAIN             =0X04, //雨声
-    SPA_BROOK            =0X05,	//小溪
-    SPA_WHITENOISE       =0X06, //white noise白噪声
-	SPA_VOL0             =0X07,
-    SPA_VOL15            =0X16,
-	SPA_PAUSE            =0X17,
-    SPA_PALY             =0X18,
+	SPA_OFF        =0X00,
+    SPA_BROOK      =0X01, //小溪
+    SPA_CAMPFIRE   =0X02, //篝火
+    SPA_CANONInD   =0X03, //卡农D大调
+    SPA_FAN        =0X04, //风
+    SPA_OUTDOOR    =0X05, //野外
+    SPA_ZEN        =0X06, //禅
+	SPA_VOL0       =0X07, //音量0
+    SPA_VOL15      =0X16, //音量15
+	SPA_PAUSE      =0X17, //暂停
+    SPA_PALY       =0X18, //播放
 }SPA_NAME;
 typedef enum
 {

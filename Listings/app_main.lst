@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 1   
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE APP_MAIN
@@ -62,7 +62,7 @@ line level    source
   50          bit AppTick3;
   51          bit AppTick4;
   52          bit AppTick5;
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 2   
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 2   
 
   53          bit AppTick1ms;
   54          bit gbHalfSecond;
@@ -126,7 +126,7 @@ line level    source
  112          º¯ÊýÔ­ÐÍ£º
  113          ÊäÈë²ÎÊý£º
  114          Êä³ö²ÎÊý£º
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 3   
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 3   
 
  115          º¯Êý¹¦ÄÜ£ºÊ±¼ä±È½Ïº¯Êý£¬Ã¿Ãë¡¢Ã¿·ÖÖÓ¡¢Ã¿Ð¡Ê±¶¼¿ÉÒÔ×öÅÐ¶Ï
  116          *******************************************************************/
@@ -190,7 +190,7 @@ line level    source
  174   2                      //                              data_bk[21] = alarm.Enable;
  175   2                      //                              data_bk[22] = alarm.Week;
  176   2                      //                              data_bk[23] = alarm.Hour;
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 4   
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 4   
 
  177   2                      //                              data_bk[24] = alarm.Minute;
  178   2                      //                              data_bk[25] = alarm.Duration;
@@ -254,7 +254,7 @@ line level    source
  234   3      //                                      spa_name = alarm.spa_name;
  235   3      //                                      enable_SPApause = alarm.play_pause;
  236   3      //                                      enableMute = ((enable_SPApause == 0) ? 0 : 1);//ÎÞÂÛÖ®Ç°²¥·Å»¹ÊÇÔÝÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖÓÔÊÐí²¥·Å¾
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 5   
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 5   
 
              -Í²¥·Å
  237   3      //                                      spa_cmd = ((enable_SPApause == 0) ? SPA_PALY : SPA_PAUSE);//ÎÞÂÛÖ®Ç°²¥·Å»¹ÊÇÔÝÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄ
@@ -308,9 +308,9 @@ line level    source
  284   3                       if(++Led_Flash>24)//3s ¿ìÉÁ£¬4´Î/s
  285   3                        setReset=0;
  286   3                      }
- 287   2                      LED_15MIN(Led_Flash%2);//Led_FlashÎª1(ÒòÎªÉÏÃæÏÈ¼Ó²»»áÎª0)Ê±ÓàÊýÎª1ÁÁ£¬Îª2Ê±Ãð
- 288   2                      LED_30MIN(Led_Flash%2);
- 289   2                      LED_60MIN(Led_Flash%2);
+ 287   2                      LED_30MIN(Led_Flash%2);//Led_FlashÎª1(ÒòÎªÉÏÃæÏÈ¼Ó²»»áÎª0)Ê±ÓàÊýÎª1ÁÁ£¬Îª2Ê±Ãð
+ 288   2                      LED_60MIN(Led_Flash%2);
+ 289   2                      LED_90MIN(Led_Flash%2);
  290   2              }
  291   1              else if(setFactory)//»Ö¸´³ö³§ÉèÖÃ³£ÁÁÈýÃë
  292   1              {
@@ -318,7 +318,7 @@ line level    source
  294   2      //              uint8_t code *EEPAddress_data_bk;
  295   2      //              EEPAddress_data_bk=0x0400+64;
  296   2                      if(++cntFlash>=50)//500ms
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 6   
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 6   
 
  297   2                      {
  298   3                              cntFlash=0;
@@ -333,9 +333,9 @@ line level    source
  307   4                              }
  308   3      
  309   3                      }
- 310   2                      LED_15MIN(1);
- 311   2                      LED_30MIN(1);
- 312   2                      LED_60MIN(1);
+ 310   2                      LED_30MIN(1);
+ 311   2                      LED_60MIN(1);
+ 312   2                      LED_90MIN(1);
  313   2              }
  314   1              else if(Flag_TestMode)//½øÈë²âÊÔÄ£Ê½TIMER60LEDµÆÉÁË¸2sÌáÊ¾
  315   1              {
@@ -345,44 +345,44 @@ line level    source
  319   3                       if(++Led_Flash>16)//2s ¿ìÉÁ£¬4´Î/s
  320   3                        Flag_TestMode=0;
  321   3                      }
- 322   2                      //LED_15MIN(Led_Flash%2);//Led_FlashÎª1(ÒòÎªÉÏÃæÏÈ¼Ó²»»áÎª0)Ê±ÓàÊýÎª1ÁÁ£¬Îª2Ê±Ãð
- 323   2                      //LED_30MIN(Led_Flash%2);
- 324   2                      LED_60MIN(Led_Flash%2);
+ 322   2                      //LED_30MIN(Led_Flash%2);//Led_FlashÎª1(ÒòÎªÉÏÃæÏÈ¼Ó²»»áÎª0)Ê±ÓàÊýÎª1ÁÁ£¬Îª2Ê±Ãð
+ 323   2                      //LED_60MIN(Led_Flash%2);
+ 324   2                      LED_90MIN(Led_Flash%2);
  325   2              }
  326   1              else if((PlayMode<=PLAY_ON)&&(color_mode==COLOR_OFF)) 
  327   1              {
- 328   2                      LED_15MIN(0);
- 329   2                      LED_30MIN(0);
- 330   2                      LED_60MIN(0);
+ 328   2                      LED_30MIN(0);
+ 329   2                      LED_60MIN(0);
+ 330   2                      LED_90MIN(0);
  331   2                      TimerMode=cntTimer=TIMER_OFF;
  332   2              }       
- 333   1              else if(TimerMode==TIMER_15MIN)
+ 333   1              else if(TimerMode==TIMER_30MIN)
  334   1              {
- 335   2                      LED_15MIN(1);
- 336   2                      LED_30MIN(0);
- 337   2                      LED_60MIN(0);
+ 335   2                      LED_30MIN(1);
+ 336   2                      LED_60MIN(0);
+ 337   2                      LED_90MIN(0);
  338   2              }
- 339   1              else if(TimerMode==TIMER_30MIN)
+ 339   1              else if(TimerMode==TIMER_60MIN)
  340   1              {
- 341   2                      LED_15MIN(0);
- 342   2                      LED_30MIN(1);
- 343   2                      LED_60MIN(0);
+ 341   2                      LED_30MIN(0);
+ 342   2                      LED_60MIN(1);
+ 343   2                      LED_90MIN(0);
  344   2              }       
- 345   1              else if(TimerMode==TIMER_60MIN)
+ 345   1              else if(TimerMode==TIMER_90MIN)
  346   1              {
- 347   2                      LED_15MIN(0);
- 348   2                      LED_30MIN(0);
- 349   2                      LED_60MIN(1);
+ 347   2                      LED_30MIN(0);
+ 348   2                      LED_60MIN(0);
+ 349   2                      LED_90MIN(1);
  350   2              }
  351   1              else 
  352   1              {
- 353   2                      LED_15MIN(0);
- 354   2                      LED_30MIN(0);
- 355   2                      LED_60MIN(0);
+ 353   2                      LED_30MIN(0);
+ 354   2                      LED_60MIN(0);
+ 355   2                      LED_90MIN(0);
  356   2              }       
  357   1      }
  358          
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 7   
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 7   
 
  359          /*******************************************************************
  360          º¯ÊýÔ­ÐÍ£º
@@ -446,7 +446,7 @@ line level    source
  417   1      //              program1.userB_val = ((data_bk[31]<=255) && (data_bk[31]>=0))?data_bk[31]:0;
  418   1      //              program1.Light_Brightness = ((data_bk[32]<=3) && (data_bk[32]>=0))?data_bk[32]:0;
  419   1      //              program1.sys_volume = ((data_bk[33]<=10) && (data_bk[33]>=0))?data_bk[33]:0;
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 8   
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 8   
 
  420   1      //              program1.PlayMode = ((data_bk[34]<=3) && (data_bk[34]>=0))?data_bk[34]:0;
  421   1      //              program1.enable_SPApause = ((data_bk[35]==0) && (data_bk[35]==1))?data_bk[35]:0;
@@ -467,92 +467,93 @@ line level    source
  436   1      //                      enableMute=0;
  437   1      //                      enable_SPApause=0;
  438   1      //                      PlayMode=PLAY_MUSIC;
- 439   1      //                      if(spa_name==SPA_NONE) //spa_nameÎªÃ¶¾Ù±äÁ¿ÀàÐÍ£¬SPA_WHITENOISEÎªÃ¶¾Ù±äÁ¿ÔªËØ
+ 439   1      //                      if(spa_name==SPA_OFF) //spa_nameÎªÃ¶¾Ù±äÁ¿ÀàÐÍ£¬SPA_ZENÎªÃ¶¾Ù±äÁ¿ÔªËØ
  440   1      //                      {
- 441   1      //                              spa_name=SPA_BRAHM_LULLABY;
+ 441   1      //                              spa_name=SPA_BROOK;
  442   1      //                      }
  443   1      //              }
- 444   1              while (1)
- 445   1              {
- 446   2                      
- 447   2                      if (AppTick1ms) //3ms
- 448   2                      {
- 449   3                              AppTick1ms = 0;
- 450   3                      }
- 451   2                      if (AppTick0)
- 452   2                      {
- 453   3                              AppTick0 = 0;
- 454   3                      }
- 455   2                      if (AppTick1)
- 456   2                      {
- 457   3                              AppTick1 = 0;
- 458   3                              PWM_DutyCycle_Change();
- 459   3                      }
- 460   2                      if (AppTick2)
- 461   2                      {
- 462   3                              AppTick2 = 0;
- 463   3                              
- 464   3                      }
- 465   2                      if (AppTick3)
- 466   2                      {
- 467   3                              AppTick3 = 0;
- 468   3                              
- 469   3                      }
- 470   2                      if (AppTick4)
- 471   2                      {
- 472   3                              AppTick4 = 0;
- 473   3                              
- 474   3                      }
- 475   2                      WDT_clear();
- 476   2              }
- 477   1      //      while(1)
- 478   1      //      { 
- 479   1      //      Uart0_Receive_Parse();          
- 480   1      //              if(AppTick1ms) //3ms
- 481   1      //              {
-C51 COMPILER V9.00   APP_MAIN                                                              08/21/2018 17:18:29 PAGE 9   
+ 444   1      //      while (1)
+ 445   1      //      {
+ 446   1      //              
+ 447   1      //              if (AppTick1ms) //3ms
+ 448   1      //              {
+ 449   1      //                      AppTick1ms = 0;
+ 450   1      //              }
+ 451   1      //              if (AppTick0)
+ 452   1      //              {
+ 453   1      //                      AppTick0 = 0;
+ 454   1      //              }
+ 455   1      //              if (AppTick1)
+ 456   1      //              {
+ 457   1      //                      AppTick1 = 0;
+ 458   1      //                      PWM_DutyCycle_Change();
+ 459   1      //              }
+ 460   1      //              if (AppTick2)
+ 461   1      //              {
+ 462   1      //                      AppTick2 = 0;
+ 463   1      //                      
+ 464   1      //              }
+ 465   1      //              if (AppTick3)
+ 466   1      //              {
+ 467   1      //                      AppTick3 = 0;
+ 468   1      //                      
+ 469   1      //              }
+ 470   1      //              if (AppTick4)
+ 471   1      //              {
+ 472   1      //                      AppTick4 = 0;
+ 473   1      //                      
+ 474   1      //              }
+ 475   1      //              WDT_clear();
+ 476   1      //      }
+ 477   1              while(1)
+ 478   1              { 
+ 479   2              Uart0_Receive_Parse();          
+ 480   2                      if(AppTick1ms) //3ms
+ 481   2                      {
+C51 COMPILER V9.00   APP_MAIN                                                              08/23/2018 10:55:36 PAGE 9   
 
- 482   1      //                      AppTick1ms=0;
- 483   1      //              }
- 484   1      //              if(AppTick0)
- 485   1      //              {
- 486   1      //                      AppTick0=0;
- 487   1      //                      KeyScan();
- 488   1      //                      KeyComMsg();
- 489   1      //              }
- 490   1      //              if(AppTick1)
- 491   1      //              {
- 492   1      //                      AppTick1=0;
- 493   1      //                      BlueMode_Handle();
- 494   1      //              }
- 495   1      //              if(AppTick2)
- 496   1      //              {
- 497   1      //                      AppTick2=0;
- 498   1      //                      DealWith_Voice();
- 499   1      //              }
- 500   1      //              if(AppTick3)
- 501   1      //              {
- 502   1      //                      AppTick3=0;
- 503   1      //                      RGB_Handle();
- 504   1      //              }
- 505   1      //              if(AppTick4)
- 506   1      //              {
- 507   1      //                      AppTick4=0;
- 508   1      //                      setLed_Handle();
- 509   1      //                      Uart0Transmit_SendString_3Step(); 
- 510   1      //                      Compare_1MinutePorc(); //10ms±»µ÷ÓÃÒ»´Î
- 511   1      //              }
- 512   1      //               WDT_clear();
- 513   1      //      }
- 514   1      }
- 515          
+ 482   3                              AppTick1ms=0;
+ 483   3                      }
+ 484   2                      if(AppTick0)
+ 485   2                      {
+ 486   3                              AppTick0=0;
+ 487   3                              KeyScan();
+ 488   3                              KeyComMsg();
+ 489   3                      }
+ 490   2                      if(AppTick1)
+ 491   2                      {
+ 492   3                              AppTick1=0;
+ 493   3                              PWM_DutyCycle_Change();
+ 494   3                              BlueMode_Handle();
+ 495   3                      }
+ 496   2                      if(AppTick2)
+ 497   2                      {
+ 498   3                              AppTick2=0;
+ 499   3                              DealWith_Voice();
+ 500   3                      }
+ 501   2                      if(AppTick3)
+ 502   2                      {
+ 503   3                              AppTick3=0;
+ 504   3                              RGB_Handle();
+ 505   3                      }
+ 506   2                      if(AppTick4)
+ 507   2                      {
+ 508   3                              AppTick4=0;
+ 509   3                              setLed_Handle();
+ 510   3                              Uart0Transmit_SendString_3Step(); 
+ 511   3                              Compare_1MinutePorc(); //10ms±»µ÷ÓÃÒ»´Î
+ 512   3                      }
+ 513   2                       WDT_clear();
+ 514   2              }
+ 515   1      }
  516          
  517          
  518          
+ 519          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    558    ----
+   CODE SIZE        =    585    ----
    CONSTANT SIZE    =     15    ----
    XDATA SIZE       =     41    ----
    PDATA SIZE       =   ----    ----

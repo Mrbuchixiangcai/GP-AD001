@@ -43,17 +43,17 @@
             P3 |= 0x08;     \
         else                \
             P3 &= ~0x08;
-#define LED_15MIN(a)        \
+#define LED_30MIN(a)        \
         if (a)              \
             P0 |= 0x10;     \
         else                \
             P0 &= ~0x10
-#define LED_30MIN(a)        \
+#define LED_60MIN(a)        \
         if (a)              \
             P0 |= 0x20;     \
         else                \
             P0 &= ~0x20
-#define LED_60MIN(a)        \
+#define LED_90MIN(a)        \
         if (a)              \
             P0 |= 0x40;     \
         else                \
@@ -65,7 +65,7 @@
             P1 &= ~0x80
 #define VOIC_BUSY()   (P1 & 0x40)
 #define CHECK_DC5V()  (P3 & 0x01)
-#define BT_LED_DET()  (P1 & 0x02)
+#define BT_LED_DET()  (P3 & 0x40)
 #define BT_MUTE_DET() (P1 & 0x04)
 #define EN_MUTE()           \
         do {                \
@@ -120,10 +120,9 @@ typedef enum {
 }PLAY_MODE;
 typedef enum {
 	TIMER_OFF = 0,
-	TIMER_15MIN = 15,
-	TIMER_30MIN = 30,
-	TIMER_45MIN = 45,
+	TIMER_30MIN = 40,
 	TIMER_60MIN = 60,
+	TIMER_90MIN = 90,
 }TIMER_MODE;
 
 //typedef struct {  //闹钟功能在001和003中屏蔽了
