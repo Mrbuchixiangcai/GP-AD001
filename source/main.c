@@ -562,7 +562,7 @@ void port_init()
 	P3   = 0x00;    	// port initial value
 
 	P4IO = 0xFA;    	// direction P43输出,P42输入
-	P4PU = 0x08;    	// pullup，P43为上拉
+	P4PU = 0x0C;    	// pullup，P43为上拉
 	P4OD = 0x00;    	// open drain
 	P4   = 0x00;    	// port initial value
 

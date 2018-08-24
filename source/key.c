@@ -78,7 +78,7 @@ uint8_t GetKeyValue(void)
 	else if (!KeyVolAdd())
 		KeyNum = T_VOLINC;
 
-	if (OLP())//如果无水就拉高了,为1，正常有水为低，为0
+	if (!OLP())//如果无水就拉高了,为1，正常有水为低，为0
 		Flas_Anhydrous = 1;
 	else
 		Flas_Anhydrous = 0;
