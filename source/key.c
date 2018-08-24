@@ -222,6 +222,11 @@ void KeyComMsg(void)
 					break;
 				}
 			}
+			/*******************************************************************
+			*******
+			if功能：在开机情况下才能执行，不会在关机情况下操作就开机
+			*******
+			*******************************************************************/
 			if(PlayMode!=PLAY_OFF)//在开机状态下才可以操作其他按键
 			{
 				case KU(T_MUSIC): //value66
@@ -238,22 +243,27 @@ void KeyComMsg(void)
 					}
 					else if(PlayMode==PLAY_MUSIC) //第二次进入
 					{
-						enableMute=0;
+						enableMute=0; //解mute
 						if(enable_SPApause)
 						{
 							enable_SPApause=0;
 							spa_cmd=SPA_PALY;
-							break;
+							//break;
 						}
 						enable_SPApause=0;
-						if(++spa_name>SPA_ZEN)
+						++spa_name;
+						if(spa_name == SPA_OFF)
 						{
-							spa_name= SPA_OFF;
+							spa_name= SPA_BROOK;
 	//						if(color_mode==COLOR_OFF)
 	//							TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 	
 	//					    PlayMode=PLAY_ON;
 	//						spa_name=SPA_OFF;
 	//						enable_SPApause=1;
+						}
+						else if (spa_name>SPA_ZEN)
+						{
+							spa_name = SPA_OFF;
 						}
 					}
 					break;
@@ -339,7 +349,9 @@ void KeyComMsg(void)
 				case KU(T_BT): 
 				{
 					if(PlayMode!=PLAY_BT)
+					{
 						PlayMode=PLAY_BT;
+					}
 					break;
 				}
 				case KH(T_BT):

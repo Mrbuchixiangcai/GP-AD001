@@ -111,7 +111,7 @@ void hex_to_char(uint8_t *p,uint8_t indata)
 *******************************************************************/
 void hex_to_char_3bit(uint8_t *p, uint8_t indata)
 {
-	uint8_t tmp,tmp2;
+	uint8_t tmp;
 	tmp = indata >> 8;
 	if (tmp >= 0x0A)
 		*p = ((tmp - 0x0A) + 'A');
@@ -867,7 +867,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			char  code respNorGpSta[] = { "$$${NorGpSta:[00,00,00,00,000000,00,00,00,000,00]}\r\n" };
 			for (i = 0; i<UART0_LEN_BUFFER; i++)
 				Uart0_Receive[i] = 0x00;
-			for (i = 0; i<51; i++)
+			for (i = 0; i<55; i++)
 				Uart0_Receive[i] = respNorGpSta[i];
 			hex_to_char(&Uart0_Receive[14], 0);//在这里是开机
 			hex_to_char(&Uart0_Receive[17], ((PlayMode == PLAY_MUSIC) ? spa_name : 7));//首先判断是不是音乐模式，如果是，是第几首歌，如果不是就返回暂停，7

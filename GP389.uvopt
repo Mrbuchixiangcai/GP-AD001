@@ -121,7 +121,7 @@
         <tDlgDll></tDlgDll>
         <tDlgPa></tDlgPa>
         <tIfile></tIfile>
-        <pMon>C:\ProgramFiles2\ABOV Semiconductor\OCD2_debugger64\ABOV_OCD.DLL</pMon>
+        <pMon>D:\ProgramFiles\ABOV Semiconductor\OCD2_debugger64\ABOV_OCD.DLL</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
         <SetRegEntry>

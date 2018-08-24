@@ -1,2 +1,18 @@
 2018_0806:内存占用缩小到了14.724k，模块化在进行
 2018.08.09：屏蔽前，001和003上把program和alarm去掉，不用改协议了，program和alarm是389的
+2018.08.24：整体写好之后调试，8月24号修改了按键操控voice部分，
+			从：
+			if(enable_SPApause)
+			{
+				enable_SPApause=0;
+				spa_cmd=SPA_PALY;
+				break;
+			}
+			改为：
+			if(enable_SPApause)
+			{
+				enable_SPApause=0;
+				spa_cmd=SPA_PALY;
+				//break;
+			}
+			之所以屏蔽break是因为按键循环时影响从OFF到ZEN到OFF再到BROOK时不能进行。

@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   KEY                                                                   08/24/2018 08:41:03 PAGE 1   
+C51 COMPILER V9.00   KEY                                                                   08/24/2018 14:39:06 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE KEY
 OBJECT MODULE PLACED IN .\Objects\key.obj
-COMPILER INVOKED BY: C:\ProgramFiles2\Keil_v5\C51\BIN\C51.EXE source\key.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inclu
-                    -de) DEBUG OBJECTEXTEND PRINT(.\Listings\key.lst) OBJECT(.\Objects\key.obj)
+COMPILER INVOKED BY: D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE source\key.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\includ
+                    -e) DEBUG OBJECTEXTEND PRINT(.\Listings\key.lst) OBJECT(.\Objects\key.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52          输出参数：
   53          函数功能：获得AD值，并判断是哪个按键，如果是单独的按键和AD值按键复合也可以检测
   54          *******************************************************************/
-C51 COMPILER V9.00   KEY                                                                   08/24/2018 08:41:03 PAGE 2   
+C51 COMPILER V9.00   KEY                                                                   08/24/2018 14:39:06 PAGE 2   
 
   55          uint8_t GetKeyValue(void) 
   56          { 
@@ -126,7 +126,7 @@ line level    source
  113   3                                      gbKeyPress=1;
  114   3                              switch(KeyEvent)
  115   3                              {
-C51 COMPILER V9.00   KEY                                                                   08/24/2018 08:41:03 PAGE 3   
+C51 COMPILER V9.00   KEY                                                                   08/24/2018 14:39:06 PAGE 3   
 
  116   4                                      case 0:
  117   4                                              KeyEvent=1;
@@ -190,7 +190,7 @@ line level    source
  175          输入参数：
  176          输出参数：
  177          函数功能：按键的处理，包括长、短按键，数据处理及功能实现，还有闹钟响时按下任意按键关闭闹钟并关机
-C51 COMPILER V9.00   KEY                                                                   08/24/2018 08:41:03 PAGE 4   
+C51 COMPILER V9.00   KEY                                                                   08/24/2018 14:39:06 PAGE 4   
 
  178          *******************************************************************/
  179          void KeyComMsg(void) 
@@ -239,205 +239,219 @@ line level    source
  222   5                                              break;
  223   5                                      }
  224   4                              }
- 225   3                              if(PlayMode!=PLAY_OFF)//在开机状态下才可以操作其他按键
- 226   3                              {
- 227   4                                      case KU(T_MUSIC): //value66
- 228   4                                      {
- 229   5                                              if((PlayMode==PLAY_ON) || (PlayMode==PLAY_BT)) //开机进入
- 230   5                                              {
- 231   6                                                      enableMute=0;
- 232   6                                                      enable_SPApause=0;
- 233   6                                                      PlayMode=PLAY_MUSIC;
- 234   6                                                      if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
- 235   6                                                      {
- 236   7                                                              spa_name=SPA_BROOK;
- 237   7                                                      }
- 238   6                                              }
- 239   5                                              else if(PlayMode==PLAY_MUSIC) //第二次进入
-C51 COMPILER V9.00   KEY                                                                   08/24/2018 08:41:03 PAGE 5   
+ 225   3                              /*******************************************************************
+ 226   3                              *******
+ 227   3                              if功能：在开机情况下才能执行，不会在关机情况下操作就开机
+ 228   3                              *******
+ 229   3                              *******************************************************************/
+ 230   3                              if(PlayMode!=PLAY_OFF)//在开机状态下才可以操作其他按键
+ 231   3                              {
+ 232   4                                      case KU(T_MUSIC): //value66
+ 233   4                                      {
+ 234   5                                              if((PlayMode==PLAY_ON) || (PlayMode==PLAY_BT)) //开机进入
+ 235   5                                              {
+ 236   6                                                      enableMute=0;
+ 237   6                                                      enable_SPApause=0;
+ 238   6                                                      PlayMode=PLAY_MUSIC;
+ 239   6                                                      if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
+C51 COMPILER V9.00   KEY                                                                   08/24/2018 14:39:06 PAGE 5   
 
- 240   5                                              {
- 241   6                                                      enableMute=0;
- 242   6                                                      if(enable_SPApause)
- 243   6                                                      {
- 244   7                                                              enable_SPApause=0;
- 245   7                                                              spa_cmd=SPA_PALY;
- 246   7                                                              break;
- 247   7                                                      }
- 248   6                                                      enable_SPApause=0;
- 249   6                                                      if(++spa_name>SPA_ZEN)
- 250   6                                                      {
- 251   7                                                              spa_name= SPA_OFF;
- 252   7              //                                              if(color_mode==COLOR_OFF)
- 253   7              //                                                      TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF;    
- 254   7              //                                          PlayMode=PLAY_ON;
- 255   7              //                                              spa_name=SPA_OFF;
- 256   7              //                                              enable_SPApause=1;
- 257   7                                                      }
- 258   6                                              }
- 259   5                                              break;
- 260   5                                      }
- 261   4                                      case KH(T_MUSIC): //value98
- 262   4                                      {
- 263   5                                              if(PlayMode == PLAY_MUSIC)
- 264   5                                              {
- 265   6                                                      enable_SPApause=~enable_SPApause;
- 266   6                                                      if(!enable_SPApause)
- 267   6                                                      {       
- 268   7                                                              enableMute=0;
- 269   7                                                              spa_cmd=SPA_PALY;       
- 270   7                                                      }
- 271   6                                                      else
- 272   6                                                      {       
- 273   7                                                              spa_cmd=SPA_PAUSE;
- 274   7                                                      }
- 275   6                                              }
- 276   5                                              break;
- 277   5                                      }
- 278   4                                      case KU(T_VOLINC): //value67 没有break所以继续执行下一条语句
- 279   4                                      case KR(T_VOLINC): //value131
- 280   4                                      {
- 281   5                                              if(PlayMode>PLAY_ON) 
- 282   5                                              {
- 283   6                                                      if(sys_volume<10)
- 284   6                                                              sys_volume++;
- 285   6                                                      enableMute=0;//
- 286   6                                              }
- 287   5                                              break;
- 288   5                                      }
- 289   4                                      case KU(T_VOLDEC): //value68
- 290   4                                      case KR(T_VOLDEC): //value132
- 291   4                                      {
- 292   5                                              if(PlayMode>PLAY_ON) 
- 293   5                                              {
- 294   6                                                      if(sys_volume >1) //
- 295   6                                                              sys_volume--;
- 296   6                                                      enableMute=0;//
- 297   6                                              }
- 298   5                                        break;
- 299   5                                      } 
- 300   4                                      case KU(T_TIMER): //value37 弹起执行
+ 240   6                                                      {
+ 241   7                                                              spa_name=SPA_BROOK;
+ 242   7                                                      }
+ 243   6                                              }
+ 244   5                                              else if(PlayMode==PLAY_MUSIC) //第二次进入
+ 245   5                                              {
+ 246   6                                                      enableMute=0; //解mute
+ 247   6                                                      if(enable_SPApause)
+ 248   6                                                      {
+ 249   7                                                              enable_SPApause=0;
+ 250   7                                                              spa_cmd=SPA_PALY;
+ 251   7                                                              //break;
+ 252   7                                                      }
+ 253   6                                                      enable_SPApause=0;
+ 254   6                                                      ++spa_name;
+ 255   6                                                      if(spa_name == SPA_OFF)
+ 256   6                                                      {
+ 257   7                                                              spa_name= SPA_BROOK;
+ 258   7              //                                              if(color_mode==COLOR_OFF)
+ 259   7              //                                                      TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF;    
+ 260   7              //                                          PlayMode=PLAY_ON;
+ 261   7              //                                              spa_name=SPA_OFF;
+ 262   7              //                                              enable_SPApause=1;
+ 263   7                                                      }
+ 264   6                                                      else if (spa_name>SPA_ZEN)
+ 265   6                                                      {
+ 266   7                                                              spa_name = SPA_OFF;
+ 267   7                                                      }
+ 268   6                                              }
+ 269   5                                              break;
+ 270   5                                      }
+ 271   4                                      case KH(T_MUSIC): //value98
+ 272   4                                      {
+ 273   5                                              if(PlayMode == PLAY_MUSIC)
+ 274   5                                              {
+ 275   6                                                      enable_SPApause=~enable_SPApause;
+ 276   6                                                      if(!enable_SPApause)
+ 277   6                                                      {       
+ 278   7                                                              enableMute=0;
+ 279   7                                                              spa_cmd=SPA_PALY;       
+ 280   7                                                      }
+ 281   6                                                      else
+ 282   6                                                      {       
+ 283   7                                                              spa_cmd=SPA_PAUSE;
+ 284   7                                                      }
+ 285   6                                              }
+ 286   5                                              break;
+ 287   5                                      }
+ 288   4                                      case KU(T_VOLINC): //value67 没有break所以继续执行下一条语句
+ 289   4                                      case KR(T_VOLINC): //value131
+ 290   4                                      {
+ 291   5                                              if(PlayMode>PLAY_ON) 
+ 292   5                                              {
+ 293   6                                                      if(sys_volume<10)
+ 294   6                                                              sys_volume++;
+ 295   6                                                      enableMute=0;//
+ 296   6                                              }
+ 297   5                                              break;
+ 298   5                                      }
+ 299   4                                      case KU(T_VOLDEC): //value68
+ 300   4                                      case KR(T_VOLDEC): //value132
  301   4                                      {
-C51 COMPILER V9.00   KEY                                                                   08/24/2018 08:41:03 PAGE 6   
+C51 COMPILER V9.00   KEY                                                                   08/24/2018 14:39:06 PAGE 6   
 
- 302   5                                              if((PlayMode>PLAY_ON)||(color_mode!=COLOR_OFF)) 
+ 302   5                                              if(PlayMode>PLAY_ON) 
  303   5                                              {
- 304   6                                                      if(TimerMode==TIMER_OFF) 
- 305   6                                                              TimerMode=cntTimer=TIMER_30MIN;
- 306   6                                                      else if(TimerMode==TIMER_30MIN)
- 307   6                                                              TimerMode=cntTimer=TIMER_60MIN; 
- 308   6                                                      else if(TimerMode==TIMER_60MIN)
- 309   6                                                              TimerMode=cntTimer=TIMER_90MIN;
- 310   6                                                      else 
- 311   6                                                              TimerMode=cntTimer=TIMER_OFF;
- 312   6                                              }
- 313   5                                              break;
- 314   5                                      }
- 315   4                                      case KU(T_LIGHT): //value70
- 316   4                                      {
- 317   5                                              if(color_mode==COLOR_USER) 
- 318   5                                                      color_mode=COLOR_WHITE; //实现循环
- 319   5                                              else if(Light_Brightness==0)
- 320   5                                                      Light_Brightness=1;
- 321   5                                              else if(++color_mode>COLOR_CHANGE)
- 322   5                                                      color_mode=COLOR_WHITE;
- 323   5                                              if(color_mode==COLOR_CHANGE)
- 324   5                                              {
- 325   6                                                      play_rgb_index=0;
- 326   6                                                      curR_val=0;
- 327   6                                                      curG_val=0;
- 328   6                                                      curB_val=0;
- 329   6                                              }
- 330   5                                              break;
- 331   5                                      }
- 332   4                                      case KH(T_LIGHT):
- 333   4                                      {
- 334   5                                              if(color_mode!=COLOR_OFF)
- 335   5                                                      if(++Light_Brightness>3) 
- 336   5                                                              Light_Brightness=0;
- 337   5                                              break;
- 338   5                                      }
- 339   4                                      case KU(T_BT): 
- 340   4                                      {
- 341   5                                              if(PlayMode!=PLAY_BT)
- 342   5                                                      PlayMode=PLAY_BT;
- 343   5                                              break;
- 344   5                                      }
- 345   4                                      case KH(T_BT):
- 346   4                                      {
- 347   5                                              if(PlayMode==PLAY_BT)
- 348   5                                                      bt_cmd=BT_PARIR; 
- 349   5                                              break;
- 350   5                                      }
- 351   4                                      case KU (T_MIST):
- 352   4                                      case KLU(T_MIST):
- 353   4                                      {
- 354   5                                              if (AtomizationMode1 == ATOMIZATION_OFF)
- 355   5                                                      AtomizationMode1 = ATOMIZATION_THREE;
- 356   5                                              else if (AtomizationMode1 == ATOMIZATION_THREE)
- 357   5                                                      AtomizationMode1 = ATOMIZATION_TWO;
- 358   5                                              else if (AtomizationMode1 == ATOMIZATION_TWO)
- 359   5                                                      AtomizationMode1 = ATOMIZATION_ONE;
- 360   5                                              else if (AtomizationMode1 == ATOMIZATION_ONE)
- 361   5                                                      AtomizationMode1 = ATOMIZATION_OFF;
- 362   5                                              break;
- 363   5                                      }
-C51 COMPILER V9.00   KEY                                                                   08/24/2018 08:41:03 PAGE 7   
+ 304   6                                                      if(sys_volume >1) //
+ 305   6                                                              sys_volume--;
+ 306   6                                                      enableMute=0;//
+ 307   6                                              }
+ 308   5                                        break;
+ 309   5                                      } 
+ 310   4                                      case KU(T_TIMER): //value37 弹起执行
+ 311   4                                      {
+ 312   5                                              if((PlayMode>PLAY_ON)||(color_mode!=COLOR_OFF)) 
+ 313   5                                              {
+ 314   6                                                      if(TimerMode==TIMER_OFF) 
+ 315   6                                                              TimerMode=cntTimer=TIMER_30MIN;
+ 316   6                                                      else if(TimerMode==TIMER_30MIN)
+ 317   6                                                              TimerMode=cntTimer=TIMER_60MIN; 
+ 318   6                                                      else if(TimerMode==TIMER_60MIN)
+ 319   6                                                              TimerMode=cntTimer=TIMER_90MIN;
+ 320   6                                                      else 
+ 321   6                                                              TimerMode=cntTimer=TIMER_OFF;
+ 322   6                                              }
+ 323   5                                              break;
+ 324   5                                      }
+ 325   4                                      case KU(T_LIGHT): //value70
+ 326   4                                      {
+ 327   5                                              if(color_mode==COLOR_USER) 
+ 328   5                                                      color_mode=COLOR_WHITE; //实现循环
+ 329   5                                              else if(Light_Brightness==0)
+ 330   5                                                      Light_Brightness=1;
+ 331   5                                              else if(++color_mode>COLOR_CHANGE)
+ 332   5                                                      color_mode=COLOR_WHITE;
+ 333   5                                              if(color_mode==COLOR_CHANGE)
+ 334   5                                              {
+ 335   6                                                      play_rgb_index=0;
+ 336   6                                                      curR_val=0;
+ 337   6                                                      curG_val=0;
+ 338   6                                                      curB_val=0;
+ 339   6                                              }
+ 340   5                                              break;
+ 341   5                                      }
+ 342   4                                      case KH(T_LIGHT):
+ 343   4                                      {
+ 344   5                                              if(color_mode!=COLOR_OFF)
+ 345   5                                                      if(++Light_Brightness>3) 
+ 346   5                                                              Light_Brightness=0;
+ 347   5                                              break;
+ 348   5                                      }
+ 349   4                                      case KU(T_BT): 
+ 350   4                                      {
+ 351   5                                              if(PlayMode!=PLAY_BT)
+ 352   5                                              {
+ 353   6                                                      PlayMode=PLAY_BT;
+ 354   6                                              }
+ 355   5                                              break;
+ 356   5                                      }
+ 357   4                                      case KH(T_BT):
+ 358   4                                      {
+ 359   5                                              if(PlayMode==PLAY_BT)
+ 360   5                                                      bt_cmd=BT_PARIR; 
+ 361   5                                              break;
+ 362   5                                      }
+ 363   4                                      case KU (T_MIST):
+C51 COMPILER V9.00   KEY                                                                   08/24/2018 14:39:06 PAGE 7   
 
- 364   4                                      case KR(T_DEFAULT): //组合键，长按10s“音量加和音量减”两个键恢复出厂设置
+ 364   4                                      case KLU(T_MIST):
  365   4                                      {
- 366   5                                              if(cntKeylong==50)
- 367   5                                              {                                        
- 368   6                                                      cntFlash=0;
- 369   6                                                      Led_Flash=0;
- 370   6                                                      setFactory=1;//置一让三个timer灯常亮三秒
- 371   6                                                      PlayMode=PLAY_ON;
- 372   6                                                      
- 373   6                                                      Uart0_SendString_3Step=5;
- 374   6                                                      Uart0Transmit_SendString("$$$Factory setting\r\n");
- 375   6                                                      bt_send_cmd(BT_CLEAR_LIST);//清除蓝牙列表列表
- 376   6                                              }
- 377   5                                              break;
- 378   5                                      }
- 379   4                                      case KR(T_CLEAR):  //组合键，长按10s“power和音量加”两个键清除wifi列表
- 380   4                                      {
- 381   5                                              if(cntKeylong==50)
- 382   5                                              {                                        
- 383   6                                                      setReset=1;     //置一让三个timer灯闪烁三秒
- 384   6                                                      cntFlash=0;
- 385   6                                                      Led_Flash=0;
- 386   6                                                      Uart0_SendString_3Step=5;
- 387   6                                                      Uart0Transmit_SendString("$$$Wifi reset\r\n");
+ 366   5                                              if (AtomizationMode1 == ATOMIZATION_OFF)
+ 367   5                                                      AtomizationMode1 = ATOMIZATION_THREE;
+ 368   5                                              else if (AtomizationMode1 == ATOMIZATION_THREE)
+ 369   5                                                      AtomizationMode1 = ATOMIZATION_TWO;
+ 370   5                                              else if (AtomizationMode1 == ATOMIZATION_TWO)
+ 371   5                                                      AtomizationMode1 = ATOMIZATION_ONE;
+ 372   5                                              else if (AtomizationMode1 == ATOMIZATION_ONE)
+ 373   5                                                      AtomizationMode1 = ATOMIZATION_OFF;
+ 374   5                                              break;
+ 375   5                                      }
+ 376   4                                      case KR(T_DEFAULT): //组合键，长按10s“音量加和音量减”两个键恢复出厂设置
+ 377   4                                      {
+ 378   5                                              if(cntKeylong==50)
+ 379   5                                              {                                        
+ 380   6                                                      cntFlash=0;
+ 381   6                                                      Led_Flash=0;
+ 382   6                                                      setFactory=1;//置一让三个timer灯常亮三秒
+ 383   6                                                      PlayMode=PLAY_ON;
+ 384   6                                                      
+ 385   6                                                      Uart0_SendString_3Step=5;
+ 386   6                                                      Uart0Transmit_SendString("$$$Factory setting\r\n");
+ 387   6                                                      bt_send_cmd(BT_CLEAR_LIST);//清除蓝牙列表列表
  388   6                                              }
  389   5                                              break;
  390   5                                      }
- 391   4                                      case KR(T_TESTMODE):  //组合键，长按10s“SOUND”和“音量加”两个键进入测试模式
+ 391   4                                      case KR(T_CLEAR):  //组合键，长按10s“power和音量加”两个键清除wifi列表
  392   4                                      {
- 393   5                                              if(cntKeylong==25)
- 394   5                                              {//长按10进入测试模式，然后通过wifi模块发送命令
- 395   6                                                      Flag_TestMode=1;
+ 393   5                                              if(cntKeylong==50)
+ 394   5                                              {                                        
+ 395   6                                                      setReset=1;     //置一让三个timer灯闪烁三秒
  396   6                                                      cntFlash=0;
  397   6                                                      Led_Flash=0;
- 398   6                                                      Uart0_SendString_3Step=3;
- 399   6                                                      Uart0Transmit_SendString(Key_MCU_VER);
+ 398   6                                                      Uart0_SendString_3Step=5;
+ 399   6                                                      Uart0Transmit_SendString("$$$Wifi reset\r\n");
  400   6                                              }
  401   5                                              break;
  402   5                                      }
- 403   4                                      default:
- 404   4                                              break;
- 405   4                              }
- 406   3                      }
- 407   2              }
- 408   1      }
- 409          
- 410          
- 411          
- 412          
- 413          
+ 403   4                                      case KR(T_TESTMODE):  //组合键，长按10s“SOUND”和“音量加”两个键进入测试模式
+ 404   4                                      {
+ 405   5                                              if(cntKeylong==25)
+ 406   5                                              {//长按10进入测试模式，然后通过wifi模块发送命令
+ 407   6                                                      Flag_TestMode=1;
+ 408   6                                                      cntFlash=0;
+ 409   6                                                      Led_Flash=0;
+ 410   6                                                      Uart0_SendString_3Step=3;
+ 411   6                                                      Uart0Transmit_SendString(Key_MCU_VER);
+ 412   6                                              }
+ 413   5                                              break;
+ 414   5                                      }
+ 415   4                                      default:
+ 416   4                                              break;
+ 417   4                              }
+ 418   3                      }
+ 419   2              }
+ 420   1      }
+ 421          
+ 422          
+ 423          
+ 424          
+ 425          
+C51 COMPILER V9.00   KEY                                                                   08/24/2018 14:39:06 PAGE 8   
+
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1074    ----
+   CODE SIZE        =   1087    ----
    CONSTANT SIZE    =    108    ----
    XDATA SIZE       =     12       1
    PDATA SIZE       =   ----    ----
