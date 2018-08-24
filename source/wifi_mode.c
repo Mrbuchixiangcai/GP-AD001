@@ -107,6 +107,33 @@ void hex_to_char(uint8_t *p,uint8_t indata)
 函数原型：
 输入参数：
 输出参数：
+函数功能：把要发送的协议转化为字符
+*******************************************************************/
+void hex_to_char_3bit(uint8_t *p, uint8_t indata)
+{
+	uint8_t tmp,tmp2;
+	tmp = indata >> 8;
+	if (tmp >= 0x0A)
+		*p = ((tmp - 0x0A) + 'A');
+	else
+		*p = (tmp + '0');
+	p++;
+	tmp = (indata&0x0FF) >> 4;
+	if (tmp >= 0x0A)
+		*p = ((tmp - 0x0A) + 'A');
+	else
+		*p = (tmp + '0');
+	tmp = indata & 0x00F;
+	if (tmp >= 0x0A)
+		*p = ((tmp - 0x0A) + 'A');
+	else
+		*p = (tmp + '0');
+}
+
+/*******************************************************************
+函数原型：
+输入参数：
+输出参数：
 函数功能：开机要发送的命令和相关操作，这个开机是按键按下开机和接收到“turn on”开机，
           其他app发送颜色并开机时GP389_ON_APP()函数
 *******************************************************************/
@@ -213,15 +240,15 @@ void ApplicationGP389_ONOFF(uint8_t onoff)
  //》代表闹钟时间（17:3B）(都是16进制,:左边是闹钟的时，范围是00-17; :右边是闹钟的分，范围是00-3B)
  //》代表响铃时间（char类型1个字节）00-FF (单位:分钟)
 	char i;
-//	char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,00;00,00,00,000000,00,00,00,00,00:00,00]}\r\n"};
-	char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,000;00,00,00,000000,]}\r\n"};//闹钟功能在001和003中屏蔽了
+	char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,000;00,00,00,000000,00,00,00,00,00:00,00,00]}\r\n"};
+	//char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,000;00,00,00,000000,]}\r\n"};//闹钟功能在001和003中屏蔽了
 	do{WDT_clear();} while(Uart0_EnableSend);
 	Count200ms_3Step=0;
 	//Uart0_SendString_3Step=0;
 	for(i=0;i<UART0_LEN_BUFFER;i++)
 		Uart0_TransmitBuffer[i]=0x00;
 	//for(i=0;i<82;i++)//闹钟功能在001和003中屏蔽了
-	for(i=0;i<41;i++)
+	for(i=0;i<88;i++)
 		Uart0_TransmitBuffer[i]=respGP389_AllSta[i];
 	hex_to_char(&Uart0_TransmitBuffer[11],onoff);
 	hex_to_char(&Uart0_TransmitBuffer[14],((PlayMode==PLAY_MUSIC)?spa_name:7));//首先判断是不是音乐模式，如果是，是第几首歌，如果不是就返回暂停，7
@@ -233,24 +260,25 @@ void ApplicationGP389_ONOFF(uint8_t onoff)
 	hex_to_char(&Uart0_TransmitBuffer[30],Light_Brightness);
 	hex_to_char(&Uart0_TransmitBuffer[33],sys_volume);
 	hex_to_char(&Uart0_TransmitBuffer[36],enable_SPApause);
-	hex_to_char(&Uart0_TransmitBuffer[39],cntTimer);
-//	hex_to_char(&Uart0_TransmitBuffer[42],00);//闹钟ID号默认为0   //闹钟功能在001和003中屏蔽了
-//	hex_to_char(&Uart0_TransmitBuffer[45],alarm.spa_name);//首先判断是不是音乐模式，如果是，是第几首歌，如果不是就返回暂停，7
-//	hex_to_char(&Uart0_TransmitBuffer[48],((alarm.color_mode==COLOR_CHANGE)?1:0));//是否是彩灯模式（循环渐变模式）
-//	hex_to_char(&Uart0_TransmitBuffer[51],alarm.userR_val);
-//	hex_to_char(&Uart0_TransmitBuffer[53],alarm.userG_val);	
-//	hex_to_char(&Uart0_TransmitBuffer[55],alarm.userB_val);
-//	hex_to_char(&Uart0_TransmitBuffer[58],alarm.Brightness);//亮度
-//	hex_to_char(&Uart0_TransmitBuffer[61],alarm.volume);//音量
-//	hex_to_char(&Uart0_TransmitBuffer[64],alarm.Enable); //闹钟总开关
-//	hex_to_char(&Uart0_TransmitBuffer[67],alarm.Week);  //闹钟周几响低4位
-//	hex_to_char(&Uart0_TransmitBuffer[70],alarm.Hour);  //闹钟定时的时间，小时低四位
-//	hex_to_char(&Uart0_TransmitBuffer[73],alarm.Minute);//闹钟定时的时间，分钟低四位
-//	hex_to_char(&Uart0_TransmitBuffer[76],alarm.Duration);//闹钟响铃时间，低四位
+	hex_to_char(&Uart0_TransmitBuffer[39],Light_Brightness);//cntTimer);
+	hex_to_char(&Uart0_TransmitBuffer[43],00);//闹钟ID号默认为0   //闹钟功能在001和003中屏蔽了
+	hex_to_char(&Uart0_TransmitBuffer[46],00); //alarm.spa_name);//首先判断是不是音乐模式，如果是，是第几首歌，如果不是就返回暂停，7
+	hex_to_char(&Uart0_TransmitBuffer[49],00); //((alarm.color_mode==COLOR_CHANGE)?1:0));//是否是彩灯模式（循环渐变模式）
+	hex_to_char(&Uart0_TransmitBuffer[52],00); //alarm.userR_val);
+	hex_to_char(&Uart0_TransmitBuffer[54],00); //alarm.userG_val);	
+	hex_to_char(&Uart0_TransmitBuffer[56],00); //alarm.userB_val);
+	hex_to_char(&Uart0_TransmitBuffer[59],00); //alarm.Brightness);//亮度
+	hex_to_char(&Uart0_TransmitBuffer[62],00); //alarm.volume);//音量
+	hex_to_char(&Uart0_TransmitBuffer[65],00); //alarm.Enable); //闹钟总开关
+	hex_to_char(&Uart0_TransmitBuffer[68],00); //alarm.Week);  //闹钟周几响低4位
+	hex_to_char(&Uart0_TransmitBuffer[71],00); //alarm.Hour);  //闹钟定时的时间，小时低四位
+	hex_to_char(&Uart0_TransmitBuffer[74],00); //alarm.Minute);//闹钟定时的时间，分钟低四位
+	hex_to_char(&Uart0_TransmitBuffer[77],00); //alarm.Duration);//闹钟响铃时间，低四位
+	hex_to_char(&Uart0_TransmitBuffer[80],AtomizationMode1);
 	Uart0_SendString_3Step=2;
 	Uart0_Tx_Pointer=0;
 	Uart0_EnableSend=1;
-	Uart0_Tx_TimeOut=10;	
+	Uart0_Tx_TimeOut=20;	
 	USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
 	if(cntFlag_ON_OFF==0)
 		cntFlag_ON_OFF=2;
@@ -785,7 +813,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			char  code respNorGpSta[]={"$$${NorGpSta:[00,00,00,00,000000,00,00,00,000,00]}\r\n"};
 			for(i=0;i<UART0_LEN_BUFFER;i++)
 				Uart0_Receive[i]=0x00;
-			for(i=0;i<48;i++)
+			for(i=0;i<55;i++)
 				Uart0_Receive[i]=respNorGpSta[i];
 			hex_to_char(&Uart0_Receive[14],1);//在这里是开机
 			hex_to_char(&Uart0_Receive[17],((PlayMode==PLAY_MUSIC)?spa_name:7));//首先判断是不是音乐模式，如果是，是第几首歌，如果不是就返回暂停，7
@@ -797,7 +825,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			hex_to_char(&Uart0_Receive[33],Light_Brightness);
 			hex_to_char(&Uart0_Receive[36],sys_volume);
 			hex_to_char(&Uart0_Receive[39],enable_SPApause);
-			hex_to_char(&Uart0_Receive[42],cntTimer);
+			hex_to_char_3bit(&Uart0_Receive[42],cntTimer);
 			hex_to_char(&Uart0_Receive[46],AtomizationMode1);
 			Uart0_SendString_3Step=2;
 		}
@@ -835,24 +863,25 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 	{
 		if(char_compare(WIFI_CMD,"{NorGpSta")==0)
 		{//W-G:"$$$NorGpSta\r\n"
-		 //G-W:"$$${NorGpSta:[00,00,01,01,FFFFFF,03,0A,00,1E]}\r\n"
-			char  code respNorGpSta[]={"$$${NorGpSta:[00,00,00,00,000000,00,00,00,00]}\r\n"};
-			for(i=0;i<UART0_LEN_BUFFER;i++)
-				Uart0_Receive[i]=0x00;
-			for(i=0;i<48;i++)
-				Uart0_Receive[i]=respNorGpSta[i];
-			hex_to_char(&Uart0_Receive[14],0);//在这里是开机
-			hex_to_char(&Uart0_Receive[17],((PlayMode==PLAY_MUSIC)?spa_name:7));//首先判断是不是音乐模式，如果是，是第几首歌，如果不是就返回暂停，7
-			hex_to_char(&Uart0_Receive[20],(color_mode==COLOR_OFF)?0:1);
-			hex_to_char(&Uart0_Receive[23],(color_mode==COLOR_CHANGE)?0:1);//是否是彩灯模式（循环渐变模式）
-			hex_to_char(&Uart0_Receive[26],userR_val);
-			hex_to_char(&Uart0_Receive[28],userG_val);
-			hex_to_char(&Uart0_Receive[30],userB_val);
-			hex_to_char(&Uart0_Receive[33],Light_Brightness);
-			hex_to_char(&Uart0_Receive[36],sys_volume);
-			hex_to_char(&Uart0_Receive[39],enable_SPApause);
-			hex_to_char(&Uart0_Receive[42],cntTimer);
-			Uart0_SendString_3Step=2;
+		 //G-W:"$$${NorGpSta:[00,00,01,01,FFFFFF,03,0A,00,01E,02]}\r\n"
+			char  code respNorGpSta[] = { "$$${NorGpSta:[00,00,00,00,000000,00,00,00,000,00]}\r\n" };
+			for (i = 0; i<UART0_LEN_BUFFER; i++)
+				Uart0_Receive[i] = 0x00;
+			for (i = 0; i<51; i++)
+				Uart0_Receive[i] = respNorGpSta[i];
+			hex_to_char(&Uart0_Receive[14], 0);//在这里是开机
+			hex_to_char(&Uart0_Receive[17], ((PlayMode == PLAY_MUSIC) ? spa_name : 7));//首先判断是不是音乐模式，如果是，是第几首歌，如果不是就返回暂停，7
+			hex_to_char(&Uart0_Receive[20], (color_mode == COLOR_OFF) ? 0 : 1);
+			hex_to_char(&Uart0_Receive[23], (color_mode == COLOR_CHANGE) ? 0 : 1);//是否是彩灯模式（循环渐变模式）
+			hex_to_char(&Uart0_Receive[26], userR_val);
+			hex_to_char(&Uart0_Receive[28], userG_val);
+			hex_to_char(&Uart0_Receive[30], userB_val);
+			hex_to_char(&Uart0_Receive[33], Light_Brightness);
+			hex_to_char(&Uart0_Receive[36], sys_volume);
+			hex_to_char(&Uart0_Receive[39], enable_SPApause);
+			hex_to_char_3bit(&Uart0_Receive[42], cntTimer);
+			hex_to_char(&Uart0_Receive[46], AtomizationMode1);
+			Uart0_SendString_3Step = 2;
 		}
 		Uart0Transmit_SendString(Uart0_Receive);
 	}

@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 1   
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE WIFI_MODE
@@ -62,7 +62,7 @@ line level    source
   52          char char_to_hex(char indata1,char indata2)
   53          {
   54   1              if(indata1>='A')
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 2   
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 2   
 
   55   1                      indata1=((indata1-'A')+0x0A);
   56   1              else
@@ -119,834 +119,866 @@ line level    source
  107          º¯ÊıÔ­ĞÍ£º
  108          ÊäÈë²ÎÊı£º
  109          Êä³ö²ÎÊı£º
- 110          º¯Êı¹¦ÄÜ£º¿ª»úÒª·¢ËÍµÄÃüÁîºÍÏà¹Ø²Ù×÷£¬Õâ¸ö¿ª»úÊÇ°´¼ü°´ÏÂ¿ª»úºÍ½ÓÊÕµ½¡°turn on¡±¿ª»ú£¬
- 111                    ÆäËûapp·¢ËÍÑÕÉ«²¢¿ª»úÊ±GP389_ON_APP()º¯Êı
- 112          *******************************************************************/
- 113          void GP389_ON(void) //
- 114          {
- 115   1              PlayMode=PLAY_ON;
- 116   1              PlayMode=((PlayMode_bk==PLAY_MUSIC)?PLAY_MUSIC:PLAY_ON);//Èç¹û¹Ø»úÊ±ÊÇmusicÄ£Ê½£¬¿ª»ú»Ø¸´´ËÄ£Ê½
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 3   
+ 110          º¯Êı¹¦ÄÜ£º°ÑÒª·¢ËÍµÄĞ­Òé×ª»¯Îª×Ö·û
+ 111          *******************************************************************/
+ 112          void hex_to_char_3bit(uint8_t *p, uint8_t indata)
+ 113          {
+ 114   1              uint8_t tmp,tmp2;
+ 115   1              tmp = indata >> 8;
+ 116   1              if (tmp >= 0x0A)
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 3   
 
- 117   1              sys_volume=sys_volume_bk;
- 118   1              color_mode=color_mode_bk;
- 119   1              //Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);//¹Ø»úÖ®Ç°Èç¹ûÁÁ¶ÈÎª0¾Í»Ö¸´Îª1£¬·ñÔòÎª¹Ø»úÖ
+ 117   1                      *p = ((tmp - 0x0A) + 'A');
+ 118   1              else
+ 119   1                      *p = (tmp + '0');
+ 120   1              p++;
+ 121   1              tmp = (indata&0x0FF) >> 4;
+ 122   1              if (tmp >= 0x0A)
+ 123   1                      *p = ((tmp - 0x0A) + 'A');
+ 124   1              else
+ 125   1                      *p = (tmp + '0');
+ 126   1              tmp = indata & 0x00F;
+ 127   1              if (tmp >= 0x0A)
+ 128   1                      *p = ((tmp - 0x0A) + 'A');
+ 129   1              else
+ 130   1                      *p = (tmp + '0');
+ 131   1      }
+*** WARNING C280 IN LINE 114 OF SOURCE\WIFI_MODE.C: 'tmp2': unreferenced local variable
+ 132          
+ 133          /*******************************************************************
+ 134          º¯ÊıÔ­ĞÍ£º
+ 135          ÊäÈë²ÎÊı£º
+ 136          Êä³ö²ÎÊı£º
+ 137          º¯Êı¹¦ÄÜ£º¿ª»úÒª·¢ËÍµÄÃüÁîºÍÏà¹Ø²Ù×÷£¬Õâ¸ö¿ª»úÊÇ°´¼ü°´ÏÂ¿ª»úºÍ½ÓÊÕµ½¡°turn on¡±¿ª»ú£¬
+ 138                    ÆäËûapp·¢ËÍÑÕÉ«²¢¿ª»úÊ±GP389_ON_APP()º¯Êı
+ 139          *******************************************************************/
+ 140          void GP389_ON(void) //
+ 141          {
+ 142   1              PlayMode=PLAY_ON;
+ 143   1              PlayMode=((PlayMode_bk==PLAY_MUSIC)?PLAY_MUSIC:PLAY_ON);//Èç¹û¹Ø»úÊ±ÊÇmusicÄ£Ê½£¬¿ª»ú»Ø¸´´ËÄ£Ê½
+ 144   1              sys_volume=sys_volume_bk;
+ 145   1              color_mode=color_mode_bk;
+ 146   1              //Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);//¹Ø»úÖ®Ç°Èç¹ûÁÁ¶ÈÎª0¾Í»Ö¸´Îª1£¬·ñÔòÎª¹Ø»úÖ
              -®Ç°ÁÁ¶È//2018.4.9¹Ø»úÖ®Ç°ÁÁ¶ÈÎª0£¬¿ª»úÒ²Îª0
- 120   1              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
- 121   1              
- 122   1              Uart0_SendString_3Step=3;
- 123   1      }
- 124          
- 125          /*******************************************************************
- 126          º¯ÊıÔ­ĞÍ£º
- 127          ÊäÈë²ÎÊı£º
- 128          Êä³ö²ÎÊı£º
- 129          º¯Êı¹¦ÄÜ£ºapp·¢ËÍÑÕÉ«¡¢µÆ¹â¡¢ÒôÀÖ¸ø»úÌ¨£¨´ËÊ±»úÌ¨Îª¹Ø»ú×´Ì¬£©£¬È»ºó¿ª»ú£¬³ıÁËÒôÁ¿ÆäËû²»»Ö¸´£¬
- 130                    Ö»½ÓÊÜĞÂµÄ¹¦ÄÜ²Ù×÷(ÑÕÉ«¡¢µÆ¹â¡¢ÒôÀÖ)
- 131          *******************************************************************/
- 132          void GP389_ON_APP(void) //
- 133          {
- 134   1              PlayMode=PLAY_ON;
- 135   1              sys_volume=sys_volume_bk;
- 136   1              //Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);//¹Ø»úÖ®Ç°Èç¹ûÁÁ¶ÈÎª0¾Í»Ö¸´Îª1£¬·ñÔòÎª¹Ø»úÖ
+ 147   1              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
+ 148   1              
+ 149   1              Uart0_SendString_3Step=3;
+ 150   1      }
+ 151          
+ 152          /*******************************************************************
+ 153          º¯ÊıÔ­ĞÍ£º
+ 154          ÊäÈë²ÎÊı£º
+ 155          Êä³ö²ÎÊı£º
+ 156          º¯Êı¹¦ÄÜ£ºapp·¢ËÍÑÕÉ«¡¢µÆ¹â¡¢ÒôÀÖ¸ø»úÌ¨£¨´ËÊ±»úÌ¨Îª¹Ø»ú×´Ì¬£©£¬È»ºó¿ª»ú£¬³ıÁËÒôÁ¿ÆäËû²»»Ö¸´£¬
+ 157                    Ö»½ÓÊÜĞÂµÄ¹¦ÄÜ²Ù×÷(ÑÕÉ«¡¢µÆ¹â¡¢ÒôÀÖ)
+ 158          *******************************************************************/
+ 159          void GP389_ON_APP(void) //
+ 160          {
+ 161   1              PlayMode=PLAY_ON;
+ 162   1              sys_volume=sys_volume_bk;
+ 163   1              //Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);//¹Ø»úÖ®Ç°Èç¹ûÁÁ¶ÈÎª0¾Í»Ö¸´Îª1£¬·ñÔòÎª¹Ø»úÖ
              -®Ç°ÁÁ¶È//2018.4.9¹Ø»úÖ®Ç°ÁÁ¶ÈÎª0£¬¿ª»úÒ²Îª0
- 137   1              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
- 138   1              Uart0_SendString_3Step=3;
- 139   1      }
- 140          
- 141          /*******************************************************************
- 142          º¯ÊıÔ­ĞÍ£º
- 143          ÊäÈë²ÎÊı£º
- 144          Êä³ö²ÎÊı£º
- 145          º¯Êı¹¦ÄÜ£º°´¼ü¹Ø»úºÍapp¿ØÖÆ¹Ø»úÖ´ĞĞµÄ
- 146          *******************************************************************/
- 147          void GP389_OFF(void) //
- 148          {
- 149   1              PlayMode_bk=PlayMode;
- 150   1              PlayMode=PLAY_OFF;
- 151   1              sys_volume_bk=sys_volume;
- 152   1              color_mode_bk=color_mode;
- 153   1              color_mode=COLOR_OFF;
- 154   1              TimerMode=cntTimer=TIMER_OFF;//
- 155   1              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
- 156   1              Uart0_SendString_3Step=3;
- 157   1      }
- 158          
- 159          /*******************************************************************
- 160          º¯ÊıÔ­ĞÍ£º
- 161          ÊäÈë²ÎÊı£º
- 162          Êä³ö²ÎÊı£º
- 163          º¯Êı¹¦ÄÜ£ºÄÖÖÓÔÚÏìÓ¦Ê±²Ù×÷ÔÚAPPÉÏµ÷ÁËµÆ¹âÁÁ¶È£¬ÒôÁ¿´óĞ¡£¬Ôò¹Ø±ÕÄÖÁå²¢¹Ø»ú£¬ÔÚappÉÏµãÁËÌØ¶¨
- 164                    ÑÕÉ«µÄµÆ¹â£¬»òÕßµãÁËÌØ¶¨ÒôÀÖ£¬»òÕßµãÁËprogram,ÄÇÃ´ÄÖÖÓÍ£Ö¹£¬ÏìÓ¦ËùµãµÄ²Ù×÷
- 165          *******************************************************************/
- 166          //void GP389_OFF_AND_AlarmOFF()//ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 167          //{
- 168          //      alarm.Runing=0;
- 169          //      gbKeyNone=0;
- 170          //      GP389_OFF();
- 171          //      //color_mode=COLOR_OFF;
- 172          //      Uart0_SendString_3Step=5;
- 173          //      ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);       
- 174          //      TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF;    
- 175          //      return;
- 176          //}
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 4   
+ 164   1              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
+ 165   1              Uart0_SendString_3Step=3;
+ 166   1      }
+ 167          
+ 168          /*******************************************************************
+ 169          º¯ÊıÔ­ĞÍ£º
+ 170          ÊäÈë²ÎÊı£º
+ 171          Êä³ö²ÎÊı£º
+ 172          º¯Êı¹¦ÄÜ£º°´¼ü¹Ø»úºÍapp¿ØÖÆ¹Ø»úÖ´ĞĞµÄ
+ 173          *******************************************************************/
+ 174          void GP389_OFF(void) //
+ 175          {
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 4   
 
- 177          
- 178          /*******************************************************************
- 179          º¯ÊıÔ­ĞÍ£º
- 180          ÊäÈë²ÎÊı£º
- 181          Êä³ö²ÎÊı£º
- 182          º¯Êı¹¦ÄÜ£ºÉêÇë¿ª¹Ø»úÊ±µ÷ÓÃ´Ëº¯Êı
- 183          *******************************************************************/
- 184          void ApplicationGP389_ONOFF(uint8_t onoff)
- 185          {//$$${GpSta:[00,00,01,01,FFFFFF,03,0A,00,01E;00,01,00,FFFFFF,03,0A,01,FF,17:3B,FF,02]}\r\n"
- 186   1       //Êı×éÖĞµÚÊı¾İÒÔ¶ººÅ·Ö¸ô£¬Êı×ÖÒÔ 16 ½øÖÆ±íÊ¾£¨ÕâÀï²»Ğ´"0x"£©£¬´Ó×óµ½ÓÒÒÀ´ÎÃ¿¸ö×Ö¶Î£¨Ç°10¸ö×Ö¶Î£©·Ö±ğ±íÊ¾£
+ 176   1              PlayMode_bk=PlayMode;
+ 177   1              PlayMode=PLAY_OFF;
+ 178   1              sys_volume_bk=sys_volume;
+ 179   1              color_mode_bk=color_mode;
+ 180   1              color_mode=COLOR_OFF;
+ 181   1              TimerMode=cntTimer=TIMER_OFF;//
+ 182   1              ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
+ 183   1              Uart0_SendString_3Step=3;
+ 184   1      }
+ 185          
+ 186          /*******************************************************************
+ 187          º¯ÊıÔ­ĞÍ£º
+ 188          ÊäÈë²ÎÊı£º
+ 189          Êä³ö²ÎÊı£º
+ 190          º¯Êı¹¦ÄÜ£ºÄÖÖÓÔÚÏìÓ¦Ê±²Ù×÷ÔÚAPPÉÏµ÷ÁËµÆ¹âÁÁ¶È£¬ÒôÁ¿´óĞ¡£¬Ôò¹Ø±ÕÄÖÁå²¢¹Ø»ú£¬ÔÚappÉÏµãÁËÌØ¶¨
+ 191                    ÑÕÉ«µÄµÆ¹â£¬»òÕßµãÁËÌØ¶¨ÒôÀÖ£¬»òÕßµãÁËprogram,ÄÇÃ´ÄÖÖÓÍ£Ö¹£¬ÏìÓ¦ËùµãµÄ²Ù×÷
+ 192          *******************************************************************/
+ 193          //void GP389_OFF_AND_AlarmOFF()//ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 194          //{
+ 195          //      alarm.Runing=0;
+ 196          //      gbKeyNone=0;
+ 197          //      GP389_OFF();
+ 198          //      //color_mode=COLOR_OFF;
+ 199          //      Uart0_SendString_3Step=5;
+ 200          //      ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);       
+ 201          //      TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF;    
+ 202          //      return;
+ 203          //}
+ 204          
+ 205          /*******************************************************************
+ 206          º¯ÊıÔ­ĞÍ£º
+ 207          ÊäÈë²ÎÊı£º
+ 208          Êä³ö²ÎÊı£º
+ 209          º¯Êı¹¦ÄÜ£ºÉêÇë¿ª¹Ø»úÊ±µ÷ÓÃ´Ëº¯Êı
+ 210          *******************************************************************/
+ 211          void ApplicationGP389_ONOFF(uint8_t onoff)
+ 212          {//$$${GpSta:[00,00,01,01,FFFFFF,03,0A,00,01E;00,01,00,FFFFFF,03,0A,01,FF,17:3B,FF,02]}\r\n"
+ 213   1       //Êı×éÖĞµÚÊı¾İÒÔ¶ººÅ·Ö¸ô£¬Êı×ÖÒÔ 16 ½øÖÆ±íÊ¾£¨ÕâÀï²»Ğ´"0x"£©£¬´Ó×óµ½ÓÒÒÀ´ÎÃ¿¸ö×Ö¶Î£¨Ç°10¸ö×Ö¶Î£©·Ö±ğ±íÊ¾£
              -º
- 187   1       //¡·ÊÇ·ñ¹Ø»ú,00ÊÇ¿ª»ú£¬01ÊÇ¹Ø»ú
- 188   1       //¡·´ú±íµÚ¼¸Ê×¸è£¨01 - 06£©
- 189   1       //¡·´ú±í¿ª¹ØµÆ£¨00¹Ø 01¿ª£©
- 190   1       //¡·´ú±íÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨00 ¹Ø 01 ¿ª£©£¨×¢£º²ÊµÆÑ­»·£¬Îª1¿ªÆôÑ­»·£©
- 191   1       //¡·´ú±íµÆµÄRGBÖµ£¨000000 - FFFFFF£©£¨²ÊµÆÑ­»·Õâ¸öÖµÎª000000£©
- 192   1       //¡·´ú±íÁÁ¶È( 00 - 03 )
- 193   1       //¡·´ú±íÒôÁ¿Öµ ( 00 - 0A )
- 194   1       //¡·´ú±íÔİÍ£pauseÑ¡Ôñ£¨00±íÊ¾Õı³£²¥·Å,01±íÊ¾ÔİÍ£²¥·Å£©
- 195   1       //¡·´ú±í¶¨Ê±Æ÷£¬00(¹Ø/²»¿ªÆô¶¨Ê±)£¬0F(15min)£¬1E(30min)£¬3C(60min)   
- 196   1       //¡·Ó¢ÎÄ·ÖºÅ¡°;¡±¸ô¿ªÕâÁ½²¿·ÖÃüÁî
- 197   1       //¡·ÄÖÖÓ¿ØÖÆĞÅÏ¢£ºÊı×éÖĞµÚÊı¾İÒÔ¶ººÅ·Ö¸ô£¬Êı×ÖÒÔ 16 ½øÖÆ±íÊ¾£¨ÕâÀï²»Ğ´"0x"£©£¬´Ó×óµ½ÓÒÒÀ´ÎÃ¿¸ö×Ö¶Î£¨10¸ö×
+ 214   1       //¡·ÊÇ·ñ¹Ø»ú,00ÊÇ¿ª»ú£¬01ÊÇ¹Ø»ú
+ 215   1       //¡·´ú±íµÚ¼¸Ê×¸è£¨01 - 06£©
+ 216   1       //¡·´ú±í¿ª¹ØµÆ£¨00¹Ø 01¿ª£©
+ 217   1       //¡·´ú±íÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨00 ¹Ø 01 ¿ª£©£¨×¢£º²ÊµÆÑ­»·£¬Îª1¿ªÆôÑ­»·£©
+ 218   1       //¡·´ú±íµÆµÄRGBÖµ£¨000000 - FFFFFF£©£¨²ÊµÆÑ­»·Õâ¸öÖµÎª000000£©
+ 219   1       //¡·´ú±íÁÁ¶È( 00 - 03 )
+ 220   1       //¡·´ú±íÒôÁ¿Öµ ( 00 - 0A )
+ 221   1       //¡·´ú±íÔİÍ£pauseÑ¡Ôñ£¨00±íÊ¾Õı³£²¥·Å,01±íÊ¾ÔİÍ£²¥·Å£©
+ 222   1       //¡·´ú±í¶¨Ê±Æ÷£¬00(¹Ø/²»¿ªÆô¶¨Ê±)£¬0F(15min)£¬1E(30min)£¬3C(60min)   
+ 223   1       //¡·Ó¢ÎÄ·ÖºÅ¡°;¡±¸ô¿ªÕâÁ½²¿·ÖÃüÁî
+ 224   1       //¡·ÄÖÖÓ¿ØÖÆĞÅÏ¢£ºÊı×éÖĞµÚÊı¾İÒÔ¶ººÅ·Ö¸ô£¬Êı×ÖÒÔ 16 ½øÖÆ±íÊ¾£¨ÕâÀï²»Ğ´"0x"£©£¬´Ó×óµ½ÓÒÒÀ´ÎÃ¿¸ö×Ö¶Î£¨10¸ö×
              -Ö¶Î£©·Ö±ğ±íÊ¾£º
- 198   1       //¡·´ú±í Alarm µÄ ID ºÅ £¨×¢£ºÏÖÔÚÖ»ÓĞÒ»¸öÄÖÖÓ£¬Ä¬ÈÏÎª0£©
- 199   1       //¡·´ú±íµÚ¼¸Ê×¸è£¨01 - 06£©
- 200   1       //¡·´ú±íÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨00 ¹Ø 01 ¿ª£©£¨×¢£º²ÊµÆÑ­»·£¬Îª1¿ªÆôÑ­»·£©
- 201   1       //¡·´ú±íµÆµÄRGBÖµ£¨000000 - FFFFFF£©£¨²ÊµÆÑ­»·Õâ¸öÖµÎª000000£©
- 202   1       //¡·´ú±íÁÁ¶È( 00 - 03 )
- 203   1       //¡·´ú±íÒôÁ¿Öµ ( 00 - 0a )
- 204   1       //¡·´ú±íÄÖÖÓ×Ü¿ª¹Ø£¨00 ¹Ø 01: ¿ª£©£¨Ä¬ÈÏ0£©
- 205   1       //¡·´ú±íÖÜÒ»µ½ÖÜÈÕµÄ¿ª¹Ø£¬Ã¿Ò»ÌìÓÃÒ»¸ö bit ±íÊ¾
- 206   1       //  0x80 ´ú±íÊÇ·ñÖØ¸´ÄÖÁå
- 207   1       //  0x01 ´ú±íÖÜÒ»Æô¶¯ÄÖÁå£¬µ«ÊÇÖ»ÏìÒ»´Î£¬ÕâÒ»´ÎÊÇÆßÌìÖ®ÄÚµÄ£¬
- 208   1       //  0xFF ´ú±íÄÖÁåÈ«¿ª£¬²¢ÇÒÃ¿ÖÜÖØ¸´£¬ÒÔ´ËÀàÍÆ
- 209   1       //  BIT            7       6    5    4    3    2    1    0
- 210   1       //  ĞÇÆÚx   repeat  ÈÕ  Áù  Îå  ËÄ  Èı  ¶ş  Ò»  £¨×¢£ºrepeatÎªÃ¿ÖÜ¶¼ÖØ¸´ÄÖÁå£¬·ñÔòÖ»ÏìÒ»´Î£¬ÕâÒ»´Î
- 211   1       //  ÊÇÆßÌìÖ®ÄÚµÄ£¬¼ÙÈç¶¨Ê±13:00£¬²»ÖØ¸´£¬ÄÇÕâ´Î¼ÆÊ±µ½(7*24*60-1)minÖ®ºó½áÊø£¬¼´ÆßÌìÖ®ºó
- 212   1       //  µÄ12:59·Ö£©
- 213   1       //¡·´ú±íÄÖÖÓÊ±¼ä£¨17:3B£©(¶¼ÊÇ16½øÖÆ,:×ó±ßÊÇÄÖÖÓµÄÊ±£¬·¶Î§ÊÇ00-17; :ÓÒ±ßÊÇÄÖÖÓµÄ·Ö£¬·¶Î§ÊÇ00-3B)
- 214   1       //¡·´ú±íÏìÁåÊ±¼ä£¨charÀàĞÍ1¸ö×Ö½Ú£©00-FF (µ¥Î»:·ÖÖÓ)
- 215   1              char i;
- 216   1      //      char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,00;00,00,00,000000,00,00,00,00,00
-             -:00,00]}\r\n"};
- 217   1              char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,000;00,00,00,000000,]}\r\n"};//ÄÖÖÓ
-             -¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 218   1              do{WDT_clear();} while(Uart0_EnableSend);
- 219   1              Count200ms_3Step=0;
- 220   1              //Uart0_SendString_3Step=0;
- 221   1              for(i=0;i<UART0_LEN_BUFFER;i++)
- 222   1                      Uart0_TransmitBuffer[i]=0x00;
- 223   1              //for(i=0;i<82;i++)//ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 224   1              for(i=0;i<41;i++)
- 225   1                      Uart0_TransmitBuffer[i]=respGP389_AllSta[i];
- 226   1              hex_to_char(&Uart0_TransmitBuffer[11],onoff);
- 227   1              hex_to_char(&Uart0_TransmitBuffer[14],((PlayMode==PLAY_MUSIC)?spa_name:7));//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹û
+ 225   1       //¡·´ú±í Alarm µÄ ID ºÅ £¨×¢£ºÏÖÔÚÖ»ÓĞÒ»¸öÄÖÖÓ£¬Ä¬ÈÏÎª0£©
+ 226   1       //¡·´ú±íµÚ¼¸Ê×¸è£¨01 - 06£©
+ 227   1       //¡·´ú±íÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨00 ¹Ø 01 ¿ª£©£¨×¢£º²ÊµÆÑ­»·£¬Îª1¿ªÆôÑ­»·£©
+ 228   1       //¡·´ú±íµÆµÄRGBÖµ£¨000000 - FFFFFF£©£¨²ÊµÆÑ­»·Õâ¸öÖµÎª000000£©
+ 229   1       //¡·´ú±íÁÁ¶È( 00 - 03 )
+ 230   1       //¡·´ú±íÒôÁ¿Öµ ( 00 - 0a )
+ 231   1       //¡·´ú±íÄÖÖÓ×Ü¿ª¹Ø£¨00 ¹Ø 01: ¿ª£©£¨Ä¬ÈÏ0£©
+ 232   1       //¡·´ú±íÖÜÒ»µ½ÖÜÈÕµÄ¿ª¹Ø£¬Ã¿Ò»ÌìÓÃÒ»¸ö bit ±íÊ¾
+ 233   1       //  0x80 ´ú±íÊÇ·ñÖØ¸´ÄÖÁå
+ 234   1       //  0x01 ´ú±íÖÜÒ»Æô¶¯ÄÖÁå£¬µ«ÊÇÖ»ÏìÒ»´Î£¬ÕâÒ»´ÎÊÇÆßÌìÖ®ÄÚµÄ£¬
+ 235   1       //  0xFF ´ú±íÄÖÁåÈ«¿ª£¬²¢ÇÒÃ¿ÖÜÖØ¸´£¬ÒÔ´ËÀàÍÆ
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 5   
+
+ 236   1       //  BIT            7       6    5    4    3    2    1    0
+ 237   1       //  ĞÇÆÚx   repeat  ÈÕ  Áù  Îå  ËÄ  Èı  ¶ş  Ò»  £¨×¢£ºrepeatÎªÃ¿ÖÜ¶¼ÖØ¸´ÄÖÁå£¬·ñÔòÖ»ÏìÒ»´Î£¬ÕâÒ»´Î
+ 238   1       //  ÊÇÆßÌìÖ®ÄÚµÄ£¬¼ÙÈç¶¨Ê±13:00£¬²»ÖØ¸´£¬ÄÇÕâ´Î¼ÆÊ±µ½(7*24*60-1)minÖ®ºó½áÊø£¬¼´ÆßÌìÖ®ºó
+ 239   1       //  µÄ12:59·Ö£©
+ 240   1       //¡·´ú±íÄÖÖÓÊ±¼ä£¨17:3B£©(¶¼ÊÇ16½øÖÆ,:×ó±ßÊÇÄÖÖÓµÄÊ±£¬·¶Î§ÊÇ00-17; :ÓÒ±ßÊÇÄÖÖÓµÄ·Ö£¬·¶Î§ÊÇ00-3B)
+ 241   1       //¡·´ú±íÏìÁåÊ±¼ä£¨charÀàĞÍ1¸ö×Ö½Ú£©00-FF (µ¥Î»:·ÖÖÓ)
+ 242   1              char i;
+ 243   1              char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,000;00,00,00,000000,00,00,00,00,00:
+             -00,00,00]}\r\n"};
+ 244   1              //char code respGP389_AllSta[]={"$$${GpSta:[00,00,00,00,000000,00,00,00,000;00,00,00,000000,]}\r\n"};//ÄÖ
+             -ÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 245   1              do{WDT_clear();} while(Uart0_EnableSend);
+ 246   1              Count200ms_3Step=0;
+ 247   1              //Uart0_SendString_3Step=0;
+ 248   1              for(i=0;i<UART0_LEN_BUFFER;i++)
+ 249   1                      Uart0_TransmitBuffer[i]=0x00;
+ 250   1              //for(i=0;i<82;i++)//ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 251   1              for(i=0;i<88;i++)
+ 252   1                      Uart0_TransmitBuffer[i]=respGP389_AllSta[i];
+ 253   1              hex_to_char(&Uart0_TransmitBuffer[11],onoff);
+ 254   1              hex_to_char(&Uart0_TransmitBuffer[14],((PlayMode==PLAY_MUSIC)?spa_name:7));//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹û
              -ÊÇ£¬ÊÇµÚ¼¸Ê×¸è£¬Èç¹û²»ÊÇ¾Í·µ»ØÔİÍ££¬7
- 228   1              hex_to_char(&Uart0_TransmitBuffer[17],((color_mode==COLOR_OFF)?0:1));//Îª1Ê±ÊÇÒª¹Ø»ú£¬ËùÒÔÒªºÍcolor_mode_
+ 255   1              hex_to_char(&Uart0_TransmitBuffer[17],((color_mode==COLOR_OFF)?0:1));//Îª1Ê±ÊÇÒª¹Ø»ú£¬ËùÒÔÒªºÍcolor_mode_
              -bk¶Ô±È£¬Îª0ÊÇÒª¿ª»ú£¬ÒÑ¾­°Ñcolor_mode_bk¸³Öµ¸øcolor_mode
- 229   1              hex_to_char(&Uart0_TransmitBuffer[20],((color_mode==COLOR_CHANGE)?1:0));
- 230   1              hex_to_char(&Uart0_TransmitBuffer[23],userR_val);
- 231   1              hex_to_char(&Uart0_TransmitBuffer[25],userG_val);       
- 232   1              hex_to_char(&Uart0_TransmitBuffer[27],userB_val);
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 5   
+ 256   1              hex_to_char(&Uart0_TransmitBuffer[20],((color_mode==COLOR_CHANGE)?1:0));
+ 257   1              hex_to_char(&Uart0_TransmitBuffer[23],userR_val);
+ 258   1              hex_to_char(&Uart0_TransmitBuffer[25],userG_val);       
+ 259   1              hex_to_char(&Uart0_TransmitBuffer[27],userB_val);
+ 260   1              hex_to_char(&Uart0_TransmitBuffer[30],Light_Brightness);
+ 261   1              hex_to_char(&Uart0_TransmitBuffer[33],sys_volume);
+ 262   1              hex_to_char(&Uart0_TransmitBuffer[36],enable_SPApause);
+ 263   1              hex_to_char(&Uart0_TransmitBuffer[39],Light_Brightness);//cntTimer);
+ 264   1              hex_to_char(&Uart0_TransmitBuffer[43],00);//ÄÖÖÓIDºÅÄ¬ÈÏÎª0   //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 265   1              hex_to_char(&Uart0_TransmitBuffer[46],00); //alarm.spa_name);//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹ûÊÇ£¬ÊÇµÚ¼¸Ê×¸è
+             -£¬Èç¹û²»ÊÇ¾Í·µ»ØÔİÍ££¬7
+ 266   1              hex_to_char(&Uart0_TransmitBuffer[49],00); //((alarm.color_mode==COLOR_CHANGE)?1:0));//ÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨Ñ­
+             -»·½¥±äÄ£Ê½£©
+ 267   1              hex_to_char(&Uart0_TransmitBuffer[52],00); //alarm.userR_val);
+ 268   1              hex_to_char(&Uart0_TransmitBuffer[54],00); //alarm.userG_val);  
+ 269   1              hex_to_char(&Uart0_TransmitBuffer[56],00); //alarm.userB_val);
+ 270   1              hex_to_char(&Uart0_TransmitBuffer[59],00); //alarm.Brightness);//ÁÁ¶È
+ 271   1              hex_to_char(&Uart0_TransmitBuffer[62],00); //alarm.volume);//ÒôÁ¿
+ 272   1              hex_to_char(&Uart0_TransmitBuffer[65],00); //alarm.Enable); //ÄÖÖÓ×Ü¿ª¹Ø
+ 273   1              hex_to_char(&Uart0_TransmitBuffer[68],00); //alarm.Week);  //ÄÖÖÓÖÜ¼¸ÏìµÍ4Î»
+ 274   1              hex_to_char(&Uart0_TransmitBuffer[71],00); //alarm.Hour);  //ÄÖÖÓ¶¨Ê±µÄÊ±¼ä£¬Ğ¡Ê±µÍËÄÎ»
+ 275   1              hex_to_char(&Uart0_TransmitBuffer[74],00); //alarm.Minute);//ÄÖÖÓ¶¨Ê±µÄÊ±¼ä£¬·ÖÖÓµÍËÄÎ»
+ 276   1              hex_to_char(&Uart0_TransmitBuffer[77],00); //alarm.Duration);//ÄÖÖÓÏìÁåÊ±¼ä£¬µÍËÄÎ»
+ 277   1              hex_to_char(&Uart0_TransmitBuffer[80],AtomizationMode1);
+ 278   1              Uart0_SendString_3Step=2;
+ 279   1              Uart0_Tx_Pointer=0;
+ 280   1              Uart0_EnableSend=1;
+ 281   1              Uart0_Tx_TimeOut=20;    
+ 282   1              USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
+ 283   1              if(cntFlag_ON_OFF==0)
+ 284   1                      cntFlag_ON_OFF=2;
+ 285   1      }
+ 286          
+ 287          /*******************************************************************
+ 288          º¯ÊıÔ­ĞÍ£º
+ 289          ÊäÈë²ÎÊı£º
+ 290          Êä³ö²ÎÊı£º
+ 291          º¯Êı¹¦ÄÜ£º´®¿Ú½ÓÊÕµ½µÄÃüÁîĞ­ÒéºÍÔ¤¶¨µÄĞ­Òé¶Ô±ÈÈ·¶¨ÊÇÄÄ¸ö½ø¶øÖ´ĞĞ²Ù×÷£¬·ñÔòÎŞ²Ù×÷
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 6   
 
- 233   1              hex_to_char(&Uart0_TransmitBuffer[30],Light_Brightness);
- 234   1              hex_to_char(&Uart0_TransmitBuffer[33],sys_volume);
- 235   1              hex_to_char(&Uart0_TransmitBuffer[36],enable_SPApause);
- 236   1              hex_to_char(&Uart0_TransmitBuffer[39],cntTimer);
- 237   1      //      hex_to_char(&Uart0_TransmitBuffer[42],00);//ÄÖÖÓIDºÅÄ¬ÈÏÎª0   //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 238   1      //      hex_to_char(&Uart0_TransmitBuffer[45],alarm.spa_name);//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹ûÊÇ£¬ÊÇµÚ¼¸Ê×¸è£¬Èç¹
-             -û²»ÊÇ¾Í·µ»ØÔİÍ££¬7
- 239   1      //      hex_to_char(&Uart0_TransmitBuffer[48],((alarm.color_mode==COLOR_CHANGE)?1:0));//ÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨Ñ­»·½¥±
-             -äÄ£Ê½£©
- 240   1      //      hex_to_char(&Uart0_TransmitBuffer[51],alarm.userR_val);
- 241   1      //      hex_to_char(&Uart0_TransmitBuffer[53],alarm.userG_val); 
- 242   1      //      hex_to_char(&Uart0_TransmitBuffer[55],alarm.userB_val);
- 243   1      //      hex_to_char(&Uart0_TransmitBuffer[58],alarm.Brightness);//ÁÁ¶È
- 244   1      //      hex_to_char(&Uart0_TransmitBuffer[61],alarm.volume);//ÒôÁ¿
- 245   1      //      hex_to_char(&Uart0_TransmitBuffer[64],alarm.Enable); //ÄÖÖÓ×Ü¿ª¹Ø
- 246   1      //      hex_to_char(&Uart0_TransmitBuffer[67],alarm.Week);  //ÄÖÖÓÖÜ¼¸ÏìµÍ4Î»
- 247   1      //      hex_to_char(&Uart0_TransmitBuffer[70],alarm.Hour);  //ÄÖÖÓ¶¨Ê±µÄÊ±¼ä£¬Ğ¡Ê±µÍËÄÎ»
- 248   1      //      hex_to_char(&Uart0_TransmitBuffer[73],alarm.Minute);//ÄÖÖÓ¶¨Ê±µÄÊ±¼ä£¬·ÖÖÓµÍËÄÎ»
- 249   1      //      hex_to_char(&Uart0_TransmitBuffer[76],alarm.Duration);//ÄÖÖÓÏìÁåÊ±¼ä£¬µÍËÄÎ»
- 250   1              Uart0_SendString_3Step=2;
- 251   1              Uart0_Tx_Pointer=0;
- 252   1              Uart0_EnableSend=1;
- 253   1              Uart0_Tx_TimeOut=10;    
- 254   1              USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
- 255   1              if(cntFlag_ON_OFF==0)
- 256   1                      cntFlag_ON_OFF=2;
- 257   1      }
- 258          
- 259          /*******************************************************************
- 260          º¯ÊıÔ­ĞÍ£º
- 261          ÊäÈë²ÎÊı£º
- 262          Êä³ö²ÎÊı£º
- 263          º¯Êı¹¦ÄÜ£º´®¿Ú½ÓÊÕµ½µÄÃüÁîĞ­ÒéºÍÔ¤¶¨µÄĞ­Òé¶Ô±ÈÈ·¶¨ÊÇÄÄ¸ö½ø¶øÖ´ĞĞ²Ù×÷£¬·ñÔòÎŞ²Ù×÷
- 264          *******************************************************************/
- 265          void Wifi_CommandDeal(char *Uart0_Receive)
- 266          {
- 267   1              uint8_t i;
- 268   1              uint8_t temp_time;//ÁÙÊ±ÓÃµÄ±äÁ¿£¬ÔÚ½ÓÊÜ¶¨Ê±Ê±¼äÄÄÀï
- 269   1              char *WIFI_CMD;
- 270   1              WIFI_CMD=&Uart0_Receive[3];
- 271   1      //      if(char_compare(WIFI_CMD,"{AlarmSet")==0)//ok  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 272   1      //      {//$$${AlarmSet:[00,01,00,01,FFFFFF,03,0A,00,00,FF,17:3B,FF,0a/20/00/12/01/01/02]}\r\n
- 273   1      //       //Êı×éÖĞµÚÊı¾İÒÔ¶ººÅ·Ö¸ô£¬Êı×ÖÒÔ 16 ½øÖÆ±íÊ¾£¨ÕâÀï²»Ğ´"0x"£©£¬´Ó×óµ½ÓÒÒÀ´ÎÃ¿¸ö×Ö¶Î£¨10¸ö×Ö¶Î£©·Ö±ğ±íÊ¾
+ 292          *******************************************************************/
+ 293          void Wifi_CommandDeal(char *Uart0_Receive)
+ 294          {
+ 295   1              uint8_t i;
+ 296   1              uint8_t temp_time;//ÁÙÊ±ÓÃµÄ±äÁ¿£¬ÔÚ½ÓÊÜ¶¨Ê±Ê±¼äÄÄÀï
+ 297   1              char *WIFI_CMD;
+ 298   1              WIFI_CMD=&Uart0_Receive[3];
+ 299   1      //      if(char_compare(WIFI_CMD,"{AlarmSet")==0)//ok  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 300   1      //      {//$$${AlarmSet:[00,01,00,01,FFFFFF,03,0A,00,00,FF,17:3B,FF,0a/20/00/12/01/01/02]}\r\n
+ 301   1      //       //Êı×éÖĞµÚÊı¾İÒÔ¶ººÅ·Ö¸ô£¬Êı×ÖÒÔ 16 ½øÖÆ±íÊ¾£¨ÕâÀï²»Ğ´"0x"£©£¬´Ó×óµ½ÓÒÒÀ´ÎÃ¿¸ö×Ö¶Î£¨10¸ö×Ö¶Î£©·Ö±ğ±íÊ¾
              -£º
- 274   1      //       //¡·´ú±í Alarm µÄ ID ºÅ £¨×¢£ºÏÖÔÚÖ»ÓĞÒ»¸öÄÖÖÓ£¬Ä¬ÈÏÎª0£©
- 275   1      //       //¡·´ú±íµÚ¼¸Ê×¸è£¨01 - 06£©
- 276   1      //       //¡·´ú±í¿ª¹ØµÆ£¨00¹Ø 01¿ª£©
- 277   1      //       //¡·´ú±íÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨00 ¹Ø 01 ¿ª£©£¨×¢£º²ÊµÆÑ­»·£¬Îª1¿ªÆôÑ­»·,£©
- 278   1      //       //¡·´ú±íµÆµÄRGBÖµ£¨000000 - FFFFFF£©£¨²ÊµÆÑ­»·Õâ¸öÖµÎª000000£©
- 279   1      //       //¡·£¨È¥µô£©´ú±íµÆÑÕÉ«µÄÏÂ±ê£¬Óëapp½çÃæÖĞµÆÒ»ÖÂ£¬·½±ãµÆ×´Ì¬Í¬²½ÔÆ¶ËºÍapp£¨00-0B£©,ÆäÖĞ00´ú±í¹ØµÆ£¬0A´ú
+ 302   1      //       //¡·´ú±í Alarm µÄ ID ºÅ £¨×¢£ºÏÖÔÚÖ»ÓĞÒ»¸öÄÖÖÓ£¬Ä¬ÈÏÎª0£©
+ 303   1      //       //¡·´ú±íµÚ¼¸Ê×¸è£¨01 - 06£©
+ 304   1      //       //¡·´ú±í¿ª¹ØµÆ£¨00¹Ø 01¿ª£©
+ 305   1      //       //¡·´ú±íÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨00 ¹Ø 01 ¿ª£©£¨×¢£º²ÊµÆÑ­»·£¬Îª1¿ªÆôÑ­»·,£©
+ 306   1      //       //¡·´ú±íµÆµÄRGBÖµ£¨000000 - FFFFFF£©£¨²ÊµÆÑ­»·Õâ¸öÖµÎª000000£©
+ 307   1      //       //¡·£¨È¥µô£©´ú±íµÆÑÕÉ«µÄÏÂ±ê£¬Óëapp½çÃæÖĞµÆÒ»ÖÂ£¬·½±ãµÆ×´Ì¬Í¬²½ÔÆ¶ËºÍapp£¨00-0B£©,ÆäÖĞ00´ú±í¹ØµÆ£¬0A´ú
              -±í²ÊµÆ£¬0B´ú±í×Ô¶¨ÒåÑÕÉ«
- 280   1      //       //¡·´ú±íÁÁ¶È( 00 - 03 )
- 281   1      //       //¡·´ú±íÒôÁ¿Öµ ( 00 - 0a )
- 282   1      //       //¡·´ú±íÔİÍ£pauseÑ¡Ôñ£¨00±íÊ¾Õı³£²¥·Å,01±íÊ¾ÔİÍ£²¥·Å£©
- 283   1      //       //¡·(È¥µô)£º´ú±í¶¨Ê±Æ÷£¬00(¹Ø/²»¿ªÆô¶¨Ê±)£¬0F(15min)£¬1E(30min)£¬3C(60min)   
- 284   1      //       //¡·´ú±íÄÖÖÓ×Ü¿ª¹Ø£¨00 ¹Ø 01: ¿ª£©£¨Ä¬ÈÏ0£©
- 285   1      //       //¡·´ú±íÖÜÒ»µ½ÖÜÈÕµÄ¿ª¹Ø£¬Ã¿Ò»ÌìÓÃÒ»¸ö bit ±íÊ¾
- 286   1      //       //  0x80 ´ú±íÊÇ·ñÖØ¸´ÄÖÁå
- 287   1      //       //  0x01 ´ú±íÖÜÒ»Æô¶¯ÄÖÁå£¬µ«ÊÇÖ»ÏìÒ»´Î£¬ÕâÒ»´ÎÊÇÆßÌìÖ®ÄÚµÄ£¬
- 288   1      //       //  0xFF ´ú±íÄÖÁåÈ«¿ª£¬²¢ÇÒÃ¿ÖÜÖØ¸´£¬ÒÔ´ËÀàÍÆ
- 289   1      //       //  BIT      7       6    5    4    3    2    1    0
- 290   1      //       //  ĞÇÆÚx  repeat    ÈÕ   Áù   Îå    ËÄ   Èı   ¶ş   Ò»  £¨×¢£ºrepeatÎªÃ¿ÖÜ¶¼ÖØ¸´ÄÖÁå£¬·ñÔòÖ»ÏìÒ»´Î
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 6   
+ 308   1      //       //¡·´ú±íÁÁ¶È( 00 - 03 )
+ 309   1      //       //¡·´ú±íÒôÁ¿Öµ ( 00 - 0a )
+ 310   1      //       //¡·´ú±íÔİÍ£pauseÑ¡Ôñ£¨00±íÊ¾Õı³£²¥·Å,01±íÊ¾ÔİÍ£²¥·Å£©
+ 311   1      //       //¡·(È¥µô)£º´ú±í¶¨Ê±Æ÷£¬00(¹Ø/²»¿ªÆô¶¨Ê±)£¬0F(15min)£¬1E(30min)£¬3C(60min)   
+ 312   1      //       //¡·´ú±íÄÖÖÓ×Ü¿ª¹Ø£¨00 ¹Ø 01: ¿ª£©£¨Ä¬ÈÏ0£©
+ 313   1      //       //¡·´ú±íÖÜÒ»µ½ÖÜÈÕµÄ¿ª¹Ø£¬Ã¿Ò»ÌìÓÃÒ»¸ö bit ±íÊ¾
+ 314   1      //       //  0x80 ´ú±íÊÇ·ñÖØ¸´ÄÖÁå
+ 315   1      //       //  0x01 ´ú±íÖÜÒ»Æô¶¯ÄÖÁå£¬µ«ÊÇÖ»ÏìÒ»´Î£¬ÕâÒ»´ÎÊÇÆßÌìÖ®ÄÚµÄ£¬
+ 316   1      //       //  0xFF ´ú±íÄÖÁåÈ«¿ª£¬²¢ÇÒÃ¿ÖÜÖØ¸´£¬ÒÔ´ËÀàÍÆ
+ 317   1      //       //  BIT      7       6    5    4    3    2    1    0
+ 318   1      //       //  ĞÇÆÚx  repeat    ÈÕ   Áù   Îå    ËÄ   Èı   ¶ş   Ò»  £¨×¢£ºrepeatÎªÃ¿ÖÜ¶¼ÖØ¸´ÄÖÁå£¬·ñÔòÖ»ÏìÒ»´Î
+ 319   1      //       //¡·´ú±íÄÖÖÓ¶¨Ê±Ê±¼äµã£¨17:3B£©(¶¼ÊÇ16½øÖÆ,:×ó±ßÊÇÄÖÖÓµÄÊ±£¬·¶Î§ÊÇ00-17; :ÓÒ±ßÊÇÄÖÖÓµÄ·Ö£¬·¶Î§ÊÇ00-3B)
+ 320   1      //       //¡·´ú±íÏìÁåÊ±¼ä£¨intÀàĞÍ4¸ö×Ö½Ú£©00-FF (µ¥Î»ÓÉÇ¿´ó¶¨Òå)
+ 321   1      //       //¡·´ú±íµ±Ç°Ê±¼ä´Á£¬·Ö±ğ°´ÕÕÊ®Áù½øÖÆÊı¼ÓĞ±¸Ü±íÊ¾£¬¸ñÊ½ÈçÏÂ£º£¨Ê±/·Ö/Ãë/Äê/ÔÂ/ÈÕ/ĞÇÆÚ£©
+ 322   1      //       //  ±ÈÈç 2018 Äê 1 ÔÂ 1 ÈÕ 10 Ê± 32 ·Ö 0 ÃëĞÇÆÚ¶ş ÄÇÃ´¸ñÊ½ÊÇ 0a/20/00/12/01/01/02
+ 323   1      //       //(WIFI_CMD[11]-'0')  //ProgrammaµÄIDºÅÔİÊ±Ã»ÓĞ£¬ÎªÒÔºóÀ©Õ¹Ô¤±¸   
+ 324   1      //              alarm.spa_name  =(WIFI_CMD[15]-'0');//µÚ¼¸Ê×¸è
+ 325   1      //              if(alarm.spa_name>=7)
+ 326   1      //                      alarm.spa_name=0;
+ 327   1      //              alarm.color_mode=(WIFI_CMD[18]-'0');//µÆ¹âµÄ¿ª¹Ø
+ 328   1      //              alarm.color_mode=(WIFI_CMD[18]=='1')?((WIFI_CMD[21]=='1')?COLOR_CHANGE:COLOR_USER):COLOR_OFF;
+ 329   1      //              alarm.userR_val=char_to_hex(WIFI_CMD[23],WIFI_CMD[24]);//RÖµ  
+ 330   1      //              alarm.userG_val=char_to_hex(WIFI_CMD[25],WIFI_CMD[26]);//GÖµ  
+ 331   1      //              alarm.userB_val=char_to_hex(WIFI_CMD[27],WIFI_CMD[28]);//BÖµ  
+ 332   1      //              alarm.Brightness=(WIFI_CMD[31]-'0');//ÁÁ¶È
+ 333   1      //              alarm.volume=char_to_hex(WIFI_CMD[33],WIFI_CMD[34]);//ÒôÁ¿
+ 334   1      //              alarm.play_pause=WIFI_CMD[37]-'0';//ÔİÍ£²¥·Å
+ 335   1      //              alarm.Enable=(WIFI_CMD[40]-'0');//ÄÖÖÓ×Ü¿ª¹Ø
+ 336   1      //              alarm.Week=char_to_hex(WIFI_CMD[42],WIFI_CMD[43]); 
+ 337   1      //              alarm.Hour=char_to_hex(WIFI_CMD[45],WIFI_CMD[46]);   //ÄÖÖÓÏìµÄĞ¡Ê±µã
+ 338   1      //              alarm.Minute=char_to_hex(WIFI_CMD[48],WIFI_CMD[49]); 
+ 339   1      //              alarm.Duration=char_to_hex(WIFI_CMD[51],WIFI_CMD[52]);//³ÖĞøÏìÁåÊ±¼ä£¬×ª»¯ÎªÊıÖµ
+ 340   1      //              IE3 &= ~0x04;           // Enable WT interrupt
+ 341   1      //              gRTC_Hour  =char_to_hex(WIFI_CMD[54],WIFI_CMD[55]);
+ 342   1      //              gRTC_Minute=char_to_hex(WIFI_CMD[57],WIFI_CMD[58]);
+ 343   1      //              gRTC_Sec   =char_to_hex(WIFI_CMD[60],WIFI_CMD[61]);
+ 344   1      //              gRTC_Week  =WIFI_CMD[73]-'0';
+ 345   1      //              gRTC_Week=Week_Table[gRTC_Week];
+ 346   1      //              IE3 |= 0x04;            // Enable WT interrupt
+ 347   1      //              if((alarm.Enable)&&(!(alarm.Week&0x7F)))
+ 348   1      //               Flag_alarm_wake_only=1;
+ 349   1      //              else
+ 350   1      //               Flag_alarm_wake_only=0;
+ 351   1      //      }
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 7   
 
- 291   1      //       //¡·´ú±íÄÖÖÓ¶¨Ê±Ê±¼äµã£¨17:3B£©(¶¼ÊÇ16½øÖÆ,:×ó±ßÊÇÄÖÖÓµÄÊ±£¬·¶Î§ÊÇ00-17; :ÓÒ±ßÊÇÄÖÖÓµÄ·Ö£¬·¶Î§ÊÇ00-3B)
- 292   1      //       //¡·´ú±íÏìÁåÊ±¼ä£¨intÀàĞÍ4¸ö×Ö½Ú£©00-FF (µ¥Î»ÓÉÇ¿´ó¶¨Òå)
- 293   1      //       //¡·´ú±íµ±Ç°Ê±¼ä´Á£¬·Ö±ğ°´ÕÕÊ®Áù½øÖÆÊı¼ÓĞ±¸Ü±íÊ¾£¬¸ñÊ½ÈçÏÂ£º£¨Ê±/·Ö/Ãë/Äê/ÔÂ/ÈÕ/ĞÇÆÚ£©
- 294   1      //       //  ±ÈÈç 2018 Äê 1 ÔÂ 1 ÈÕ 10 Ê± 32 ·Ö 0 ÃëĞÇÆÚ¶ş ÄÇÃ´¸ñÊ½ÊÇ 0a/20/00/12/01/01/02
- 295   1      //       //(WIFI_CMD[11]-'0')  //ProgrammaµÄIDºÅÔİÊ±Ã»ÓĞ£¬ÎªÒÔºóÀ©Õ¹Ô¤±¸   
- 296   1      //              alarm.spa_name  =(WIFI_CMD[15]-'0');//µÚ¼¸Ê×¸è
- 297   1      //              if(alarm.spa_name>=7)
- 298   1      //                      alarm.spa_name=0;
- 299   1      //              alarm.color_mode=(WIFI_CMD[18]-'0');//µÆ¹âµÄ¿ª¹Ø
- 300   1      //              alarm.color_mode=(WIFI_CMD[18]=='1')?((WIFI_CMD[21]=='1')?COLOR_CHANGE:COLOR_USER):COLOR_OFF;
- 301   1      //              alarm.userR_val=char_to_hex(WIFI_CMD[23],WIFI_CMD[24]);//RÖµ  
- 302   1      //              alarm.userG_val=char_to_hex(WIFI_CMD[25],WIFI_CMD[26]);//GÖµ  
- 303   1      //              alarm.userB_val=char_to_hex(WIFI_CMD[27],WIFI_CMD[28]);//BÖµ  
- 304   1      //              alarm.Brightness=(WIFI_CMD[31]-'0');//ÁÁ¶È
- 305   1      //              alarm.volume=char_to_hex(WIFI_CMD[33],WIFI_CMD[34]);//ÒôÁ¿
- 306   1      //              alarm.play_pause=WIFI_CMD[37]-'0';//ÔİÍ£²¥·Å
- 307   1      //              alarm.Enable=(WIFI_CMD[40]-'0');//ÄÖÖÓ×Ü¿ª¹Ø
- 308   1      //              alarm.Week=char_to_hex(WIFI_CMD[42],WIFI_CMD[43]); 
- 309   1      //              alarm.Hour=char_to_hex(WIFI_CMD[45],WIFI_CMD[46]);   //ÄÖÖÓÏìµÄĞ¡Ê±µã
- 310   1      //              alarm.Minute=char_to_hex(WIFI_CMD[48],WIFI_CMD[49]); 
- 311   1      //              alarm.Duration=char_to_hex(WIFI_CMD[51],WIFI_CMD[52]);//³ÖĞøÏìÁåÊ±¼ä£¬×ª»¯ÎªÊıÖµ
- 312   1      //              IE3 &= ~0x04;           // Enable WT interrupt
- 313   1      //              gRTC_Hour  =char_to_hex(WIFI_CMD[54],WIFI_CMD[55]);
- 314   1      //              gRTC_Minute=char_to_hex(WIFI_CMD[57],WIFI_CMD[58]);
- 315   1      //              gRTC_Sec   =char_to_hex(WIFI_CMD[60],WIFI_CMD[61]);
- 316   1      //              gRTC_Week  =WIFI_CMD[73]-'0';
- 317   1      //              gRTC_Week=Week_Table[gRTC_Week];
- 318   1      //              IE3 |= 0x04;            // Enable WT interrupt
- 319   1      //              if((alarm.Enable)&&(!(alarm.Week&0x7F)))
- 320   1      //               Flag_alarm_wake_only=1;
- 321   1      //              else
- 322   1      //               Flag_alarm_wake_only=0;
- 323   1      //      }
- 324   1      //      else if(char_compare(WIFI_CMD,"{AlarmOnOff")==0)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 325   1      //      {//$$${AlarmOnOff:[00,00,10/21/33/12/01/1D/01]}\r\n
- 326   1      //       //¡·´ú±í Alarm µÄ ID ºÅ 
- 327   1      //       //¡·´ú±íÄÖÖÓµÄ¿ª¹Ø
- 328   1      //       //¡·´ú±íµ±Ç°Ê±¼ä´Á£¬·Ö±ğ°´ÕÕÊ®Áù½øÖÆÊı¼ÓĞ±¸Ü±íÊ¾£¬¸ñÊ½ÈçÏÂ£º£¨Ê±/·Ö/Ãë/Äê/ÔÂ/ÈÕ/ĞÇÆÚ£©
- 329   1      //       //      ±ÈÈç 2018 Äê 1 ÔÂ 1 ÈÕ 10 Ê± 32 ·Ö 0 ÃëĞÇÆÚ¶ş ÄÇÃ´¸ñÊ½ÊÇ  0a/20/00/12/01/01/02
- 330   1      //       //(WIFI_CMD[11]-'0')  //ProgrammaµÄIDºÅÔİÊ±Ã»ÓĞ£¬ÎªÒÔºóÀ©Õ¹Ô¤±¸   
- 331   1      //              alarm.Enable=(WIFI_CMD[17]-'0'); 
- 332   1      //              IE3 &= ~0x04;           // Enable WT interrupt
- 333   1      //              gRTC_Hour    =char_to_hex(WIFI_CMD[19],WIFI_CMD[20]);
- 334   1      //              gRTC_Minute  =char_to_hex(WIFI_CMD[22],WIFI_CMD[23]);
- 335   1      //              gRTC_Sec     =char_to_hex(WIFI_CMD[25],WIFI_CMD[26]);
- 336   1      //              gRTC_Week    =WIFI_CMD[38]-'0';
- 337   1      //              gRTC_Week=Week_Table[gRTC_Week];
- 338   1      //              IE3 |= 0x04;            // Enable WT interrupt
- 339   1      //              if((alarm.Enable)&&(!(alarm.Week&0x7F)))
- 340   1      //               Flag_alarm_wake_only=1;
- 341   1      //              else
- 342   1      //               Flag_alarm_wake_only=0;
- 343   1      //      }
- 344   1                      if(char_compare(WIFI_CMD, "Turn on unit")==0) 
- 345   1                      {//$$$Turn on unit\r\n
- 346   2                              Uart0Transmit_SendString(Uart0_Receive);
- 347   2                              if(PlayMode==PLAY_OFF)
- 348   2                              {
- 349   3                                      GP389_ON();     
- 350   3                                      //ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
- 351   3                                      return;
- 352   3                              }
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 7   
+ 352   1      //      else if(char_compare(WIFI_CMD,"{AlarmOnOff")==0)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 353   1      //      {//$$${AlarmOnOff:[00,00,10/21/33/12/01/1D/01]}\r\n
+ 354   1      //       //¡·´ú±í Alarm µÄ ID ºÅ 
+ 355   1      //       //¡·´ú±íÄÖÖÓµÄ¿ª¹Ø
+ 356   1      //       //¡·´ú±íµ±Ç°Ê±¼ä´Á£¬·Ö±ğ°´ÕÕÊ®Áù½øÖÆÊı¼ÓĞ±¸Ü±íÊ¾£¬¸ñÊ½ÈçÏÂ£º£¨Ê±/·Ö/Ãë/Äê/ÔÂ/ÈÕ/ĞÇÆÚ£©
+ 357   1      //       //      ±ÈÈç 2018 Äê 1 ÔÂ 1 ÈÕ 10 Ê± 32 ·Ö 0 ÃëĞÇÆÚ¶ş ÄÇÃ´¸ñÊ½ÊÇ  0a/20/00/12/01/01/02
+ 358   1      //       //(WIFI_CMD[11]-'0')  //ProgrammaµÄIDºÅÔİÊ±Ã»ÓĞ£¬ÎªÒÔºóÀ©Õ¹Ô¤±¸   
+ 359   1      //              alarm.Enable=(WIFI_CMD[17]-'0'); 
+ 360   1      //              IE3 &= ~0x04;           // Enable WT interrupt
+ 361   1      //              gRTC_Hour    =char_to_hex(WIFI_CMD[19],WIFI_CMD[20]);
+ 362   1      //              gRTC_Minute  =char_to_hex(WIFI_CMD[22],WIFI_CMD[23]);
+ 363   1      //              gRTC_Sec     =char_to_hex(WIFI_CMD[25],WIFI_CMD[26]);
+ 364   1      //              gRTC_Week    =WIFI_CMD[38]-'0';
+ 365   1      //              gRTC_Week=Week_Table[gRTC_Week];
+ 366   1      //              IE3 |= 0x04;            // Enable WT interrupt
+ 367   1      //              if((alarm.Enable)&&(!(alarm.Week&0x7F)))
+ 368   1      //               Flag_alarm_wake_only=1;
+ 369   1      //              else
+ 370   1      //               Flag_alarm_wake_only=0;
+ 371   1      //      }
+ 372   1                      if(char_compare(WIFI_CMD, "Turn on unit")==0) 
+ 373   1                      {//$$$Turn on unit\r\n
+ 374   2                              Uart0Transmit_SendString(Uart0_Receive);
+ 375   2                              if(PlayMode==PLAY_OFF)
+ 376   2                              {
+ 377   3                                      GP389_ON();     
+ 378   3                                      //ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
+ 379   3                                      return;
+ 380   3                              }
+ 381   2                      }
+ 382   1                      else if(char_compare(WIFI_CMD, "Turn on Lightr")==0)
+ 383   1                      {//$$$Turn on Lightr\r\n
+ 384   2                              Uart0Transmit_SendString(Uart0_Receive);
+ 385   2                              if(PlayMode==PLAY_OFF)
+ 386   2                                      GP389_ON_APP(); 
+ 387   2      //                      if(alarm.Runing)//Õâ¸öÒ»¶¨ÊÇ¿ª»ú×´Ì¬²Å½øÈ¥  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 388   2      //                      {
+ 389   2      //                              alarm.Runing=0;
+ 390   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 391   2      //                      }
+ 392   2                              color_mode=color_mode_bk;
+ 393   2                              if(color_mode==COLOR_OFF)
+ 394   2                                      color_mode=COLOR_WHITE;
+ 395   2                              Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);
+ 396   2                              return;
+ 397   2                      }
+ 398   1                      else if(char_compare(WIFI_CMD, "Change light color")==0)  
+ 399   1                      {//$$$Change light color Allplay\r\n
+ 400   2                              Uart0Transmit_SendString(Uart0_Receive);
+ 401   2                              if(PlayMode==PLAY_OFF)
+ 402   2                                      GP389_ON_APP();
+ 403   2      //                      if(alarm.Runing) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 404   2      //                      {//Õâ¸öÒ»¶¨ÊÇ¿ª»úÇé¿öÏÂ½øÈëµÄ
+ 405   2      //                              alarm.Runing=0;
+ 406   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 407   2      //                      }
+ 408   2                              color_mode=COLOR_CHANGE;
+ 409   2                              play_rgb_index=0;
+ 410   2                              curR_val=0;
+ 411   2                              curG_val=0;
+ 412   2                              curB_val=0;
+ 413   2                              Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 8   
 
- 353   2                      }
- 354   1                      else if(char_compare(WIFI_CMD, "Turn on Lightr")==0)
- 355   1                      {//$$$Turn on Lightr\r\n
- 356   2                              Uart0Transmit_SendString(Uart0_Receive);
- 357   2                              if(PlayMode==PLAY_OFF)
- 358   2                                      GP389_ON_APP(); 
- 359   2      //                      if(alarm.Runing)//Õâ¸öÒ»¶¨ÊÇ¿ª»ú×´Ì¬²Å½øÈ¥  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 360   2      //                      {
- 361   2      //                              alarm.Runing=0;
- 362   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 363   2      //                      }
- 364   2                              color_mode=color_mode_bk;
- 365   2                              if(color_mode==COLOR_OFF)
- 366   2                                      color_mode=COLOR_WHITE;
- 367   2                              Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);
- 368   2                              return;
- 369   2                      }
- 370   1                      else if(char_compare(WIFI_CMD, "Change light color")==0)  
- 371   1                      {//$$$Change light color Allplay\r\n
- 372   2                              Uart0Transmit_SendString(Uart0_Receive);
- 373   2                              if(PlayMode==PLAY_OFF)
- 374   2                                      GP389_ON_APP();
- 375   2      //                      if(alarm.Runing) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 376   2      //                      {//Õâ¸öÒ»¶¨ÊÇ¿ª»úÇé¿öÏÂ½øÈëµÄ
- 377   2      //                              alarm.Runing=0;
- 378   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 379   2      //                      }
- 380   2                              color_mode=COLOR_CHANGE;
- 381   2                              play_rgb_index=0;
- 382   2                              curR_val=0;
- 383   2                              curG_val=0;
- 384   2                              curB_val=0;
- 385   2                              Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);
- 386   2                              return;
- 387   2                      } 
- 388   1                      else if(char_compare(WIFI_CMD, "User color")==0) 
- 389   1                      {//$$$User color FFFFFF\r\n(000000-FFFFFF)
- 390   2                              Uart0Transmit_SendString(Uart0_Receive);
- 391   2                              if(PlayMode==PLAY_OFF)
- 392   2                                      GP389_ON_APP();
- 393   2      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 394   2      //                      {
- 395   2      //                              alarm.Runing=0;
- 396   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 397   2      //                      }
- 398   2                              userR_val=char_to_hex(WIFI_CMD[11],WIFI_CMD[12]);
- 399   2                              userG_val=char_to_hex(WIFI_CMD[13],WIFI_CMD[14]);
- 400   2                              userB_val=char_to_hex(WIFI_CMD[15],WIFI_CMD[16]);
- 401   2                              color_mode=COLOR_USER;
- 402   2                              Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);
- 403   2                              return;
- 404   2                      }
- 405   1                      else if(char_compare(WIFI_CMD, "Select Sound file")==0) 
- 406   1                      {//$$$Select Sound file to play01\r\n
- 407   2                              Uart0Transmit_SendString(Uart0_Receive);
- 408   2                              if(PlayMode==PLAY_OFF)
- 409   2                                      GP389_ON_APP();
- 410   2      //                      if(alarm.Runing) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 411   2      //                      {
- 412   2      //                              alarm.Runing=0;
- 413   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 414   2      //                      }
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 8   
+ 414   2                              return;
+ 415   2                      } 
+ 416   1                      else if(char_compare(WIFI_CMD, "User color")==0) 
+ 417   1                      {//$$$User color FFFFFF\r\n(000000-FFFFFF)
+ 418   2                              Uart0Transmit_SendString(Uart0_Receive);
+ 419   2                              if(PlayMode==PLAY_OFF)
+ 420   2                                      GP389_ON_APP();
+ 421   2      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 422   2      //                      {
+ 423   2      //                              alarm.Runing=0;
+ 424   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 425   2      //                      }
+ 426   2                              userR_val=char_to_hex(WIFI_CMD[11],WIFI_CMD[12]);
+ 427   2                              userG_val=char_to_hex(WIFI_CMD[13],WIFI_CMD[14]);
+ 428   2                              userB_val=char_to_hex(WIFI_CMD[15],WIFI_CMD[16]);
+ 429   2                              color_mode=COLOR_USER;
+ 430   2                              Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);
+ 431   2                              return;
+ 432   2                      }
+ 433   1                      else if(char_compare(WIFI_CMD, "Select Sound file")==0) 
+ 434   1                      {//$$$Select Sound file to play01\r\n
+ 435   2                              Uart0Transmit_SendString(Uart0_Receive);
+ 436   2                              if(PlayMode==PLAY_OFF)
+ 437   2                                      GP389_ON_APP();
+ 438   2      //                      if(alarm.Runing) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 439   2      //                      {
+ 440   2      //                              alarm.Runing=0;
+ 441   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 442   2      //                      }
+ 443   2                              enableMute=0;//½âmute
+ 444   2                              enable_SPApause=0;
+ 445   2                              PlayMode=PLAY_MUSIC;
+ 446   2                              spa_name=WIFI_CMD[26]-'0';
+ 447   2                              if(cur_spa_name==spa_name)
+ 448   2                                      spa_cmd=SPA_PALY;
+ 449   2                              Uart0_SendString_3Step=1;
+ 450   2                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//Ã¿´Î¸ü¸ÄÒôÀÖ¾Í·¢¸øappÍ¬²½
+ 451   2                              return;
+ 452   2                      }
+ 453   1                      else if(char_compare(WIFI_CMD, "music play")==0)
+ 454   1                      {//$$$music play\r\n
+ 455   2                              //Uart0Transmit_SendString(Uart0_Receive);
+ 456   2                              if(PlayMode==PLAY_OFF)
+ 457   2                                      GP389_ON_APP();
+ 458   2      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 459   2      //                      {
+ 460   2      //                              alarm.Runing=0;
+ 461   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 462   2      //                      }
+ 463   2                              PlayMode=PLAY_MUSIC;
+ 464   2                              enableMute=0;     //½â³ı¾²Òô
+ 465   2                              enable_SPApause=0;//Îª0±íÊ¾²¥·Å
+ 466   2                              if(spa_name==SPA_OFF) //spa_nameÎªÃ¶¾Ù±äÁ¿ÀàĞÍ£¬SPA_ZENÎªÃ¶¾Ù±äÁ¿ÔªËØ
+ 467   2                                      spa_name=SPA_BROOK;
+ 468   2                              else
+ 469   2                                      spa_cmd=SPA_PALY;                       
+ 470   2                              /*if(PlayMode==PLAY_BT)
+ 471   2                              {
+ 472   2                                      if(flag_bt_play)
+ 473   2                                      {
+ 474   2                                              bt_cmd=BT_PALY;//Ğ­ÒéÀïÃæÊÇÒ»ÌõÃüÁî£¬ËùÒÔ²¥·Å/ÔİÍ£¶¼Òª·¢ËÍÕâÌõ
+ 475   2                                      }
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 9   
 
- 415   2                              enableMute=0;//½âmute
- 416   2                              enable_SPApause=0;
- 417   2                              PlayMode=PLAY_MUSIC;
- 418   2                              spa_name=WIFI_CMD[26]-'0';
- 419   2                              if(cur_spa_name==spa_name)
- 420   2                                      spa_cmd=SPA_PALY;
- 421   2                              Uart0_SendString_3Step=1;
- 422   2                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//Ã¿´Î¸ü¸ÄÒôÀÖ¾Í·¢¸øappÍ¬²½
- 423   2                              return;
- 424   2                      }
- 425   1                      else if(char_compare(WIFI_CMD, "music play")==0)
- 426   1                      {//$$$music play\r\n
- 427   2                              //Uart0Transmit_SendString(Uart0_Receive);
- 428   2                              if(PlayMode==PLAY_OFF)
- 429   2                                      GP389_ON_APP();
- 430   2      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 431   2      //                      {
- 432   2      //                              alarm.Runing=0;
- 433   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 434   2      //                      }
- 435   2                              PlayMode=PLAY_MUSIC;
- 436   2                              enableMute=0;     //½â³ı¾²Òô
- 437   2                              enable_SPApause=0;//Îª0±íÊ¾²¥·Å
- 438   2                              if(spa_name==SPA_OFF) //spa_nameÎªÃ¶¾Ù±äÁ¿ÀàĞÍ£¬SPA_ZENÎªÃ¶¾Ù±äÁ¿ÔªËØ
- 439   2                                      spa_name=SPA_BROOK;
- 440   2                              else
- 441   2                                      spa_cmd=SPA_PALY;                       
- 442   2                              /*if(PlayMode==PLAY_BT)
- 443   2                              {
- 444   2                                      if(flag_bt_play)
- 445   2                                      {
- 446   2                                              bt_cmd=BT_PALY;//Ğ­ÒéÀïÃæÊÇÒ»ÌõÃüÁî£¬ËùÒÔ²¥·Å/ÔİÍ£¶¼Òª·¢ËÍÕâÌõ
- 447   2                                      }
- 448   2                              }*/
- 449   2                              return;
- 450   2                      }
- 451   1                      else if(char_compare(WIFI_CMD,"ProPlay\r\n")==0)//½ÓÊÕµ½¾Í²¥·Å×îºóµÄ½ÓÊÕµ½µÄ$$${Program:[00,01,01,00,FFF
+ 476   2                              }*/
+ 477   2                              return;
+ 478   2                      }
+ 479   1                      else if(char_compare(WIFI_CMD,"ProPlay\r\n")==0)//½ÓÊÕµ½¾Í²¥·Å×îºóµÄ½ÓÊÕµ½µÄ$$${Program:[00,01,01,00,FFF
              -FFF,03,0A,00,1E]}\r\nÊı¾İ
- 452   1                      {//$$${Program
- 453   2                              Uart0Transmit_SendString(Uart0_Receive);
- 454   2                              if(PlayMode==PLAY_OFF)
- 455   2                                      GP389_ON_APP();
- 456   2      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 457   2      //                      {
- 458   2      //                              alarm.Runing=0;
- 459   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 460   2      //                      }
- 461   2                              spa_name=program1.spa_name;
- 462   2                              color_mode=program1.color_mode;
- 463   2                              userR_val=program1.userR_val;
- 464   2                              userG_val=program1.userG_val;
- 465   2                              userB_val=program1.userB_val;
- 466   2                              Light_Brightness=program1.Light_Brightness;
- 467   2                              sys_volume=program1.sys_volume;
- 468   2                              PlayMode=program1.PlayMode;
- 469   2                              enable_SPApause=program1.enable_SPApause;
- 470   2                              program1.enableMute=enableMute=((enable_SPApause==0)?0:1);//ÎŞÂÛÖ®Ç°²¥·Å»¹ÊÇÔİÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖÓÔ
+ 480   1                      {//$$${Program
+ 481   2                              Uart0Transmit_SendString(Uart0_Receive);
+ 482   2                              if(PlayMode==PLAY_OFF)
+ 483   2                                      GP389_ON_APP();
+ 484   2      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 485   2      //                      {
+ 486   2      //                              alarm.Runing=0;
+ 487   2      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 488   2      //                      }
+ 489   2                              spa_name=program1.spa_name;
+ 490   2                              color_mode=program1.color_mode;
+ 491   2                              userR_val=program1.userR_val;
+ 492   2                              userG_val=program1.userG_val;
+ 493   2                              userB_val=program1.userB_val;
+ 494   2                              Light_Brightness=program1.Light_Brightness;
+ 495   2                              sys_volume=program1.sys_volume;
+ 496   2                              PlayMode=program1.PlayMode;
+ 497   2                              enable_SPApause=program1.enable_SPApause;
+ 498   2                              program1.enableMute=enableMute=((enable_SPApause==0)?0:1);//ÎŞÂÛÖ®Ç°²¥·Å»¹ÊÇÔİÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖÓÔ
              -ÊĞí²¥·Å¾Í²¥·Å
- 471   2                              spa_cmd=((enable_SPApause==0)?SPA_PALY:SPA_PAUSE);//ÎŞÂÛÖ®Ç°²¥·Å»¹ÊÇÔİÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖÓÔÊĞí²¥·Å¾
+ 499   2                              spa_cmd=((enable_SPApause==0)?SPA_PALY:SPA_PAUSE);//ÎŞÂÛÖ®Ç°²¥·Å»¹ÊÇÔİÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖÓÔÊĞí²¥·Å¾
              -Í²¥·Å
- 472   2                              TimerMode=program1.TimerMode;
- 473   2                              return;
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 9   
-
- 474   2                      } 
- 475   1                      else if (char_compare(WIFI_CMD, "Turn on Humidifier") == 0)
- 476   1                      {//$$$Turn on/off Humidifier\r\n
- 477   2                              Uart0Transmit_SendString(Uart0_Receive);
- 478   2                              if (PlayMode == PLAY_OFF)
- 479   2                                      GP389_ON_APP();
- 480   2                              //                      if(alarm.Runing) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 481   2                              //                      {
- 482   2                              //                              alarm.Runing=0;
- 483   2                              //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 484   2                              //                      }
- 485   2                              if(AtomizationMode1==ATOMIZATION_OFF) //ÕâÒ»ÌõÊÇÅÂÔÚÎí»¯Æ÷ÒÑ¾­¿ªÆô²¢ÇÒ²»ÔÙ×îĞ¡µµÎ»£¬È»ºóÓÖ½ÓÊÕµ½¿ª»úÃüÁ
+ 500   2                              TimerMode=program1.TimerMode;
+ 501   2                              return;
+ 502   2                      } 
+ 503   1                      else if (char_compare(WIFI_CMD, "Turn on Humidifier") == 0)
+ 504   1                      {//$$$Turn on/off Humidifier\r\n
+ 505   2                              Uart0Transmit_SendString(Uart0_Receive);
+ 506   2                              if (PlayMode == PLAY_OFF)
+ 507   2                                      GP389_ON_APP();
+ 508   2                              //                      if(alarm.Runing) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 509   2                              //                      {
+ 510   2                              //                              alarm.Runing=0;
+ 511   2                              //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 512   2                              //                      }
+ 513   2                              if(AtomizationMode1==ATOMIZATION_OFF) //ÕâÒ»ÌõÊÇÅÂÔÚÎí»¯Æ÷ÒÑ¾­¿ªÆô²¢ÇÒ²»ÔÙ×îĞ¡µµÎ»£¬È»ºóÓÖ½ÓÊÕµ½¿ª»úÃüÁ
              -î±»Ç¿ĞĞ¸ü¸ÄÎª×îĞ¡¶şÉèÁ¢µÄ
- 486   2                                      AtomizationMode1 = ATOMIZATION_THREE;
- 487   2                              return;
- 488   2                      }
- 489   1                      else if (char_compare(WIFI_CMD, "Turn off Humidifier") == 0)
- 490   1                      {//$$$Turn on/off Humidifier\r\n
- 491   2                              Uart0Transmit_SendString(Uart0_Receive);
- 492   2                              if (PlayMode == PLAY_OFF)
- 493   2                                      GP389_ON_APP();
- 494   2                              //                      if(alarm.Runing) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 495   2                              //                      {
- 496   2                              //                              alarm.Runing=0;
- 497   2                              //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 498   2                              //                      }
- 499   2                              AtomizationMode1 = ATOMIZATION_OFF;
- 500   2                              return;
- 501   2                      }
- 502   1      //              else if(char_compare(WIFI_CMD,"{Program")==0)//¹Ø»ú×´Ì¬ÏÂ´ò¿ª
- 503   1      //              {//$$${Program:[00,01,01,00,FFFFFF,03,0A,00,1E]}\r\n
- 504   1      //                      Uart0Transmit_SendString(Uart0_Receive);
- 505   1      //                      if(PlayMode==PLAY_OFF)
- 506   1      //                              GP389_ON_APP();
- 507   1      //                      if(alarm.Runing)
- 508   1      //                      {
- 509   1      //                              alarm.Runing=0;
- 510   1      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
- 511   1      //                      }
- 512   1      //                      Program1_LaterNum(); //ÏÈ°ÑµÍÊı×Ö¸³¸ø¸ßÊı×Ö£¬
- 513   1      //                      program1.spa_name=spa_name=WIFI_CMD[14]-'0';
- 514   1      //                      program1.color_mode=color_mode=((WIFI_CMD[17]=='1')?COLOR_WHITE:COLOR_OFF);//µÆ¹âµÄ¿ª¹Ø
- 515   1      //                      program1.color_mode=color_mode=((WIFI_CMD[17]=='1')?((WIFI_CMD[20]=='1')?COLOR_CHANGE:COLOR_USER):COL
+ 514   2                                      AtomizationMode1 = ATOMIZATION_THREE;
+ 515   2                              return;
+ 516   2                      }
+ 517   1                      else if (char_compare(WIFI_CMD, "Turn off Humidifier") == 0)
+ 518   1                      {//$$$Turn on/off Humidifier\r\n
+ 519   2                              Uart0Transmit_SendString(Uart0_Receive);
+ 520   2                              if (PlayMode == PLAY_OFF)
+ 521   2                                      GP389_ON_APP();
+ 522   2                              //                      if(alarm.Runing) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 523   2                              //                      {
+ 524   2                              //                              alarm.Runing=0;
+ 525   2                              //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 526   2                              //                      }
+ 527   2                              AtomizationMode1 = ATOMIZATION_OFF;
+ 528   2                              return;
+ 529   2                      }
+ 530   1      //              else if(char_compare(WIFI_CMD,"{Program")==0)//¹Ø»ú×´Ì¬ÏÂ´ò¿ª
+ 531   1      //              {//$$${Program:[00,01,01,00,FFFFFF,03,0A,00,1E]}\r\n
+ 532   1      //                      Uart0Transmit_SendString(Uart0_Receive);
+ 533   1      //                      if(PlayMode==PLAY_OFF)
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 10  
+
+ 534   1      //                              GP389_ON_APP();
+ 535   1      //                      if(alarm.Runing)
+ 536   1      //                      {
+ 537   1      //                              alarm.Runing=0;
+ 538   1      //                              TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 
+ 539   1      //                      }
+ 540   1      //                      Program1_LaterNum(); //ÏÈ°ÑµÍÊı×Ö¸³¸ø¸ßÊı×Ö£¬
+ 541   1      //                      program1.spa_name=spa_name=WIFI_CMD[14]-'0';
+ 542   1      //                      program1.color_mode=color_mode=((WIFI_CMD[17]=='1')?COLOR_WHITE:COLOR_OFF);//µÆ¹âµÄ¿ª¹Ø
+ 543   1      //                      program1.color_mode=color_mode=((WIFI_CMD[17]=='1')?((WIFI_CMD[20]=='1')?COLOR_CHANGE:COLOR_USER):COL
              -OR_OFF);//ÏÈÅĞ¶ÏÉÏÒ»×éÊÇ·ñ¿ªÆôµÆ¹â£¬Èç¹û¿ªÆôµÆ¹â¾ÍÔÙÅĞ¶ÏÊÇ·ñ¿ªÆô²ÊµÆ£¬Èç¹û²»¿ªÆô¾ÍÊÇÓÃ»§Öµ                                                                                                                                                                                               //Ó
              -Ã»§ÖµÊÇÏÂÃæRGBµÄÖµ
- 516   1      //                      program1.userR_val=userR_val=char_to_hex(WIFI_CMD[22],WIFI_CMD[23]);
- 517   1      //                      program1.userG_val=userG_val=char_to_hex(WIFI_CMD[24],WIFI_CMD[25]);
- 518   1      //                      program1.userB_val=userB_val=char_to_hex(WIFI_CMD[26],WIFI_CMD[27]);
- 519   1      //                      program1.Light_Brightness=Light_Brightness=char_to_bcd(WIFI_CMD[29],WIFI_CMD[30]);
- 520   1      //                      program1.sys_volume=sys_volume=char_to_hex(WIFI_CMD[32],WIFI_CMD[33]);//ÒôÁ¿
- 521   1      //                      program1.PlayMode=PlayMode=PLAY_MUSIC;
- 522   1      //                      program1.enable_SPApause=enable_SPApause=WIFI_CMD[36]-'0';
- 523   1      //                      program1.enableMute=enableMute=((enable_SPApause==0)?0:1);//ÎŞÂÛÖ®Ç°²¥·Å»¹ÊÇÔİÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖ
+ 544   1      //                      program1.userR_val=userR_val=char_to_hex(WIFI_CMD[22],WIFI_CMD[23]);
+ 545   1      //                      program1.userG_val=userG_val=char_to_hex(WIFI_CMD[24],WIFI_CMD[25]);
+ 546   1      //                      program1.userB_val=userB_val=char_to_hex(WIFI_CMD[26],WIFI_CMD[27]);
+ 547   1      //                      program1.Light_Brightness=Light_Brightness=char_to_bcd(WIFI_CMD[29],WIFI_CMD[30]);
+ 548   1      //                      program1.sys_volume=sys_volume=char_to_hex(WIFI_CMD[32],WIFI_CMD[33]);//ÒôÁ¿
+ 549   1      //                      program1.PlayMode=PlayMode=PLAY_MUSIC;
+ 550   1      //                      program1.enable_SPApause=enable_SPApause=WIFI_CMD[36]-'0';
+ 551   1      //                      program1.enableMute=enableMute=((enable_SPApause==0)?0:1);//ÎŞÂÛÖ®Ç°²¥·Å»¹ÊÇÔİÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖ
              -ÓÔÊĞí²¥·Å¾Í²¥·Å
- 524   1      //                      spa_cmd=((enable_SPApause==0)?SPA_PALY:SPA_PAUSE);//ÎŞÂÛÖ®Ç°²¥·Å»¹ÊÇÔİÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖÓÔÊĞí²¥·
+ 552   1      //                      spa_cmd=((enable_SPApause==0)?SPA_PALY:SPA_PAUSE);//ÎŞÂÛÖ®Ç°²¥·Å»¹ÊÇÔİÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖÓÔÊĞí²¥·
              -Å¾Í²¥·Å
- 525   1      //                      program1.TimerMode=TimerMode=cntTimer=char_to_hex(WIFI_CMD[38],WIFI_CMD[39]);
- 526   1      //                      return;
- 527   1      //              }
- 528   1                      else if(char_compare(WIFI_CMD,"VER0.\r\n")==0) 
- 529   1                      {
- 530   2                              return;
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 10  
+ 553   1      //                      program1.TimerMode=TimerMode=cntTimer=char_to_hex(WIFI_CMD[38],WIFI_CMD[39]);
+ 554   1      //                      return;
+ 555   1      //              }
+ 556   1                      else if(char_compare(WIFI_CMD,"VER0.\r\n")==0) 
+ 557   1                      {
+ 558   2                              return;
+ 559   2                      }
+ 560   1                      else if(char_compare(WIFI_CMD,"VER\r\n")==0) 
+ 561   1                      {
+ 562   2                              Uart0Transmit_SendString(MCU_VER);//Ã¿´ÎÉı¼¶ĞèÒªÊÖ¶¯¸ÄĞ´ÕâÀï
+ 563   2                              return;
+ 564   2                      }
+ 565   1                      else if(char_compare(WIFI_CMD,"GpSta")==0)
+ 566   1                      {//×îÖÕ×´Ì¬ÊÇ¹Ø»ú
+ 567   2                              Uart0_SendString_3Step=0;
+ 568   2                              cntFlag_ON_OFF=0;
+ 569   2                              return;//PlayMode=PLAY_OFF;     ÒòÎªÓĞÇ¿ÖÆ¹Ø»ú£¬ËùÒÔ¿ÉÒÔ²»ÒªGP389_OFF()/GP389_ON()
+ 570   2                      }
+ 571   1      //              else if(char_compare(WIFI_CMD,"GpSta:[00]\r\n")==0)
+ 572   1      //              {//×îÖÕ×´Ì¬ÊÇ¿ª»ú£¬
+ 573   1      //                      Uart0_SendString_3Step=0;
+ 574   1      //                      cntFlag_ON_OFF=0;
+ 575   1      //                      return;//PlayMode=PLAY_OFF;     ÒòÎªÓĞÇ¿ÖÆ¹Ø»ú£¬ËùÒÔ¿ÉÒÔ²»ÒªGP389_OFF()/GP389_ON()
+ 576   1      //              }
+ 577   1              
+ 578   1              
+ 579   1              if(PlayMode!=PLAY_OFF)
+ 580   1              {
+ 581   2                      if(char_compare(WIFI_CMD,"{TimeSync")==0)
+ 582   2                      {//$$${TimeSync:[0A/20/00/12/01/01/02]}\r\n
+ 583   3                              IE3 &= ~0x04;           // Enable WT interrupt
+ 584   3                              gRTC_Hour  =char_to_hex(WIFI_CMD[11],WIFI_CMD[12]);
+ 585   3                              gRTC_Minute=char_to_hex(WIFI_CMD[14],WIFI_CMD[15]);
+ 586   3                              gRTC_Sec   =char_to_hex(WIFI_CMD[17],WIFI_CMD[18]);
+ 587   3                              gRTC_Week  =WIFI_CMD[30]-'0';
+ 588   3                              gRTC_Week  =Week_Table[gRTC_Week];
+ 589   3                              IE3 |= 0x04;            // Enable WT interrupt
+ 590   3                              Falg_TimeSync_Allow=0;//½ÓÊÕµ½Í¬²½ĞÅÏ¢¾Í²»ÔÙ·¢ËÍÇëÇóÍ¬²½£¬ËùÒÔÖÃÎª0
+ 591   3                              return;
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 11  
 
- 531   2                      }
- 532   1                      else if(char_compare(WIFI_CMD,"VER\r\n")==0) 
- 533   1                      {
- 534   2                              Uart0Transmit_SendString(MCU_VER);//Ã¿´ÎÉı¼¶ĞèÒªÊÖ¶¯¸ÄĞ´ÕâÀï
- 535   2                              return;
- 536   2                      }
- 537   1                      else if(char_compare(WIFI_CMD,"GpSta")==0)
- 538   1                      {//×îÖÕ×´Ì¬ÊÇ¹Ø»ú
- 539   2                              Uart0_SendString_3Step=0;
- 540   2                              cntFlag_ON_OFF=0;
- 541   2                              return;//PlayMode=PLAY_OFF;     ÒòÎªÓĞÇ¿ÖÆ¹Ø»ú£¬ËùÒÔ¿ÉÒÔ²»ÒªGP389_OFF()/GP389_ON()
- 542   2                      }
- 543   1      //              else if(char_compare(WIFI_CMD,"GpSta:[00]\r\n")==0)
- 544   1      //              {//×îÖÕ×´Ì¬ÊÇ¿ª»ú£¬
- 545   1      //                      Uart0_SendString_3Step=0;
- 546   1      //                      cntFlag_ON_OFF=0;
- 547   1      //                      return;//PlayMode=PLAY_OFF;     ÒòÎªÓĞÇ¿ÖÆ¹Ø»ú£¬ËùÒÔ¿ÉÒÔ²»ÒªGP389_OFF()/GP389_ON()
- 548   1      //              }
- 549   1              
- 550   1              
- 551   1              if(PlayMode!=PLAY_OFF)
- 552   1              {
- 553   2                      if(char_compare(WIFI_CMD,"{TimeSync")==0)
- 554   2                      {//$$${TimeSync:[0A/20/00/12/01/01/02]}\r\n
- 555   3                              IE3 &= ~0x04;           // Enable WT interrupt
- 556   3                              gRTC_Hour  =char_to_hex(WIFI_CMD[11],WIFI_CMD[12]);
- 557   3                              gRTC_Minute=char_to_hex(WIFI_CMD[14],WIFI_CMD[15]);
- 558   3                              gRTC_Sec   =char_to_hex(WIFI_CMD[17],WIFI_CMD[18]);
- 559   3                              gRTC_Week  =WIFI_CMD[30]-'0';
- 560   3                              gRTC_Week  =Week_Table[gRTC_Week];
- 561   3                              IE3 |= 0x04;            // Enable WT interrupt
- 562   3                              Falg_TimeSync_Allow=0;//½ÓÊÕµ½Í¬²½ĞÅÏ¢¾Í²»ÔÙ·¢ËÍÇëÇóÍ¬²½£¬ËùÒÔÖÃÎª0
- 563   3                              return;
- 564   3                      }       
- 565   2                      else if(char_compare(WIFI_CMD, "Turn off unit")==0) 
- 566   2                      {//ÕâÌõĞ­ÒéÃüÁîÊÇappÖ±½Ó·¢ËÍ¹ıÀ´µÄ¹Ø»úÃüÁî£¬²»ÓÃÉêÇë¾Í¿ÉÒÔ¹Ø»ú£¬µ«ÊÇÊÕµ½ÕâÌõÃüÁîÒªÅĞ¶Ï
- 567   3                       //´ËÊ±²»ÓÃ½øĞĞÅĞ¶ÏÊÇ²»ÊÇÔÚ¹Ø»ú×´Ì¬£¬ÒòÎª¹Ø»úÖ®ºóĞèÒªÉè¶¨µÄ×´Ì¬¶Ô³ÌĞòÎŞÓ°Ïì£¬»òÕß¿ª»úÖ®
- 568   3                       //ºó»á³õÊ¼»¯ÕâĞ©×´Ì¬
- 569   3                       //$$$Turn off unit\r\n
- 570   3                              Uart0Transmit_SendString(Uart0_Receive);
- 571   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 572   3      //                      {
- 573   3      //                              GP389_OFF_AND_AlarmOFF();
- 574   3      //                              return;
- 575   3      //                      }
- 576   3                              
- 577   3                              Uart0_SendString_3Step=3;
- 578   3                              GP389_OFF();
- 579   3                              //ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
- 580   3                              return;
- 581   3                      }
- 582   2                      else if(char_compare(WIFI_CMD, "Turn on BT")==0) 
- 583   2                      {//$$$Turn on BT\r\n
- 584   3                              PlayMode=PLAY_BT;
- 585   3                      }
- 586   2                      else if (char_compare(WIFI_CMD, "previous song\r\n") == 0)
- 587   2                      {//$$$previous song\r\n ÉÏÒ»Ê×¸è  
- 588   3                              spa_cmd = SPA_PALY;
- 589   3                              if ((spa_name > SPA_OFF) && (spa_name <= SPA_ZEN))
- 590   3                                      spa_name--;
- 591   3                              else
- 592   3                                      if (spa_name == SPA_OFF)//ĞÎ³ÉÑ­»·
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 11  
+ 592   3                      }       
+ 593   2                      else if(char_compare(WIFI_CMD, "Turn off unit")==0) 
+ 594   2                      {//ÕâÌõĞ­ÒéÃüÁîÊÇappÖ±½Ó·¢ËÍ¹ıÀ´µÄ¹Ø»úÃüÁî£¬²»ÓÃÉêÇë¾Í¿ÉÒÔ¹Ø»ú£¬µ«ÊÇÊÕµ½ÕâÌõÃüÁîÒªÅĞ¶Ï
+ 595   3                       //´ËÊ±²»ÓÃ½øĞĞÅĞ¶ÏÊÇ²»ÊÇÔÚ¹Ø»ú×´Ì¬£¬ÒòÎª¹Ø»úÖ®ºóĞèÒªÉè¶¨µÄ×´Ì¬¶Ô³ÌĞòÎŞÓ°Ïì£¬»òÕß¿ª»úÖ®
+ 596   3                       //ºó»á³õÊ¼»¯ÕâĞ©×´Ì¬
+ 597   3                       //$$$Turn off unit\r\n
+ 598   3                              Uart0Transmit_SendString(Uart0_Receive);
+ 599   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 600   3      //                      {
+ 601   3      //                              GP389_OFF_AND_AlarmOFF();
+ 602   3      //                              return;
+ 603   3      //                      }
+ 604   3                              
+ 605   3                              Uart0_SendString_3Step=3;
+ 606   3                              GP389_OFF();
+ 607   3                              //ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
+ 608   3                              return;
+ 609   3                      }
+ 610   2                      else if(char_compare(WIFI_CMD, "Turn on BT")==0) 
+ 611   2                      {//$$$Turn on BT\r\n
+ 612   3                              PlayMode=PLAY_BT;
+ 613   3                      }
+ 614   2                      else if (char_compare(WIFI_CMD, "previous song\r\n") == 0)
+ 615   2                      {//$$$previous song\r\n ÉÏÒ»Ê×¸è  
+ 616   3                              spa_cmd = SPA_PALY;
+ 617   3                              if ((spa_name > SPA_OFF) && (spa_name <= SPA_ZEN))
+ 618   3                                      spa_name--;
+ 619   3                              else
+ 620   3                                      if (spa_name == SPA_OFF)//ĞÎ³ÉÑ­»·
+ 621   3                                              spa_name = SPA_ZEN;
+ 622   3                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//Ã¿´Î¸ü¸ÄÒôÀÖ¾Í·¢¸øappÍ¬²½
+ 623   3                              return;
+ 624   3                      }
+ 625   2                      else if (char_compare(WIFI_CMD, "next song\r\n") == 0)
+ 626   2                      {//$$$next song\r\n ÏÂÒ»Ê×¸è
+ 627   3                              spa_cmd = SPA_PALY;
+ 628   3                              if ((spa_name >= SPA_OFF) && (spa_name < SPA_ZEN))
+ 629   3                                      spa_name++;
+ 630   3                              else
+ 631   3                                      if (spa_name == SPA_ZEN) //ĞÎ³ÉÑ­»·
+ 632   3                                              spa_name = SPA_OFF;
+ 633   3                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//Ã¿´Î¸ü¸ÄÒôÀÖ¾Í·¢¸øappÍ¬²½
+ 634   3                              return;
+ 635   3                      }
+ 636   2                      else if(char_compare(WIFI_CMD, "music pause")==0)
+ 637   2                      {//$$$music pause\r\n
+ 638   3                              if(PlayMode==PLAY_MUSIC)
+ 639   3                              {                                   
+ 640   4                                      enable_SPApause=1;
+ 641   4                                      spa_cmd=SPA_PAUSE;
+ 642   4                              }
+ 643   3      //                      if(PlayMode==PLAY_BT)
+ 644   3      //                      {
+ 645   3      //                              if(flag_bt_play) 
+ 646   3      //                              {
+ 647   3      //                                      bt_cmd=BT_PAUSE;//Ğ­ÒéÀïÃæÊÇÒ»ÌõÃüÁî£¬ËùÒÔ²¥·Å/ÔİÍ£¶¼Òª·¢ËÍÕâÌõ
+ 648   3      //                              }
+ 649   3      //                      }
+ 650   3                              return;
+ 651   3                      }
+ 652   2                      else if(char_compare(WIFI_CMD,"{MusicStatus")==0)
+ 653   2                      {
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 12  
 
- 593   3                                              spa_name = SPA_ZEN;
- 594   3                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//Ã¿´Î¸ü¸ÄÒôÀÖ¾Í·¢¸øappÍ¬²½
- 595   3                              return;
- 596   3                      }
- 597   2                      else if (char_compare(WIFI_CMD, "next song\r\n") == 0)
- 598   2                      {//$$$next song\r\n ÏÂÒ»Ê×¸è
- 599   3                              spa_cmd = SPA_PALY;
- 600   3                              if ((spa_name >= SPA_OFF) && (spa_name < SPA_ZEN))
- 601   3                                      spa_name++;
- 602   3                              else
- 603   3                                      if (spa_name == SPA_ZEN) //ĞÎ³ÉÑ­»·
- 604   3                                              spa_name = SPA_OFF;
- 605   3                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//Ã¿´Î¸ü¸ÄÒôÀÖ¾Í·¢¸øappÍ¬²½
- 606   3                              return;
- 607   3                      }
- 608   2                      else if(char_compare(WIFI_CMD, "music pause")==0)
- 609   2                      {//$$$music pause\r\n
- 610   3                              if(PlayMode==PLAY_MUSIC)
- 611   3                              {                                   
- 612   4                                      enable_SPApause=1;
- 613   4                                      spa_cmd=SPA_PAUSE;
- 614   4                              }
- 615   3      //                      if(PlayMode==PLAY_BT)
- 616   3      //                      {
- 617   3      //                              if(flag_bt_play) 
- 618   3      //                              {
- 619   3      //                                      bt_cmd=BT_PAUSE;//Ğ­ÒéÀïÃæÊÇÒ»ÌõÃüÁî£¬ËùÒÔ²¥·Å/ÔİÍ£¶¼Òª·¢ËÍÕâÌõ
- 620   3      //                              }
- 621   3      //                      }
- 622   3                              return;
- 623   3                      }
- 624   2                      else if(char_compare(WIFI_CMD,"{MusicStatus")==0)
- 625   2                      {
- 626   3                              return;
- 627   3                      }
- 628   2                      else if(char_compare(WIFI_CMD, "Adjust Output Volume")==0)
- 629   2                      {//$$$Adjust Output Volumexx\r\n£¬xx´ú±í01-10
- 630   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 631   3      //                      {
- 632   3      //                              GP389_OFF_AND_AlarmOFF();
- 633   3      //                              return;
- 634   3      //                      }
- 635   3                              sys_volume=char_to_bcd(WIFI_CMD[20],WIFI_CMD[21]);
- 636   3                              enableMute=0;
- 637   3                      }
- 638   2                      else if(char_compare(WIFI_CMD, "volume up")==0) 
- 639   2                      {//$$$volume up\r\n
- 640   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 641   3      //                      {
- 642   3      //                              GP389_OFF_AND_AlarmOFF();
- 643   3      //                              return;
- 644   3      //                      }
- 645   3                              sys_volume=((sys_volume < 10)?((sys_volume<=8)?(sys_volume += 2):(sys_volume += 1)):10);
- 646   3                              enableMute=0;
- 647   3                      }
- 648   2                      else if(char_compare(WIFI_CMD, "volume down")==0) 
- 649   2                      {//volume down\r\n
- 650   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 651   3      //                      {
- 652   3      //                              GP389_OFF_AND_AlarmOFF();
- 653   3      //                              return;
- 654   3      //                      }
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 12  
-
- 655   3                              sys_volume=((sys_volume > 1)?((sys_volume>=3)?(sys_volume -= 2):(sys_volume -= 1)):1);
- 656   3                              enableMute=0;
- 657   3                      }
- 658   2                      else if(char_compare(WIFI_CMD, "music mute")==0) 
- 659   2                      {//$$$music mute\r\n
- 660   3                              enableMute=1;
- 661   3                              return;
- 662   3                      }
- 663   2                      else if(char_compare(WIFI_CMD, "music unmute")==0) 
- 664   2                      {//$$$music unmute\r\n
- 665   3                              enableMute=0;
- 666   3                              return;
- 667   3                      }
- 668   2                      else if(char_compare(WIFI_CMD, "Set Timer")==0)//ok
- 669   2                      {//$$$Set Timer XXX\r\n(30/60/90)
- 670   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 671   3      //                      {
- 672   3      //                              GP389_OFF_AND_AlarmOFF();
- 673   3      //                              return;
- 674   3      //                      }
- 675   3                              temp_time=char_to_bcd(WIFI_CMD[10], WIFI_CMD[11]);//Ö»¼ì²âÇ°Á½¸öÊı×Ö£¬ÔÙÅĞ¶Ï
- 676   3                              TimerMode=cntTimer= (temp_time == 90) ? 90 : ((temp_time == 60) ? 60 : ((temp_time == 30) ? 30 : 0));
- 677   3                      }
- 678   2                      else if(char_compare(WIFI_CMD, "Turn off Timer")==0)//ok
- 679   2                      {//$$$Turn off Timer\r\n
- 680   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 681   3      //                      {
- 682   3      //                              GP389_OFF_AND_AlarmOFF();
- 683   3      //                              return;
- 684   3      //                      }
- 685   3                              TimerMode=cntTimer=TIMER_OFF;
- 686   3                      }
- 687   2                      else if(char_compare(WIFI_CMD, "Turn off Lightr")==0)  
- 688   2                      {//$$$Turn off Lightr\r\n
- 689   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 690   3      //                      {
- 691   3      //                              GP389_OFF_AND_AlarmOFF();
- 692   3      //                              return;
- 693   3      //                      }
- 694   3                              color_mode=COLOR_OFF;
- 695   3                      } 
- 696   2                      else if(char_compare(WIFI_CMD,"light up")==0)
- 697   2                      {//$$$light up\r\n
+ 654   3                              return;
+ 655   3                      }
+ 656   2                      else if(char_compare(WIFI_CMD, "Adjust Output Volume")==0)
+ 657   2                      {//$$$Adjust Output Volumexx\r\n£¬xx´ú±í01-10
+ 658   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 659   3      //                      {
+ 660   3      //                              GP389_OFF_AND_AlarmOFF();
+ 661   3      //                              return;
+ 662   3      //                      }
+ 663   3                              sys_volume=char_to_bcd(WIFI_CMD[20],WIFI_CMD[21]);
+ 664   3                              enableMute=0;
+ 665   3                      }
+ 666   2                      else if(char_compare(WIFI_CMD, "volume up")==0) 
+ 667   2                      {//$$$volume up\r\n
+ 668   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 669   3      //                      {
+ 670   3      //                              GP389_OFF_AND_AlarmOFF();
+ 671   3      //                              return;
+ 672   3      //                      }
+ 673   3                              sys_volume=((sys_volume < 10)?((sys_volume<=8)?(sys_volume += 2):(sys_volume += 1)):10);
+ 674   3                              enableMute=0;
+ 675   3                      }
+ 676   2                      else if(char_compare(WIFI_CMD, "volume down")==0) 
+ 677   2                      {//volume down\r\n
+ 678   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 679   3      //                      {
+ 680   3      //                              GP389_OFF_AND_AlarmOFF();
+ 681   3      //                              return;
+ 682   3      //                      }
+ 683   3                              sys_volume=((sys_volume > 1)?((sys_volume>=3)?(sys_volume -= 2):(sys_volume -= 1)):1);
+ 684   3                              enableMute=0;
+ 685   3                      }
+ 686   2                      else if(char_compare(WIFI_CMD, "music mute")==0) 
+ 687   2                      {//$$$music mute\r\n
+ 688   3                              enableMute=1;
+ 689   3                              return;
+ 690   3                      }
+ 691   2                      else if(char_compare(WIFI_CMD, "music unmute")==0) 
+ 692   2                      {//$$$music unmute\r\n
+ 693   3                              enableMute=0;
+ 694   3                              return;
+ 695   3                      }
+ 696   2                      else if(char_compare(WIFI_CMD, "Set Timer")==0)//ok
+ 697   2                      {//$$$Set Timer XXX\r\n(30/60/90)
  698   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
  699   3      //                      {
  700   3      //                              GP389_OFF_AND_AlarmOFF();
  701   3      //                              return;
  702   3      //                      }
- 703   3                              if(Light_Brightness<3)
- 704   3                                      Light_Brightness++;
+ 703   3                              temp_time=char_to_bcd(WIFI_CMD[10], WIFI_CMD[11]);//Ö»¼ì²âÇ°Á½¸öÊı×Ö£¬ÔÙÅĞ¶Ï
+ 704   3                              TimerMode=cntTimer= (temp_time == 90) ? 90 : ((temp_time == 60) ? 60 : ((temp_time == 30) ? 30 : 0));
  705   3                      }
- 706   2                      else if(char_compare(WIFI_CMD,"light down")==0)
- 707   2                      {//$$$light down\r\n
+ 706   2                      else if(char_compare(WIFI_CMD, "Turn off Timer")==0)//ok
+ 707   2                      {//$$$Turn off Timer\r\n
  708   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
  709   3      //                      {
  710   3      //                              GP389_OFF_AND_AlarmOFF();
  711   3      //                              return;
  712   3      //                      }
- 713   3                              if(Light_Brightness>0)
- 714   3                                      Light_Brightness--;
- 715   3                      }
- 716   2                      else if(char_compare(WIFI_CMD,"Adjust Light Brightness")==0)
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 13  
+ 713   3                              TimerMode=cntTimer=TIMER_OFF;
+ 714   3                      }
+ 715   2                      else if(char_compare(WIFI_CMD, "Turn off Lightr")==0)  
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 13  
 
- 717   2                      {//$$$Adjust Light Brightness 01\r\n(01-03)
- 718   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 719   3      //                      {
- 720   3      //                              GP389_OFF_AND_AlarmOFF();
- 721   3      //                              return;
- 722   3      //                      }
- 723   3                              Light_Brightness=char_to_bcd(WIFI_CMD[24],WIFI_CMD[25]);
- 724   3                      }
- 725   2                      else if (char_compare(WIFI_CMD, "Adjust moist mode") == 0)
- 726   2                      {//$$$Adjust moist mode XX\r\n (01-03)
- 727   3                       //                     if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 728   3                       //                     {
- 729   3                       //                             GP389_OFF_AND_AlarmOFF();
- 730   3                       //                             return;
- 731   3                       //                     }
- 732   3                              AtomizationMode1 = char_to_bcd(WIFI_CMD[18], WIFI_CMD[19]);
+ 716   2                      {//$$$Turn off Lightr\r\n
+ 717   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 718   3      //                      {
+ 719   3      //                              GP389_OFF_AND_AlarmOFF();
+ 720   3      //                              return;
+ 721   3      //                      }
+ 722   3                              color_mode=COLOR_OFF;
+ 723   3                      } 
+ 724   2                      else if(char_compare(WIFI_CMD,"light up")==0)
+ 725   2                      {//$$$light up\r\n
+ 726   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 727   3      //                      {
+ 728   3      //                              GP389_OFF_AND_AlarmOFF();
+ 729   3      //                              return;
+ 730   3      //                      }
+ 731   3                              if(Light_Brightness<3)
+ 732   3                                      Light_Brightness++;
  733   3                      }
- 734   2      //              else if(char_compare(WIFI_CMD,"AlaGpSta\r\n")==0) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
- 735   2      //              {//W-G:"$$$AlaGpSta\r\n"
- 736   2      //               //G-W:"$$${AlaGpSta:[00,01,01,00,FFFFFF,03,0A,00,01,FF,17:3B,FF]}\r\n"
- 737   2      //               //Êı×éÖĞµÚÊı¾İÒÔ¶ººÅ·Ö¸ô£¬Êı×ÖÒÔ 16 ½øÖÆ±íÊ¾£¨ÕâÀï²»Ğ´"0x"£©£¬´Ó×óµ½ÓÒÒÀ´ÎÃ¿¸ö×Ö¶Î£¨13¸ö×Ö¶Î£©·Ö±ğ±íÊ
+ 734   2                      else if(char_compare(WIFI_CMD,"light down")==0)
+ 735   2                      {//$$$light down\r\n
+ 736   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 737   3      //                      {
+ 738   3      //                              GP389_OFF_AND_AlarmOFF();
+ 739   3      //                              return;
+ 740   3      //                      }
+ 741   3                              if(Light_Brightness>0)
+ 742   3                                      Light_Brightness--;
+ 743   3                      }
+ 744   2                      else if(char_compare(WIFI_CMD,"Adjust Light Brightness")==0)
+ 745   2                      {//$$$Adjust Light Brightness 01\r\n(01-03)
+ 746   3      //                      if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 747   3      //                      {
+ 748   3      //                              GP389_OFF_AND_AlarmOFF();
+ 749   3      //                              return;
+ 750   3      //                      }
+ 751   3                              Light_Brightness=char_to_bcd(WIFI_CMD[24],WIFI_CMD[25]);
+ 752   3                      }
+ 753   2                      else if (char_compare(WIFI_CMD, "Adjust moist mode") == 0)
+ 754   2                      {//$$$Adjust moist mode XX\r\n (01-03)
+ 755   3                       //                     if(alarm.Runing)  //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 756   3                       //                     {
+ 757   3                       //                             GP389_OFF_AND_AlarmOFF();
+ 758   3                       //                             return;
+ 759   3                       //                     }
+ 760   3                              AtomizationMode1 = char_to_bcd(WIFI_CMD[18], WIFI_CMD[19]);
+ 761   3                      }
+ 762   2      //              else if(char_compare(WIFI_CMD,"AlaGpSta\r\n")==0) //ÄÖÖÓ¹¦ÄÜÔÚ001ºÍ003ÖĞÆÁ±ÎÁË
+ 763   2      //              {//W-G:"$$$AlaGpSta\r\n"
+ 764   2      //               //G-W:"$$${AlaGpSta:[00,01,01,00,FFFFFF,03,0A,00,01,FF,17:3B,FF]}\r\n"
+ 765   2      //               //Êı×éÖĞµÚÊı¾İÒÔ¶ººÅ·Ö¸ô£¬Êı×ÖÒÔ 16 ½øÖÆ±íÊ¾£¨ÕâÀï²»Ğ´"0x"£©£¬´Ó×óµ½ÓÒÒÀ´ÎÃ¿¸ö×Ö¶Î£¨13¸ö×Ö¶Î£©·Ö±ğ±íÊ
              -¾£º
- 738   2      //               //¡·´ú±í Alarm µÄ ID ºÅ £¨×¢£ºÏÖÔÚÖ»ÓĞÒ»¸öÄÖÖÓ£¬Ä¬ÈÏÎª0£©
- 739   2      //               //¡·´ú±íµÚ¼¸Ê×¸è£¨01 - 06£©
- 740   2      //               //¡·´ú±í¿ª¹ØµÆ£¨00¹Ø 01¿ª£©
- 741   2      //               //¡·´ú±íÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨00 ¹Ø 01 ¿ª£©£¨×¢£º²ÊµÆÑ­»·£¬Îª1¿ªÆôÑ­»·£©
- 742   2      //               //¡·´ú±íµÆµÄRGBÖµ£¨000000 - FFFFFF£©£¨²ÊµÆÑ­»·Õâ¸öÖµÎª000000£©
- 743   2      //               //¡·´ú±íÁÁ¶È( 00 - 03 )
- 744   2      //               //¡·´ú±íÒôÁ¿Öµ ( 00 - 0a )
- 745   2      //               //¡·´ú±íÔİÍ£pauseÑ¡Ôñ£¨00±íÊ¾Õı³£²¥·Å,01±íÊ¾ÔİÍ£²¥·Å£©
- 746   2      //               //£¨È¥µô£©¡·´ú±í¶¨Ê±Æ÷£¬00(¹Ø/²»¿ªÆô¶¨Ê±)£¬0F(15min)£¬1E(30min)£¬3C(60min)   
- 747   2      //               //¡·´ú±íÄÖÖÓ×Ü¿ª¹Ø£¨00 ¹Ø 01: ¿ª£©£¨Ä¬ÈÏ0£©
- 748   2      //               //¡·´ú±íÖÜÒ»µ½ÖÜÈÕµÄ¿ª¹Ø£¬Ã¿Ò»ÌìÓÃÒ»¸ö bit ±íÊ¾
- 749   2      //               //    0x80 ´ú±íÊÇ·ñÖØ¸´ÄÖÁå
- 750   2      //               //    0x01 ´ú±íÖÜÒ»Æô¶¯ÄÖÁå£¬µ«ÊÇÖ»ÏìÒ»´Î£¬ÕâÒ»´ÎÊÇÆßÌìÖ®ÄÚµÄ£¬
- 751   2      //               //    0xFF ´ú±íÄÖÁåÈ«¿ª£¬²¢ÇÒÃ¿ÖÜÖØ¸´£¬ÒÔ´ËÀàÍÆ
- 752   2      //               //    BIT            7       6    5    4    3    2    1    0
- 753   2      //               //    ĞÇÆÚx   repeat  ÈÕ  Áù  Îå  ËÄ  Èı  ¶ş  Ò»  £¨×¢£ºrepeatÎªÃ¿ÖÜ¶¼ÖØ¸´ÄÖÁå£¬·ñÔòÖ»ÏìÒ»´Î£¬ÕâÒ»´Î
- 754   2      //               //  ÊÇÆßÌìÖ®ÄÚµÄ£¬¼ÙÈç¶¨Ê±13:00£¬²»ÖØ¸´£¬ÄÇÕâ´Î¼ÆÊ±µ½(7*24*60-1)minÖ®ºó½áÊø£¬¼´ÆßÌìÖ®ºó
- 755   2      //               //  µÄ12:59·Ö£©
- 756   2      //               //¡·´ú±íÄÖÖÓ¶¨Ê±Ê±¼äµã£¨17:3B£©(¶¼ÊÇ16½øÖÆ,:×ó±ßÊÇÄÖÖÓµÄÊ±£¬·¶Î§ÊÇ00-17; :ÓÒ±ßÊÇÄÖÖÓµÄ·Ö£¬·¶Î§ÊÇ00-3B
+ 766   2      //               //¡·´ú±í Alarm µÄ ID ºÅ £¨×¢£ºÏÖÔÚÖ»ÓĞÒ»¸öÄÖÖÓ£¬Ä¬ÈÏÎª0£©
+ 767   2      //               //¡·´ú±íµÚ¼¸Ê×¸è£¨01 - 06£©
+ 768   2      //               //¡·´ú±í¿ª¹ØµÆ£¨00¹Ø 01¿ª£©
+ 769   2      //               //¡·´ú±íÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨00 ¹Ø 01 ¿ª£©£¨×¢£º²ÊµÆÑ­»·£¬Îª1¿ªÆôÑ­»·£©
+ 770   2      //               //¡·´ú±íµÆµÄRGBÖµ£¨000000 - FFFFFF£©£¨²ÊµÆÑ­»·Õâ¸öÖµÎª000000£©
+ 771   2      //               //¡·´ú±íÁÁ¶È( 00 - 03 )
+ 772   2      //               //¡·´ú±íÒôÁ¿Öµ ( 00 - 0a )
+ 773   2      //               //¡·´ú±íÔİÍ£pauseÑ¡Ôñ£¨00±íÊ¾Õı³£²¥·Å,01±íÊ¾ÔİÍ£²¥·Å£©
+ 774   2      //               //£¨È¥µô£©¡·´ú±í¶¨Ê±Æ÷£¬00(¹Ø/²»¿ªÆô¶¨Ê±)£¬0F(15min)£¬1E(30min)£¬3C(60min)   
+ 775   2      //               //¡·´ú±íÄÖÖÓ×Ü¿ª¹Ø£¨00 ¹Ø 01: ¿ª£©£¨Ä¬ÈÏ0£©
+ 776   2      //               //¡·´ú±íÖÜÒ»µ½ÖÜÈÕµÄ¿ª¹Ø£¬Ã¿Ò»ÌìÓÃÒ»¸ö bit ±íÊ¾
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 14  
+
+ 777   2      //               //    0x80 ´ú±íÊÇ·ñÖØ¸´ÄÖÁå
+ 778   2      //               //    0x01 ´ú±íÖÜÒ»Æô¶¯ÄÖÁå£¬µ«ÊÇÖ»ÏìÒ»´Î£¬ÕâÒ»´ÎÊÇÆßÌìÖ®ÄÚµÄ£¬
+ 779   2      //               //    0xFF ´ú±íÄÖÁåÈ«¿ª£¬²¢ÇÒÃ¿ÖÜÖØ¸´£¬ÒÔ´ËÀàÍÆ
+ 780   2      //               //    BIT            7       6    5    4    3    2    1    0
+ 781   2      //               //    ĞÇÆÚx   repeat  ÈÕ  Áù  Îå  ËÄ  Èı  ¶ş  Ò»  £¨×¢£ºrepeatÎªÃ¿ÖÜ¶¼ÖØ¸´ÄÖÁå£¬·ñÔòÖ»ÏìÒ»´Î£¬ÕâÒ»´Î
+ 782   2      //               //  ÊÇÆßÌìÖ®ÄÚµÄ£¬¼ÙÈç¶¨Ê±13:00£¬²»ÖØ¸´£¬ÄÇÕâ´Î¼ÆÊ±µ½(7*24*60-1)minÖ®ºó½áÊø£¬¼´ÆßÌìÖ®ºó
+ 783   2      //               //  µÄ12:59·Ö£©
+ 784   2      //               //¡·´ú±íÄÖÖÓ¶¨Ê±Ê±¼äµã£¨17:3B£©(¶¼ÊÇ16½øÖÆ,:×ó±ßÊÇÄÖÖÓµÄÊ±£¬·¶Î§ÊÇ00-17; :ÓÒ±ßÊÇÄÖÖÓµÄ·Ö£¬·¶Î§ÊÇ00-3B
              -)
- 757   2      //               //¡·´ú±íÏìÁåÊ±¼ä£¨charÀàĞÍ1¸ö×Ö½Ú£©00-FF (µ¥Î»:·ÖÖÓ)
- 758   2      //               //£¨È¥µô£©¡·´ú±íµ±Ç°Ê±¼ä´Á£¬·Ö±ğ°´ÕÕÊ®Áù½øÖÆÊı¼ÓĞ±¸Ü±íÊ¾£¬¸ñÊ½ÈçÏÂ£º£¨Ê±/·Ö/Ãë/Äê/ÔÂ/ÈÕ/ĞÇÆÚ£© 
- 759   2      //               //    ±ÈÈç 2018 Äê 1 ÔÂ 1 ÈÕ 10 Ê± 32 ·Ö 0 ÃëĞÇÆÚ¶ş ÄÇÃ´¸ñÊ½ÊÇ 0a/20/00/12/01/01/02
- 760   2      //                      char  code respAlaGpSta[]={"$$${AlaGpSta:[00,00,00,00,000000,00,00,00,00,00,00:00,00]}\r\n"};
- 761   2      //                      for(i=0;i<UART0_LEN_BUFFER;i++)
- 762   2      //                              Uart0_Receive[i]=0x00;
- 763   2      //                      for(i=0;i<62;i++)
- 764   2      //                              Uart0_Receive[i]=respAlaGpSta[i];
- 765   2      //                      hex_to_char(&Uart0_Receive[14],0);//IDºÅÄ¬ÈÏÎª0
- 766   2      //                      hex_to_char(&Uart0_Receive[17],((alarm.spa_name!=0)?alarm.spa_name:7));//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹û
+ 785   2      //               //¡·´ú±íÏìÁåÊ±¼ä£¨charÀàĞÍ1¸ö×Ö½Ú£©00-FF (µ¥Î»:·ÖÖÓ)
+ 786   2      //               //£¨È¥µô£©¡·´ú±íµ±Ç°Ê±¼ä´Á£¬·Ö±ğ°´ÕÕÊ®Áù½øÖÆÊı¼ÓĞ±¸Ü±íÊ¾£¬¸ñÊ½ÈçÏÂ£º£¨Ê±/·Ö/Ãë/Äê/ÔÂ/ÈÕ/ĞÇÆÚ£© 
+ 787   2      //               //    ±ÈÈç 2018 Äê 1 ÔÂ 1 ÈÕ 10 Ê± 32 ·Ö 0 ÃëĞÇÆÚ¶ş ÄÇÃ´¸ñÊ½ÊÇ 0a/20/00/12/01/01/02
+ 788   2      //                      char  code respAlaGpSta[]={"$$${AlaGpSta:[00,00,00,00,000000,00,00,00,00,00,00:00,00]}\r\n"};
+ 789   2      //                      for(i=0;i<UART0_LEN_BUFFER;i++)
+ 790   2      //                              Uart0_Receive[i]=0x00;
+ 791   2      //                      for(i=0;i<62;i++)
+ 792   2      //                              Uart0_Receive[i]=respAlaGpSta[i];
+ 793   2      //                      hex_to_char(&Uart0_Receive[14],0);//IDºÅÄ¬ÈÏÎª0
+ 794   2      //                      hex_to_char(&Uart0_Receive[17],((alarm.spa_name!=0)?alarm.spa_name:7));//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹û
              -ÊÇ£¬ÊÇµÚ¼¸Ê×¸è£¬Èç¹û²»ÊÇ¾Í·µ»ØÔİÍ££¬7
- 767   2      //                      hex_to_char(&Uart0_Receive[20],((alarm.color_mode==COLOR_OFF)?0:1));//¿ª¹ØµÆ
- 768   2      //                      hex_to_char(&Uart0_Receive[23],(((alarm.color_mode==COLOR_CHANGE)?1:0)));//ÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨Ñ­»·½¥±äÄ£
+ 795   2      //                      hex_to_char(&Uart0_Receive[20],((alarm.color_mode==COLOR_OFF)?0:1));//¿ª¹ØµÆ
+ 796   2      //                      hex_to_char(&Uart0_Receive[23],(((alarm.color_mode==COLOR_CHANGE)?1:0)));//ÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨Ñ­»·½¥±äÄ£
              -Ê½£©
- 769   2      //                      hex_to_char(&Uart0_Receive[26],alarm.userR_val);
- 770   2      //                      hex_to_char(&Uart0_Receive[28],alarm.userG_val);
- 771   2      //                      hex_to_char(&Uart0_Receive[30],alarm.userB_val);
- 772   2      //                      hex_to_char(&Uart0_Receive[33],alarm.Brightness);//ÁÁ¶È
- 773   2      //                      hex_to_char(&Uart0_Receive[36],alarm.volume);//ÒôÁ¿
- 774   2      //                      hex_to_char(&Uart0_Receive[39],alarm.play_pause);
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 14  
-
- 775   2      //                      hex_to_char(&Uart0_Receive[42],alarm.Enable);
- 776   2      //                      hex_to_char(&Uart0_Receive[45],alarm.Week);
- 777   2      //                      hex_to_char(&Uart0_Receive[48],alarm.Hour);
- 778   2      //                      hex_to_char(&Uart0_Receive[51],alarm.Minute);
- 779   2      //                      hex_to_char(&Uart0_Receive[54],alarm.Duration);
- 780   2      //                      Uart0_SendString_3Step=2;
- 781   2      //              }
- 782   2                      else if(char_compare(WIFI_CMD,"NorGpSta\r\n")==0)
- 783   2                      {//W-G:"$$$NorGpSta\r\n"
- 784   3                       //G-W:"$$${NorGpSta:[00,00,01,01,FFFFFF,03,0A,00,01E,02]}\r\n"
- 785   3                              char  code respNorGpSta[]={"$$${NorGpSta:[00,00,00,00,000000,00,00,00,000,00]}\r\n"};
- 786   3                              for(i=0;i<UART0_LEN_BUFFER;i++)
- 787   3                                      Uart0_Receive[i]=0x00;
- 788   3                              for(i=0;i<48;i++)
- 789   3                                      Uart0_Receive[i]=respNorGpSta[i];
- 790   3                              hex_to_char(&Uart0_Receive[14],1);//ÔÚÕâÀïÊÇ¿ª»ú
- 791   3                              hex_to_char(&Uart0_Receive[17],((PlayMode==PLAY_MUSIC)?spa_name:7));//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹ûÊÇ£¬Ê
+ 797   2      //                      hex_to_char(&Uart0_Receive[26],alarm.userR_val);
+ 798   2      //                      hex_to_char(&Uart0_Receive[28],alarm.userG_val);
+ 799   2      //                      hex_to_char(&Uart0_Receive[30],alarm.userB_val);
+ 800   2      //                      hex_to_char(&Uart0_Receive[33],alarm.Brightness);//ÁÁ¶È
+ 801   2      //                      hex_to_char(&Uart0_Receive[36],alarm.volume);//ÒôÁ¿
+ 802   2      //                      hex_to_char(&Uart0_Receive[39],alarm.play_pause);
+ 803   2      //                      hex_to_char(&Uart0_Receive[42],alarm.Enable);
+ 804   2      //                      hex_to_char(&Uart0_Receive[45],alarm.Week);
+ 805   2      //                      hex_to_char(&Uart0_Receive[48],alarm.Hour);
+ 806   2      //                      hex_to_char(&Uart0_Receive[51],alarm.Minute);
+ 807   2      //                      hex_to_char(&Uart0_Receive[54],alarm.Duration);
+ 808   2      //                      Uart0_SendString_3Step=2;
+ 809   2      //              }
+ 810   2                      else if(char_compare(WIFI_CMD,"NorGpSta\r\n")==0)
+ 811   2                      {//W-G:"$$$NorGpSta\r\n"
+ 812   3                       //G-W:"$$${NorGpSta:[00,00,01,01,FFFFFF,03,0A,00,01E,02]}\r\n"
+ 813   3                              char  code respNorGpSta[]={"$$${NorGpSta:[00,00,00,00,000000,00,00,00,000,00]}\r\n"};
+ 814   3                              for(i=0;i<UART0_LEN_BUFFER;i++)
+ 815   3                                      Uart0_Receive[i]=0x00;
+ 816   3                              for(i=0;i<55;i++)
+ 817   3                                      Uart0_Receive[i]=respNorGpSta[i];
+ 818   3                              hex_to_char(&Uart0_Receive[14],1);//ÔÚÕâÀïÊÇ¿ª»ú
+ 819   3                              hex_to_char(&Uart0_Receive[17],((PlayMode==PLAY_MUSIC)?spa_name:7));//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹ûÊÇ£¬Ê
              -ÇµÚ¼¸Ê×¸è£¬Èç¹û²»ÊÇ¾Í·µ»ØÔİÍ££¬7
- 792   3                              hex_to_char(&Uart0_Receive[20],(color_mode==COLOR_OFF)?0:1);
- 793   3                              hex_to_char(&Uart0_Receive[23],(color_mode==COLOR_CHANGE)?0:1);//ÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨Ñ­»·½¥±äÄ£Ê½£©
- 794   3                              hex_to_char(&Uart0_Receive[26],userR_val);
- 795   3                              hex_to_char(&Uart0_Receive[28],userG_val);
- 796   3                              hex_to_char(&Uart0_Receive[30],userB_val);
- 797   3                              hex_to_char(&Uart0_Receive[33],Light_Brightness);
- 798   3                              hex_to_char(&Uart0_Receive[36],sys_volume);
- 799   3                              hex_to_char(&Uart0_Receive[39],enable_SPApause);
- 800   3                              hex_to_char(&Uart0_Receive[42],cntTimer);
- 801   3                              hex_to_char(&Uart0_Receive[46],AtomizationMode1);
- 802   3                              Uart0_SendString_3Step=2;
- 803   3                      }
- 804   2                      else if(char_compare(WIFI_CMD," update")==0) 
- 805   2                      {//mcu update+0X43A4+0X0044,½ÓÊÕµ½Õâ¸öĞÅÏ¢¿ªÊ¼Éı¼¶
- 806   3                              Update_ByteSizeSum=(char_to_hex(WIFI_CMD[10],WIFI_CMD[11])<<8)|char_to_hex(WIFI_CMD[12],WIFI_CMD[13]);/
+ 820   3                              hex_to_char(&Uart0_Receive[20],(color_mode==COLOR_OFF)?0:1);
+ 821   3                              hex_to_char(&Uart0_Receive[23],(color_mode==COLOR_CHANGE)?0:1);//ÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨Ñ­»·½¥±äÄ£Ê½£©
+ 822   3                              hex_to_char(&Uart0_Receive[26],userR_val);
+ 823   3                              hex_to_char(&Uart0_Receive[28],userG_val);
+ 824   3                              hex_to_char(&Uart0_Receive[30],userB_val);
+ 825   3                              hex_to_char(&Uart0_Receive[33],Light_Brightness);
+ 826   3                              hex_to_char(&Uart0_Receive[36],sys_volume);
+ 827   3                              hex_to_char(&Uart0_Receive[39],enable_SPApause);
+ 828   3                              hex_to_char_3bit(&Uart0_Receive[42],cntTimer);
+ 829   3                              hex_to_char(&Uart0_Receive[46],AtomizationMode1);
+ 830   3                              Uart0_SendString_3Step=2;
+ 831   3                      }
+ 832   2                      else if(char_compare(WIFI_CMD," update")==0) 
+ 833   2                      {//mcu update+0X43A4+0X0044,½ÓÊÕµ½Õâ¸öĞÅÏ¢¿ªÊ¼Éı¼¶
+ 834   3                              Update_ByteSizeSum=(char_to_hex(WIFI_CMD[10],WIFI_CMD[11])<<8)|char_to_hex(WIFI_CMD[12],WIFI_CMD[13]);/
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 15  
+
              -/¶àÉÙ¸ö×Ö½Ú£¬µØÎ»ÔÚÇ°£¬¸ßÎ»ÔÚºó
- 807   3                              Update_PacketSum  =(char_to_hex(WIFI_CMD[17],WIFI_CMD[18])<<8)|char_to_hex(WIFI_CMD[19],WIFI_CMD[20]);/
+ 835   3                              Update_PacketSum  =(char_to_hex(WIFI_CMD[17],WIFI_CMD[18])<<8)|char_to_hex(WIFI_CMD[19],WIFI_CMD[20]);/
              -/¶àÉÙ¸ö°ü
- 808   3                              update_handle();
- 809   3                      }
- 810   2                      else if(char_compare(WIFI_CMD,"ATWQ\r\n")==0) 
- 811   2                      {//$$$ATWQ\r\n
- 812   3                              Uart0_SendString_3Step=0;
- 813   3                              return;
- 814   3                      }
- 815   2                      else if(char_compare(WIFI_CMD,"VER\r\n")==0) 
- 816   2                      {
- 817   3                              Uart0Transmit_SendString(MCU_VER);//Ã¿´ÎÉı¼¶ĞèÒªÊÖ¶¯¸ÄĞ´ÕâÀï
- 818   3                              return;
- 819   3                      }
- 820   2                      else if(char_compare(WIFI_CMD,"Enter TestMode:")==0) 
- 821   2                      {
- 822   3                              Uart0_SendString_3Step=0;
- 823   3                              cntFlash=0;
- 824   3                              Led_Flash=0;
- 825   3                              setFactory=1;//ÖÃÒ»ÈÃÈı¸ötimerµÆ³£ÁÁÈıÃë
- 826   3                              PlayMode=PLAY_ON;
- 827   3                              bt_send_cmd(BT_CLEAR_LIST);//Çå³ıÀ¶ÑÀÁĞ±íÁĞ±í
- 828   3                              return;
- 829   3                      }
- 830   2                      Uart0Transmit_SendString(Uart0_Receive);
- 831   2                      ////////////////////////////////////////////////////////////////////////////////////
- 832   2                      ////////////////////////////////////////////////////////////////////////////////////
- 833   2              }
-C51 COMPILER V9.00   WIFI_MODE                                                             08/23/2018 10:55:38 PAGE 15  
+ 836   3                              update_handle();
+ 837   3                      }
+ 838   2                      else if(char_compare(WIFI_CMD,"ATWQ\r\n")==0) 
+ 839   2                      {//$$$ATWQ\r\n
+ 840   3                              Uart0_SendString_3Step=0;
+ 841   3                              return;
+ 842   3                      }
+ 843   2                      else if(char_compare(WIFI_CMD,"VER\r\n")==0) 
+ 844   2                      {
+ 845   3                              Uart0Transmit_SendString(MCU_VER);//Ã¿´ÎÉı¼¶ĞèÒªÊÖ¶¯¸ÄĞ´ÕâÀï
+ 846   3                              return;
+ 847   3                      }
+ 848   2                      else if(char_compare(WIFI_CMD,"Enter TestMode:")==0) 
+ 849   2                      {
+ 850   3                              Uart0_SendString_3Step=0;
+ 851   3                              cntFlash=0;
+ 852   3                              Led_Flash=0;
+ 853   3                              setFactory=1;//ÖÃÒ»ÈÃÈı¸ötimerµÆ³£ÁÁÈıÃë
+ 854   3                              PlayMode=PLAY_ON;
+ 855   3                              bt_send_cmd(BT_CLEAR_LIST);//Çå³ıÀ¶ÑÀÁĞ±íÁĞ±í
+ 856   3                              return;
+ 857   3                      }
+ 858   2                      Uart0Transmit_SendString(Uart0_Receive);
+ 859   2                      ////////////////////////////////////////////////////////////////////////////////////
+ 860   2                      ////////////////////////////////////////////////////////////////////////////////////
+ 861   2              }
+ 862   1              else //¹Ø»ú×´Ì¬ÏÂ½ÓÊÕÌØ¶¨wifiÊı¾İ
+ 863   1              {
+ 864   2                      if(char_compare(WIFI_CMD,"{NorGpSta")==0)
+ 865   2                      {//W-G:"$$$NorGpSta\r\n"
+ 866   3                       //G-W:"$$${NorGpSta:[00,00,01,01,FFFFFF,03,0A,00,01E,02]}\r\n"
+ 867   3                              char  code respNorGpSta[] = { "$$${NorGpSta:[00,00,00,00,000000,00,00,00,000,00]}\r\n" };
+ 868   3                              for (i = 0; i<UART0_LEN_BUFFER; i++)
+ 869   3                                      Uart0_Receive[i] = 0x00;
+ 870   3                              for (i = 0; i<51; i++)
+ 871   3                                      Uart0_Receive[i] = respNorGpSta[i];
+ 872   3                              hex_to_char(&Uart0_Receive[14], 0);//ÔÚÕâÀïÊÇ¿ª»ú
+ 873   3                              hex_to_char(&Uart0_Receive[17], ((PlayMode == PLAY_MUSIC) ? spa_name : 7));//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç
+             -¹ûÊÇ£¬ÊÇµÚ¼¸Ê×¸è£¬Èç¹û²»ÊÇ¾Í·µ»ØÔİÍ££¬7
+ 874   3                              hex_to_char(&Uart0_Receive[20], (color_mode == COLOR_OFF) ? 0 : 1);
+ 875   3                              hex_to_char(&Uart0_Receive[23], (color_mode == COLOR_CHANGE) ? 0 : 1);//ÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨Ñ­»·½¥±äÄ£Ê½£©
+ 876   3                              hex_to_char(&Uart0_Receive[26], userR_val);
+ 877   3                              hex_to_char(&Uart0_Receive[28], userG_val);
+ 878   3                              hex_to_char(&Uart0_Receive[30], userB_val);
+ 879   3                              hex_to_char(&Uart0_Receive[33], Light_Brightness);
+ 880   3                              hex_to_char(&Uart0_Receive[36], sys_volume);
+ 881   3                              hex_to_char(&Uart0_Receive[39], enable_SPApause);
+ 882   3                              hex_to_char_3bit(&Uart0_Receive[42], cntTimer);
+ 883   3                              hex_to_char(&Uart0_Receive[46], AtomizationMode1);
+ 884   3                              Uart0_SendString_3Step = 2;
+ 885   3                      }
+ 886   2                      Uart0Transmit_SendString(Uart0_Receive);
+ 887   2              }
+ 888   1      }
+ 889          
+ 890          /*******************************************************************
+ 891          º¯ÊıÔ­ĞÍ£º
+ 892          ÊäÈë²ÎÊı£º
+ 893          Êä³ö²ÎÊı£º
+C51 COMPILER V9.00   WIFI_MODE                                                             08/24/2018 08:41:04 PAGE 16  
 
- 834   1              else //¹Ø»ú×´Ì¬ÏÂ½ÓÊÕÌØ¶¨wifiÊı¾İ
- 835   1              {
- 836   2                      if(char_compare(WIFI_CMD,"{NorGpSta")==0)
- 837   2                      {//W-G:"$$$NorGpSta\r\n"
- 838   3                       //G-W:"$$${NorGpSta:[00,00,01,01,FFFFFF,03,0A,00,1E]}\r\n"
- 839   3                              char  code respNorGpSta[]={"$$${NorGpSta:[00,00,00,00,000000,00,00,00,00]}\r\n"};
- 840   3                              for(i=0;i<UART0_LEN_BUFFER;i++)
- 841   3                                      Uart0_Receive[i]=0x00;
- 842   3                              for(i=0;i<48;i++)
- 843   3                                      Uart0_Receive[i]=respNorGpSta[i];
- 844   3                              hex_to_char(&Uart0_Receive[14],0);//ÔÚÕâÀïÊÇ¿ª»ú
- 845   3                              hex_to_char(&Uart0_Receive[17],((PlayMode==PLAY_MUSIC)?spa_name:7));//Ê×ÏÈÅĞ¶ÏÊÇ²»ÊÇÒôÀÖÄ£Ê½£¬Èç¹ûÊÇ£¬Ê
-             -ÇµÚ¼¸Ê×¸è£¬Èç¹û²»ÊÇ¾Í·µ»ØÔİÍ££¬7
- 846   3                              hex_to_char(&Uart0_Receive[20],(color_mode==COLOR_OFF)?0:1);
- 847   3                              hex_to_char(&Uart0_Receive[23],(color_mode==COLOR_CHANGE)?0:1);//ÊÇ·ñÊÇ²ÊµÆÄ£Ê½£¨Ñ­»·½¥±äÄ£Ê½£©
- 848   3                              hex_to_char(&Uart0_Receive[26],userR_val);
- 849   3                              hex_to_char(&Uart0_Receive[28],userG_val);
- 850   3                              hex_to_char(&Uart0_Receive[30],userB_val);
- 851   3                              hex_to_char(&Uart0_Receive[33],Light_Brightness);
- 852   3                              hex_to_char(&Uart0_Receive[36],sys_volume);
- 853   3                              hex_to_char(&Uart0_Receive[39],enable_SPApause);
- 854   3                              hex_to_char(&Uart0_Receive[42],cntTimer);
- 855   3                              Uart0_SendString_3Step=2;
- 856   3                      }
- 857   2                      Uart0Transmit_SendString(Uart0_Receive);
- 858   2              }
- 859   1      }
- 860          
- 861          /*******************************************************************
- 862          º¯ÊıÔ­ĞÍ£º
- 863          ÊäÈë²ÎÊı£º
- 864          Êä³ö²ÎÊı£º
- 865          º¯Êı¹¦ÄÜ£ºÔÚappÉÏ·¢ËÍ¡°×´Ì¬¡°¹¦ÄÜ¸ø»úÌ¨£¬×´Ì¬¹¦ÄÜÊÇÍ¬Ê±ÉèÖÃºÃ¼¸¸ö²Ù×÷£¨ÒôÀÖ£¬µÆ¹âµÈ£©£¬È»ºóÒ»Æğ·¢¹ıÀ´
- 866                    È»ºó»úÌ¨¼ÇÂ¼ÏÂÀ´µÚ¼¸´Î·¢µÄ£¬°ÑĞÂµÄÒ»´Î¸´ÖÆ¸øprogram1£¬ÉÏÒ»´ÎµÄprogram1¸´ÖÆ¸øprogram2£¬ÒòÎª
- 867                            Êı¾İºÍÊı¾İÀàĞÍ¶¼Ò»Ñù£¬ËùÒÔ¿ÉÒÔÖ±½Ó¸´ÖÆ
- 868          *******************************************************************/
- 869          //void Program1_LaterNum()
- 870          //{
- 871          //      program3=program2;//ÒòÎªÊı¾İºÍÊı¾İÀàĞÍÍêÈ«Ò»Ñù£¬ËùÒÔ¿ÉÒÔÖ±½Ó¸³Öµ
- 872          //      program2=program1;
- 873          //}
- 874          
- 875          
- 876          
- 877          
+ 894          º¯Êı¹¦ÄÜ£ºÔÚappÉÏ·¢ËÍ¡°×´Ì¬¡°¹¦ÄÜ¸ø»úÌ¨£¬×´Ì¬¹¦ÄÜÊÇÍ¬Ê±ÉèÖÃºÃ¼¸¸ö²Ù×÷£¨ÒôÀÖ£¬µÆ¹âµÈ£©£¬È»ºóÒ»Æğ·¢¹ıÀ´
+ 895                    È»ºó»úÌ¨¼ÇÂ¼ÏÂÀ´µÚ¼¸´Î·¢µÄ£¬°ÑĞÂµÄÒ»´Î¸´ÖÆ¸øprogram1£¬ÉÏÒ»´ÎµÄprogram1¸´ÖÆ¸øprogram2£¬ÒòÎª
+ 896                            Êı¾İºÍÊı¾İÀàĞÍ¶¼Ò»Ñù£¬ËùÒÔ¿ÉÒÔÖ±½Ó¸´ÖÆ
+ 897          *******************************************************************/
+ 898          //void Program1_LaterNum()
+ 899          //{
+ 900          //      program3=program2;//ÒòÎªÊı¾İºÍÊı¾İÀàĞÍÍêÈ«Ò»Ñù£¬ËùÒÔ¿ÉÒÔÖ±½Ó¸³Öµ
+ 901          //      program2=program1;
+ 902          //}
+ 903          
+ 904          
+ 905          
+ 906          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   3293    ----
-   CONSTANT SIZE    =    822    ----
-   XDATA SIZE       =   ----      14
+   CODE SIZE        =   3466    ----
+   CONSTANT SIZE    =    849    ----
+   XDATA SIZE       =   ----      15
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
@@ -954,4 +986,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

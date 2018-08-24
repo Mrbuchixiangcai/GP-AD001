@@ -455,7 +455,7 @@ void app_main(void)
 //		if (AppTick1)
 //		{
 //			AppTick1 = 0;
-//			PWM_DutyCycle_Change();
+//			PWM_Shutdown();
 //		}
 //		if (AppTick2)
 //		{

@@ -121,7 +121,7 @@ void INT_USI0_Tx() interrupt 10
 	USI0ST1&=~0x80;
 	if(Uart0_EnableSend)
 	{		 
-		Uart0_Tx_TimeOut=10;
+		Uart0_Tx_TimeOut=20;
 		USI0DR=Uart0_TransmitBuffer[Uart0_Tx_Pointer++];
 		if(Uart0_TransmitBuffer[Uart0_Tx_Pointer]=='\0')
 			Uart0_EnableSend=0;
