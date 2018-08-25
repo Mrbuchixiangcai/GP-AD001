@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   BT_MODE                                                               08/24/2018 14:39:05 PAGE 1   
+C51 COMPILER V9.00   BT_MODE                                                               08/25/2018 10:15:31 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE BT_MODE
@@ -62,7 +62,7 @@ line level    source
   52          //标志未定义flags definetion//
   53          bit BT_Work; 
   54          bit flag_bt_conn;  //蓝牙连接标志位
-C51 COMPILER V9.00   BT_MODE                                                               08/24/2018 14:39:05 PAGE 2   
+C51 COMPILER V9.00   BT_MODE                                                               08/25/2018 10:15:31 PAGE 2   
 
   55          bit flag_bt_play;  //蓝牙播放
   56          bit flag_bt_pause; //暂停
@@ -126,7 +126,7 @@ line level    source
  114   3                      }
  115   2                      else
  116   2                      {
-C51 COMPILER V9.00   BT_MODE                                                               08/24/2018 14:39:05 PAGE 3   
+C51 COMPILER V9.00   BT_MODE                                                               08/25/2018 10:15:31 PAGE 3   
 
  117   3                              Uart1_RX_Finish_B=0;
  118   3                              BT_CMD=Uart1_ReceiveBuffer_B; 
@@ -190,7 +190,7 @@ line level    source
  176   1              {
  177   2                      if(BT_Work == 0) //初始化蓝牙
  178   2                      {
-C51 COMPILER V9.00   BT_MODE                                                               08/24/2018 14:39:05 PAGE 4   
+C51 COMPILER V9.00   BT_MODE                                                               08/25/2018 10:15:31 PAGE 4   
 
  179   3                              cntMuteBT=0;            
  180   3                              flag_bt_conn=0;
@@ -254,7 +254,7 @@ line level    source
  238   2                      if(BT_Work==1)
  239   2                      {
  240   3                              cntMuteBT=0;    
-C51 COMPILER V9.00   BT_MODE                                                               08/24/2018 14:39:05 PAGE 5   
+C51 COMPILER V9.00   BT_MODE                                                               08/25/2018 10:15:31 PAGE 5   
 
  241   3                              BT_Step=BT_STEP_START;
  242   3                      }

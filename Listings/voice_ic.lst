@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   VOICE_IC                                                              08/24/2018 14:39:07 PAGE 1   
+C51 COMPILER V9.00   VOICE_IC                                                              08/25/2018 10:15:36 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE VOICE_IC
@@ -62,7 +62,7 @@ line level    source
   52   1              {
   53   2                      flag_voice_send = 1;
   54   2                      voice_send_data = key-1;
-C51 COMPILER V9.00   VOICE_IC                                                              08/24/2018 14:39:07 PAGE 2   
+C51 COMPILER V9.00   VOICE_IC                                                              08/25/2018 10:15:36 PAGE 2   
 
   55   2                      voice_send_step = 0;
   56   2                      voice_50us_cnt =  0;
@@ -126,7 +126,7 @@ line level    source
  114   4                                      case 17+1:
  115   4                                                      voice_50us_cnt_set = 200;
  116   4                                              break;
-C51 COMPILER V9.00   VOICE_IC                                                              08/24/2018 14:39:07 PAGE 3   
+C51 COMPILER V9.00   VOICE_IC                                                              08/25/2018 10:15:36 PAGE 3   
 
  117   4                                      default:
  118   4                                              VOIC_DATA(0);
@@ -190,7 +190,7 @@ line level    source
  176   3                              default: 
  177   3                                      if(spa_cmd)
  178   3                                      { 
-C51 COMPILER V9.00   VOICE_IC                                                              08/24/2018 14:39:07 PAGE 4   
+C51 COMPILER V9.00   VOICE_IC                                                              08/25/2018 10:15:36 PAGE 4   
 
  179   4                                              if(!flag_voice_send) 
  180   4                                              {
@@ -254,7 +254,7 @@ line level    source
  238   1              else
  239   1              {
  240   2                      if(gbVoice_Work!=0)
-C51 COMPILER V9.00   VOICE_IC                                                              08/24/2018 14:39:07 PAGE 5   
+C51 COMPILER V9.00   VOICE_IC                                                              08/25/2018 10:15:36 PAGE 5   
 
  241   2                      {
  242   3                              Voice_Step=VOICE_STEP_START; //为下一次发送做准备，所以赋值为start
