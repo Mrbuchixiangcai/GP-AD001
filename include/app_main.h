@@ -120,7 +120,7 @@ typedef enum {
 }PLAY_MODE;
 typedef enum {
 	TIMER_OFF = 0,
-	TIMER_30MIN = 40,
+	TIMER_30MIN = 30,
 	TIMER_60MIN = 60,
 	TIMER_90MIN = 90,
 }TIMER_MODE;

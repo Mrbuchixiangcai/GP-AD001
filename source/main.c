@@ -199,7 +199,7 @@ void INT_WT() interrupt 20
 	 	if(++gRTC_Sec>59) 
 		{
 			gRTC_Sec=0;
-			/*if(++gRTC_Minute>59)
+			if(++gRTC_Minute>59)
 			{
 				gRTC_Minute=0;
 				if(++gRTC_Hour>23)
@@ -209,9 +209,9 @@ void INT_WT() interrupt 20
 					if(gRTC_Week==0x80)
 						gRTC_Week=0x01;
 				}
-			}*/
+			}
 		}
-		if(++gRTC_Minute>59)
+		/*if(++gRTC_Minute>59)
 		{
 			gRTC_Minute=0;
 			if(++gRTC_Hour>23)
@@ -221,7 +221,7 @@ void INT_WT() interrupt 20
 				if(gRTC_Week==0x80)
 					gRTC_Week=0x01;
 			}
-		}
+		}*/
 	}
 }
 

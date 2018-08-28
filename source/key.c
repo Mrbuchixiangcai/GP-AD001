@@ -82,7 +82,7 @@ uint8_t GetKeyValue(void)
 		Flas_Anhydrous = 1;
 	else
 		Flas_Anhydrous = 0;
-	return KeyNum; //返回按键
+	return KeyNum; //返回按键  
 }
 
 /*******************************************************************
@@ -319,23 +319,26 @@ void KeyComMsg(void)
 							TimerMode=cntTimer=TIMER_90MIN;
 						else 
 							TimerMode=cntTimer=TIMER_OFF;
-					}
+					}  
 					break;
 				}
-				case KU(T_LIGHT): //value70
+				case KU(T_LIGHT): //value_70
 				{
-					if(color_mode==COLOR_USER) 
-						color_mode=COLOR_WHITE; //实现循环
-					else if(Light_Brightness==0)
-						Light_Brightness=1;
-					else if(++color_mode>COLOR_CHANGE)
-						color_mode=COLOR_WHITE;
-					if(color_mode==COLOR_CHANGE)
+					if(PlayMode!=PLAY_OFF) 
 					{
-						play_rgb_index=0;
-						curR_val=0;
-						curG_val=0;
-						curB_val=0;
+						if(color_mode==COLOR_USER) 
+							color_mode=COLOR_WHITE; //实现循环
+						else if(Light_Brightness==0)
+							Light_Brightness=1;
+						else if(++color_mode>COLOR_CHANGE)
+							color_mode=COLOR_WHITE;
+						if(color_mode==COLOR_CHANGE)
+						{
+							play_rgb_index=0;
+							curR_val=0;
+							curG_val=0;
+							curB_val=0;
+						}
 					}
 					break;
 				}

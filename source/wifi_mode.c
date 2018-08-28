@@ -178,6 +178,7 @@ void GP389_OFF(void) //
 	sys_volume_bk=sys_volume;
 	color_mode_bk=color_mode;
 	color_mode=COLOR_OFF;
+	AtomizationMode1 = ATOMIZATION_OFF;
 	TimerMode=cntTimer=TIMER_OFF;//
 	ApplicationGP389_ONOFF((PlayMode==PLAY_OFF)?1:0);
 	Uart0_SendString_3Step=3;
@@ -615,10 +616,21 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 		{//$$$previous song\r\n 上一首歌  
 			spa_cmd = SPA_PALY;
 			if ((spa_name > SPA_OFF) && (spa_name <= SPA_ZEN))
+			{
+				
 				spa_name--;
+			}
 			else
 				if (spa_name == SPA_OFF)//形成循环
+				{
 					spa_name = SPA_ZEN;
+					enableMute=0; //解mute
+					if(enable_SPApause)
+					{
+						enable_SPApause=0;
+						spa_cmd=SPA_PALY;
+					}
+				}
 			Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//每次更改音乐就发给app同步
 			return;
 		}
@@ -626,7 +638,15 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 		{//$$$next song\r\n 下一首歌
 			spa_cmd = SPA_PALY;
 			if ((spa_name >= SPA_OFF) && (spa_name < SPA_ZEN))
+			{
 				spa_name++;
+				enableMute=0; //解mute
+				if(enable_SPApause)
+				{
+					enable_SPApause=0;
+					spa_cmd=SPA_PALY;
+				}
+			}
 			else
 				if (spa_name == SPA_ZEN) //形成循环
 					spa_name = SPA_OFF;
@@ -694,14 +714,14 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			return;
 		}
 		else if(char_compare(WIFI_CMD, "Set Timer")==0)//ok
-		{//$$$Set Timer XXX\r\n(30/60/90)
+		{//$$$Set Timer XXX\r\n(030/060/090)
 //			if(alarm.Runing)  //闹钟功能在001和003中屏蔽了
 //			{
 //				GP389_OFF_AND_AlarmOFF();
 //				return;
 //			}
 			temp_time=char_to_bcd(WIFI_CMD[10], WIFI_CMD[11]);//只检测前两个数字，再判断
-			TimerMode=cntTimer= (temp_time == 90) ? 90 : ((temp_time == 60) ? 60 : ((temp_time == 30) ? 30 : 0));
+			TimerMode=cntTimer= (temp_time == 9) ? 90 : ((temp_time == 6) ? 60 : ((temp_time == 3) ? 30 : 0));
 		}
 		else if(char_compare(WIFI_CMD, "Turn off Timer")==0)//ok
 		{//$$$Turn off Timer\r\n
@@ -750,7 +770,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 //			}
 			Light_Brightness=char_to_bcd(WIFI_CMD[24],WIFI_CMD[25]);
 		}
-		else if (char_compare(WIFI_CMD, "Adjust moist mode") == 0)
+		else if (char_compare(WIFI_CMD, "Adjust moist mode ") == 0)
 		{//$$$Adjust moist mode XX\r\n (01-03)
 		 //			if(alarm.Runing)  //闹钟功能在001和003中屏蔽了
 		 //			{
