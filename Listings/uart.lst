@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   UART                                                                  08/28/2018 08:45:52 PAGE 1   
+C51 COMPILER V9.00   UART                                                                  10/05/2018 16:42:22 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE UART
@@ -44,7 +44,7 @@ line level    source
   34          void Uart0Transmit_SendString(char *str) 
   35          {
   36   1              uint8_t i;
-  37   1       do{WDT_clear();} while(Uart0_EnableSend);
+  37   1              do{WDT_clear();} while(Uart0_EnableSend);
   38   1              Count200ms_3Step=0;
   39   1              //Uart0_SendString_3Step=0;
   40   1              for(i=0;i<UART0_LEN_BUFFER;i++)         
@@ -62,7 +62,7 @@ line level    source
   52          
   53          /*******************************************************************
   54          函数原型：
-C51 COMPILER V9.00   UART                                                                  08/28/2018 08:45:52 PAGE 2   
+C51 COMPILER V9.00   UART                                                                  10/05/2018 16:42:22 PAGE 2   
 
   55          输入参数：
   56          输出参数：
@@ -126,7 +126,7 @@ line level    source
  114   2                      Uart0_ReceiveBuffer[sUart0_Rx_Pointer]=0x00;
  115   2                      if(++sUart0_Rx_Pointer>=(UART0_RX_LEN_BUFFER-1))        
  116   2                              sUart0_Rx_Pointer=0;
-C51 COMPILER V9.00   UART                                                                  08/28/2018 08:45:52 PAGE 3   
+C51 COMPILER V9.00   UART                                                                  10/05/2018 16:42:22 PAGE 3   
 
  117   2                      if(WIFI_ReceiveBuffer[Rx_Pointer++]=='\n')
  118   2                      {

@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   BT_MODE                                                               08/28/2018 08:45:50 PAGE 1   
+C51 COMPILER V9.00   BT_MODE                                                               10/05/2018 16:42:20 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE BT_MODE
@@ -62,7 +62,7 @@ line level    source
   52          //标志未定义flags definetion//
   53          bit BT_Work; 
   54          bit flag_bt_conn;  //蓝牙连接标志位
-C51 COMPILER V9.00   BT_MODE                                                               08/28/2018 08:45:50 PAGE 2   
+C51 COMPILER V9.00   BT_MODE                                                               10/05/2018 16:42:20 PAGE 2   
 
   55          bit flag_bt_play;  //蓝牙播放
   56          bit flag_bt_pause; //暂停
@@ -126,7 +126,7 @@ line level    source
  114   3                      }
  115   2                      else
  116   2                      {
-C51 COMPILER V9.00   BT_MODE                                                               08/28/2018 08:45:50 PAGE 3   
+C51 COMPILER V9.00   BT_MODE                                                               10/05/2018 16:42:20 PAGE 3   
 
  117   3                              Uart1_RX_Finish_B=0;
  118   3                              BT_CMD=Uart1_ReceiveBuffer_B; 
@@ -190,7 +190,7 @@ line level    source
  176   1              {
  177   2                      if(BT_Work == 0) //初始化蓝牙
  178   2                      {
-C51 COMPILER V9.00   BT_MODE                                                               08/28/2018 08:45:50 PAGE 4   
+C51 COMPILER V9.00   BT_MODE                                                               10/05/2018 16:42:20 PAGE 4   
 
  179   3                              cntMuteBT=0;            
  180   3                              flag_bt_conn=0;
@@ -207,16 +207,16 @@ line level    source
  191   3                                      BT_Step++;
  192   3                                      break;
  193   3                              case BT_STEP_INITI1:
- 194   3              UART1_def_init(); 
- 195   3              CLR_BT_POWER(); //复位PA11 连接蓝牙芯片vbat端口
- 196   3                                BT_Step++;
+ 194   3                                      UART1_def_init(); 
+ 195   3                                      CLR_BT_POWER(); //复位PA11 连接蓝牙芯片vbat端口
+ 196   3                                      BT_Step++;
  197   3                                      break;
  198   3                              case BT_STEP_INITI2:
  199   3                                   BT_Step++;
  200   3                                      break;
  201   3                              case BT_STEP_INITI3:
  202   3                                      SET_BT_POWER(); //置位PA11，对应蓝牙芯片的vbat脚
- 203   3                                BT_Step++;
+ 203   3                                      BT_Step++;
  204   3                                      break;
  205   3                              case BT_STEP_INITI4:
  206   3                                      UART1_init(); 
@@ -226,7 +226,7 @@ line level    source
  210   3                                      if(sys_volume!=bt_volume) //如果蓝牙音量信息和系统音量信息不相等，把系统的发给蓝牙
  211   3                                      {
  212   4                                              bt_volume=sys_volume;
- 213   4                                              bt_send_cmd(BT_VOL); //串口发送音量信息到app端
+ 213   4                                              bt_send_cmd(BT_VOL); //串口发送音量信息到蓝牙模块端
  214   4                                      }
  215   3                                      else if(bt_cmd)
  216   3                                      {
@@ -254,7 +254,7 @@ line level    source
  238   2                      if(BT_Work==1)
  239   2                      {
  240   3                              cntMuteBT=0;    
-C51 COMPILER V9.00   BT_MODE                                                               08/28/2018 08:45:50 PAGE 5   
+C51 COMPILER V9.00   BT_MODE                                                               10/05/2018 16:42:20 PAGE 5   
 
  241   3                              BT_Step=BT_STEP_START;
  242   3                      }
@@ -277,7 +277,7 @@ line level    source
  259   3                                      break;
  260   3                              case BT_STEP_INITI4:
  261   3                                      BT_Step++;
- 262   3              CLR_AUCH();
+ 262   3                                      CLR_AUCH();
  263   3                                      break;
  264   3                              default: 
  265   3                                      break;

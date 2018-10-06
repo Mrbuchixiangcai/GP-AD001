@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   KEY                                                                   08/28/2018 08:45:51 PAGE 1   
+C51 COMPILER V9.00   KEY                                                                   10/05/2018 16:42:21 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE KEY
@@ -62,7 +62,7 @@ line level    source
   52          输出参数：
   53          函数功能：获得AD值，并判断是哪个按键，如果是单独的按键和AD值按键复合也可以检测
   54          *******************************************************************/
-C51 COMPILER V9.00   KEY                                                                   08/28/2018 08:45:51 PAGE 2   
+C51 COMPILER V9.00   KEY                                                                   10/05/2018 16:42:21 PAGE 2   
 
   55          uint8_t GetKeyValue(void) 
   56          { 
@@ -126,7 +126,7 @@ line level    source
  113   3                                      gbKeyPress=1;
  114   3                              switch(KeyEvent)
  115   3                              {
-C51 COMPILER V9.00   KEY                                                                   08/28/2018 08:45:51 PAGE 3   
+C51 COMPILER V9.00   KEY                                                                   10/05/2018 16:42:21 PAGE 3   
 
  116   4                                      case 0:
  117   4                                              KeyEvent=1;
@@ -190,7 +190,7 @@ line level    source
  175          输入参数：
  176          输出参数：
  177          函数功能：按键的处理，包括长、短按键，数据处理及功能实现，还有闹钟响时按下任意按键关闭闹钟并关机
-C51 COMPILER V9.00   KEY                                                                   08/28/2018 08:45:51 PAGE 4   
+C51 COMPILER V9.00   KEY                                                                   10/05/2018 16:42:21 PAGE 4   
 
  178          *******************************************************************/
  179          void KeyComMsg(void) 
@@ -253,11 +253,11 @@ line level    source
  236   6                                                      enableMute=0;
  237   6                                                      enable_SPApause=0;
  238   6                                                      PlayMode=PLAY_MUSIC;
- 239   6                                                      if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
-C51 COMPILER V9.00   KEY                                                                   08/28/2018 08:45:51 PAGE 5   
+ 239   6                                                      if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_SONG12为枚举变量元素
+C51 COMPILER V9.00   KEY                                                                   10/05/2018 16:42:21 PAGE 5   
 
  240   6                                                      {
- 241   7                                                              spa_name=SPA_BROOK;
+ 241   7                                                              spa_name=SPA_SONG1;
  242   7                                                      }
  243   6                                              }
  244   5                                              else if(PlayMode==PLAY_MUSIC) //第二次进入
@@ -271,16 +271,16 @@ line level    source
  252   7                                                      }
  253   6                                                      enable_SPApause=0;
  254   6                                                      ++spa_name;
- 255   6                                                      if(spa_name == SPA_OFF)
- 256   6                                                      {
- 257   7                                                              spa_name= SPA_BROOK;
- 258   7              //                                              if(color_mode==COLOR_OFF)
- 259   7              //                                                      TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF;    
- 260   7              //                                          PlayMode=PLAY_ON;
- 261   7              //                                              spa_name=SPA_OFF;
- 262   7              //                                              enable_SPApause=1;
- 263   7                                                      }
- 264   6                                                      else if (spa_name>SPA_ZEN)
+ 255   6      //                                              if(spa_name == SPA_OFF)
+ 256   6      //                                              {
+ 257   6      //                                                      spa_name= SPA_SONG1;
+ 258   6      //      //                                              if(color_mode==COLOR_OFF)
+ 259   6      //      //                                                      TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF;    
+ 260   6      //      //                                          PlayMode=PLAY_ON;
+ 261   6      //      //                                              spa_name=SPA_OFF;
+ 262   6      //      //                                              enable_SPApause=1;
+ 263   6      //                                              }
+ 264   6                                                      if (spa_name>SPA_SONG12)
  265   6                                                      {
  266   7                                                              spa_name = SPA_OFF;
  267   7                                                      }
@@ -318,7 +318,7 @@ line level    source
  299   4                                      case KU(T_VOLDEC): //value68
  300   4                                      case KR(T_VOLDEC): //value132
  301   4                                      {
-C51 COMPILER V9.00   KEY                                                                   08/28/2018 08:45:51 PAGE 6   
+C51 COMPILER V9.00   KEY                                                                   10/05/2018 16:42:21 PAGE 6   
 
  302   5                                              if(PlayMode>PLAY_ON) 
  303   5                                              {
@@ -340,10 +340,10 @@ line level    source
  319   6                                                              TimerMode=cntTimer=TIMER_90MIN;
  320   6                                                      else 
  321   6                                                              TimerMode=cntTimer=TIMER_OFF;
- 322   6                                              }
+ 322   6                                              }  
  323   5                                              break;
  324   5                                      }
- 325   4                                      case KU(T_LIGHT): //value70
+ 325   4                                      case KU(T_LIGHT): //value_70
  326   4                                      {
  327   5                                              if(PlayMode!=PLAY_OFF) 
  328   5                                              {
@@ -382,7 +382,7 @@ line level    source
  361   4                                      {
  362   5                                              if(PlayMode==PLAY_BT)
  363   5                                                      bt_cmd=BT_PARIR; 
-C51 COMPILER V9.00   KEY                                                                   08/28/2018 08:45:51 PAGE 7   
+C51 COMPILER V9.00   KEY                                                                   10/05/2018 16:42:21 PAGE 7   
 
  364   5                                              break;
  365   5                                      }
@@ -446,7 +446,7 @@ line level    source
  423   1      }
  424          
  425          
-C51 COMPILER V9.00   KEY                                                                   08/28/2018 08:45:51 PAGE 8   
+C51 COMPILER V9.00   KEY                                                                   10/05/2018 16:42:21 PAGE 8   
 
  426          
  427          
@@ -454,7 +454,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1096    ----
+   CODE SIZE        =   1086    ----
    CONSTANT SIZE    =    108    ----
    XDATA SIZE       =     12       1
    PDATA SIZE       =   ----    ----

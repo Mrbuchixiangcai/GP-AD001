@@ -464,8 +464,8 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			PlayMode=PLAY_MUSIC;
 			enableMute=0;     //解除静音
 			enable_SPApause=0;//为0表示播放
-			if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
-				spa_name=SPA_BROOK;
+			if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_SONG12为枚举变量元素
+				spa_name=SPA_SONG1;
 			else
 				spa_cmd=SPA_PALY;			
 			/*if(PlayMode==PLAY_BT)
@@ -615,7 +615,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 		else if (char_compare(WIFI_CMD, "previous song\r\n") == 0)
 		{//$$$previous song\r\n 上一首歌  
 			spa_cmd = SPA_PALY;
-			if ((spa_name > SPA_OFF) && (spa_name <= SPA_ZEN))
+			if ((spa_name > SPA_OFF) && (spa_name <= SPA_SONG12))
 			{
 				
 				spa_name--;
@@ -623,7 +623,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 			else
 				if (spa_name == SPA_OFF)//形成循环
 				{
-					spa_name = SPA_ZEN;
+					spa_name = SPA_SONG12;
 					enableMute=0; //解mute
 					if(enable_SPApause)
 					{
@@ -637,7 +637,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 		else if (char_compare(WIFI_CMD, "next song\r\n") == 0)
 		{//$$$next song\r\n 下一首歌
 			spa_cmd = SPA_PALY;
-			if ((spa_name >= SPA_OFF) && (spa_name < SPA_ZEN))
+			if ((spa_name >= SPA_OFF) && (spa_name < SPA_SONG12))
 			{
 				spa_name++;
 				enableMute=0; //解mute
@@ -648,7 +648,7 @@ void Wifi_CommandDeal(char *Uart0_Receive)
 				}
 			}
 			else
-				if (spa_name == SPA_ZEN) //形成循环
+				if (spa_name == SPA_SONG12) //形成循环
 					spa_name = SPA_OFF;
 			Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//每次更改音乐就发给app同步
 			return;

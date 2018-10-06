@@ -191,16 +191,16 @@ void BlueMode_Handle(void) //接收到的数据信息/状态进行处理
 				BT_Step++;
 				break;
 			case BT_STEP_INITI1:
-        UART1_def_init(); 
-        CLR_BT_POWER(); //复位PA11 连接蓝牙芯片vbat端口
-			  BT_Step++;
+				UART1_def_init(); 
+				CLR_BT_POWER(); //复位PA11 连接蓝牙芯片vbat端口
+				BT_Step++;
 				break;
 			case BT_STEP_INITI2:
 			     BT_Step++;
 				break;
 			case BT_STEP_INITI3:
 				SET_BT_POWER(); //置位PA11，对应蓝牙芯片的vbat脚
-			  BT_Step++;
+				BT_Step++;
 				break;
 			case BT_STEP_INITI4:
 				UART1_init(); 
@@ -210,7 +210,7 @@ void BlueMode_Handle(void) //接收到的数据信息/状态进行处理
 				if(sys_volume!=bt_volume) //如果蓝牙音量信息和系统音量信息不相等，把系统的发给蓝牙
 				{
 					bt_volume=sys_volume;
-					bt_send_cmd(BT_VOL); //串口发送音量信息到app端
+					bt_send_cmd(BT_VOL); //串口发送音量信息到蓝牙模块端
 				}
 				else if(bt_cmd)
 				{
@@ -259,7 +259,7 @@ void BlueMode_Handle(void) //接收到的数据信息/状态进行处理
 				break;
 			case BT_STEP_INITI4:
 				BT_Step++;
-        CLR_AUCH();
+				CLR_AUCH();
 				break;
 			default: 
 				break;

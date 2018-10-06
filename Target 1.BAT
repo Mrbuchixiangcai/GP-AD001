@@ -17,5 +17,5 @@ SET CPU_XTAL=0x00B71B00
 "D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE" @".\Objects\voice_ic.__i"
 "D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE" @".\Objects\WIFI_M~1.__I"
 "D:\ProgramFiles\Keil_v5\C51\BIN\C51.EXE" @".\Objects\PWM.__i"
-"D:\ProgramFiles\Keil_v5\C51\BIN\BL51.EXE" @".\Objects\GP389.lnp"
-"D:\ProgramFiles\Keil_v5\C51\BIN\OH51.EXE" ".\Objects\GP389" 
+"D:\ProgramFiles\Keil_v5\C51\BIN\BL51.EXE" @".\Objects\GP-AD001.lnp"
+"D:\ProgramFiles\Keil_v5\C51\BIN\OH51.EXE" ".\Objects\GP-AD001" 

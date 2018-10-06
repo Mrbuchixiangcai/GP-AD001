@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 1   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE APP_MAIN
@@ -62,7 +62,7 @@ line level    source
   50          bit AppTick3;
   51          bit AppTick4;
   52          bit AppTick5;
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 2   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 2   
 
   53          bit AppTick1ms;
   54          bit gbHalfSecond;
@@ -126,7 +126,7 @@ line level    source
  112          º¯ÊýÔ­ÐÍ£º
  113          ÊäÈë²ÎÊý£º
  114          Êä³ö²ÎÊý£º
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 3   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 3   
 
  115          º¯Êý¹¦ÄÜ£ºÊ±¼ä±È½Ïº¯Êý£¬Ã¿Ãë¡¢Ã¿·ÖÖÓ¡¢Ã¿Ð¡Ê±¶¼¿ÉÒÔ×öÅÐ¶Ï
  116          *******************************************************************/
@@ -190,7 +190,7 @@ line level    source
  174   2                      //                              data_bk[21] = alarm.Enable;
  175   2                      //                              data_bk[22] = alarm.Week;
  176   2                      //                              data_bk[23] = alarm.Hour;
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 4   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 4   
 
  177   2                      //                              data_bk[24] = alarm.Minute;
  178   2                      //                              data_bk[25] = alarm.Duration;
@@ -254,7 +254,7 @@ line level    source
  234   3      //                                      spa_name = alarm.spa_name;
  235   3      //                                      enable_SPApause = alarm.play_pause;
  236   3      //                                      enableMute = ((enable_SPApause == 0) ? 0 : 1);//ÎÞÂÛÖ®Ç°²¥·Å»¹ÊÇÔÝÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄÖÖÓÔÊÐí²¥·Å¾
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 5   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 5   
 
              -Í²¥·Å
  237   3      //                                      spa_cmd = ((enable_SPApause == 0) ? SPA_PALY : SPA_PAUSE);//ÎÞÂÛÖ®Ç°²¥·Å»¹ÊÇÔÝÍ££¬Ö»ÒªÄÖÖÓÏìÓ¦²¢ÇÒÄ
@@ -318,7 +318,7 @@ line level    source
  294   2      //              uint8_t code *EEPAddress_data_bk;
  295   2      //              EEPAddress_data_bk=0x0400+64;
  296   2                      if(++cntFlash>=50)//500ms
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 6   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 6   
 
  297   2                      {
  298   3                              cntFlash=0;
@@ -382,7 +382,7 @@ line level    source
  356   2              }       
  357   1      }
  358          
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 7   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 7   
 
  359          /*******************************************************************
  360          º¯ÊýÔ­ÐÍ£º
@@ -446,7 +446,7 @@ line level    source
  417   1      //              program1.userB_val = ((data_bk[31]<=255) && (data_bk[31]>=0))?data_bk[31]:0;
  418   1      //              program1.Light_Brightness = ((data_bk[32]<=3) && (data_bk[32]>=0))?data_bk[32]:0;
  419   1      //              program1.sys_volume = ((data_bk[33]<=10) && (data_bk[33]>=0))?data_bk[33]:0;
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 8   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 8   
 
  420   1      //              program1.PlayMode = ((data_bk[34]<=3) && (data_bk[34]>=0))?data_bk[34]:0;
  421   1      //              program1.enable_SPApause = ((data_bk[35]==0) && (data_bk[35]==1))?data_bk[35]:0;
@@ -467,9 +467,9 @@ line level    source
  436   1      //                      enableMute=0;
  437   1      //                      enable_SPApause=0;
  438   1      //                      PlayMode=PLAY_MUSIC;
- 439   1      //                      if(spa_name==SPA_OFF) //spa_nameÎªÃ¶¾Ù±äÁ¿ÀàÐÍ£¬SPA_ZENÎªÃ¶¾Ù±äÁ¿ÔªËØ
+ 439   1      //                      if(spa_name==SPA_OFF) //spa_nameÎªÃ¶¾Ù±äÁ¿ÀàÐÍ£¬SPA_SONG12ÎªÃ¶¾Ù±äÁ¿ÔªËØ
  440   1      //                      {
- 441   1      //                              spa_name=SPA_BROOK;
+ 441   1      //                              spa_name=SPA_SONG1;
  442   1      //                      }
  443   1      //              }
  444   1      //      while (1)
@@ -510,7 +510,7 @@ line level    source
  479   2              Uart0_Receive_Parse();          
  480   2                      if(AppTick1ms) //3ms
  481   2                      {
-C51 COMPILER V9.00   APP_MAIN                                                              08/28/2018 08:45:50 PAGE 9   
+C51 COMPILER V9.00   APP_MAIN                                                              10/05/2018 16:42:20 PAGE 9   
 
  482   3                              AppTick1ms=0;
  483   3                      }

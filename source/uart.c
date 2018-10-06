@@ -34,7 +34,7 @@ uint8_t  idata  Uart0_SendString_3Step;
 void Uart0Transmit_SendString(char *str) 
 {
 	uint8_t i;
- do{WDT_clear();} while(Uart0_EnableSend);
+	do{WDT_clear();} while(Uart0_EnableSend);
 	Count200ms_3Step=0;
 	//Uart0_SendString_3Step=0;
 	for(i=0;i<UART0_LEN_BUFFER;i++)		

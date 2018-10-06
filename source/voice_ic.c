@@ -10,14 +10,15 @@ VOICE_STEP    Voice_Step; //语音步骤枚举变量类型
 
 
 //变量定义variable definition//
-uint8_t idata voice_send_step; //语音发送步骤
-uint8_t idata voice_send_data; //语音发送数据
-uint8_t idata voice_50us_cnt; //50us计时
-uint8_t idata voice_50us_cnt_set; //50us计时设计
-uint8_t idata spa_cmd; //spa命令
-uint8_t idata spa_volume; //音量
-uint8_t idata cur_spa_name;
-uint8_t idata cntSPAOn;
+uint8_t  idata voice_send_step; //语音发送步骤
+uint8_t  idata voice_send_data; //语音发送数据
+uint16_t idata voice_50us_cnt; //50us计时
+uint16_t idata voice_50us_cnt_set; //50us计时设计
+uint8_t  idata spa_cmd; //spa命令
+uint8_t  idata spa_volume; //音量
+uint8_t  idata cur_spa_name;
+uint8_t  idata cntSPAOn;
+uint8_t  idata shi_Temp;
 code uint8_t voice_vol_tab[]=
 {
 	0x00,0x01,0x02,0x03,0x05,0x07,
@@ -76,11 +77,21 @@ void voice_in_timer(void)
 			{
 				case 0:		
           			VOIC_DATA(1); 
-					voice_50us_cnt_set = 160;
+					voice_50us_cnt_set = 400-1;
 					break;					
 				case 1:
-					VOIC_DATA(0); 
-					voice_50us_cnt_set = 20;			
+				case 3:
+				case 5:
+				case 7:
+				case 9:
+				case 11:
+				case 13:
+				case 15:
+					VOIC_DATA(0);
+					if(voice_send_data & 0x80)
+						voice_50us_cnt_set = 40;//2ms
+					else
+						voice_50us_cnt_set = 120;//6ms
 					break;
 				case 2:
 				case 4:
@@ -90,29 +101,16 @@ void voice_in_timer(void)
 				case 12:
 				case 14:
 				case 16:
-					VOIC_DATA(1);
+					VOIC_DATA(1); ; 
 					if(voice_send_data & 0x80)
-						voice_50us_cnt_set = 30;
+						voice_50us_cnt_set = 120;
 					else
-						voice_50us_cnt_set = 10;
-					break;
-				case 2+1:
-				case 4+1:
-				case 6+1:
-				case 8+1:
-				case 10+1:
-				case 12+1:
-				case 14+1:
-				case 16+1:
-					VOIC_DATA(0); ; 
-					if(voice_send_data & 0x80)
-						voice_50us_cnt_set = 10;
-					else
-						voice_50us_cnt_set =30;
+						voice_50us_cnt_set =40;
 					voice_send_data=voice_send_data<<1;
 					break;
 				case 17+1:
-						voice_50us_cnt_set = 200;
+                    VOIC_DATA(0);
+					voice_50us_cnt_set = 200;
 					break;
 				default:
 					VOIC_DATA(0);
@@ -148,14 +146,14 @@ void DealWith_Voice(void) //被主函数调用
 				EN_MUTE();
 				if(++cntSPAOn>25)
 				{
-				  CLR_AUCH();
+					CLR_AUCH();
 					SET_BT_POWER(); //置位PA11，对应蓝牙芯片的vbat脚
 					cntSPAOn=0;
 					Voice_Step++;
 				}
 				break;
 			case VOICE_STEP_INITI1:
-        UART1_init(); 
+				UART1_init(); 
 				SET_VOICE_POWER();
 				if(++cntSPAOn>50)
 				{
@@ -197,11 +195,14 @@ void DealWith_Voice(void) //被主函数调用
 							cur_spa_name=SPA_PAUSE;
 							Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
 						}
-					  else if((spa_name<=SPA_ZEN))
+					  else if((spa_name<=SPA_SONG12))
 						{
 							Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);
 						}
-						voice_send(cur_spa_name);	
+//						shi_Temp++;
+//						if(shi_Temp>0x0C)
+//							shi_Temp=0x00;
+						voice_send(cur_spa_name);//voice_send(cur_spa_name);	
 						cur_spa_name=spa_name;
 					}
 				}
@@ -210,7 +211,9 @@ void DealWith_Voice(void) //被主函数调用
 					if(!flag_voice_send)
 					{
 						spa_volume=sys_volume;
-            			set_voice_vol(sys_volume);
+//            			set_voice_vol(sys_volume);
+						bt_volume=sys_volume;
+						bt_send_cmd(BT_VOL); //串口发送音量信息到蓝牙模块端
 					}
 				}
 				else if((enableMute!=enableMute_bk)&&(!Uart0_SendString_3Step))

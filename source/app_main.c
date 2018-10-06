@@ -436,9 +436,9 @@ void app_main(void)
 //			enableMute=0;
 //			enable_SPApause=0;
 //			PlayMode=PLAY_MUSIC;
-//			if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
+//			if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_SONG12为枚举变量元素
 //			{
-//				spa_name=SPA_BROOK;
+//				spa_name=SPA_SONG1;
 //			}
 //		}
 //	while (1)

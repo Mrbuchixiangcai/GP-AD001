@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   VOICE_IC                                                              08/28/2018 08:45:52 PAGE 1   
+C51 COMPILER V9.00   VOICE_IC                                                              10/05/2018 16:42:22 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE VOICE_IC
@@ -20,290 +20,293 @@ line level    source
   10          
   11          
   12          //变量定义variable definition//
-  13          uint8_t idata voice_send_step; //语音发送步骤
-  14          uint8_t idata voice_send_data; //语音发送数据
-  15          uint8_t idata voice_50us_cnt; //50us计时
-  16          uint8_t idata voice_50us_cnt_set; //50us计时设计
-  17          uint8_t idata spa_cmd; //spa命令
-  18          uint8_t idata spa_volume; //音量
-  19          uint8_t idata cur_spa_name;
-  20          uint8_t idata cntSPAOn;
-  21          code uint8_t voice_vol_tab[]=
-  22          {
-  23                  0x00,0x01,0x02,0x03,0x05,0x07,
-  24                  0x09,0x0A,0x0C,0x0E,0x0F,
-  25          };
-  26          
-  27          //标志未定义flags definetion//
-  28          bit       gbVoice_Work;
-  29          bit   flag_voice_send; //语音发送标志
-  30          bit   enable_SPApause;//为1为暂停
-  31          
-  32          /*******************************************************************
-  33          函数原型：
-  34          输入参数：
-  35          输出参数：
-  36          函数功能：设置语音音量 
-  37          *******************************************************************/
-  38          void set_voice_vol(uint8_t vol) //设置语音音量 
-  39          {
-  40   1              voice_send(SPA_VOL15-voice_vol_tab[vol]);
-  41   1      }
-  42          
-  43          /*******************************************************************
-  44          函数原型：
-  45          输入参数：
-  46          输出参数：
-  47          函数功能：语音发送
-  48          *******************************************************************/
-  49          void voice_send(uint8_t key) //语音发送
-  50          {
-  51   1              if(!flag_voice_send)
-  52   1              {
-  53   2                      flag_voice_send = 1;
-  54   2                      voice_send_data = key-1;
-C51 COMPILER V9.00   VOICE_IC                                                              08/28/2018 08:45:52 PAGE 2   
+  13          uint8_t  idata voice_send_step; //语音发送步骤
+  14          uint8_t  idata voice_send_data; //语音发送数据
+  15          uint16_t idata voice_50us_cnt; //50us计时
+  16          uint16_t idata voice_50us_cnt_set; //50us计时设计
+  17          uint8_t  idata spa_cmd; //spa命令
+  18          uint8_t  idata spa_volume; //音量
+  19          uint8_t  idata cur_spa_name;
+  20          uint8_t  idata cntSPAOn;
+  21          uint8_t  idata shi_Temp;
+  22          code uint8_t voice_vol_tab[]=
+  23          {
+  24                  0x00,0x01,0x02,0x03,0x05,0x07,
+  25                  0x09,0x0A,0x0C,0x0E,0x0F,
+  26          };
+  27          
+  28          //标志未定义flags definetion//
+  29          bit       gbVoice_Work;
+  30          bit   flag_voice_send; //语音发送标志
+  31          bit   enable_SPApause;//为1为暂停
+  32          
+  33          /*******************************************************************
+  34          函数原型：
+  35          输入参数：
+  36          输出参数：
+  37          函数功能：设置语音音量 
+  38          *******************************************************************/
+  39          void set_voice_vol(uint8_t vol) //设置语音音量 
+  40          {
+  41   1              voice_send(SPA_VOL15-voice_vol_tab[vol]);
+  42   1      }
+  43          
+  44          /*******************************************************************
+  45          函数原型：
+  46          输入参数：
+  47          输出参数：
+  48          函数功能：语音发送
+  49          *******************************************************************/
+  50          void voice_send(uint8_t key) //语音发送
+  51          {
+  52   1              if(!flag_voice_send)
+  53   1              {
+  54   2                      flag_voice_send = 1;
+C51 COMPILER V9.00   VOICE_IC                                                              10/05/2018 16:42:22 PAGE 2   
 
-  55   2                      voice_send_step = 0;
-  56   2                      voice_50us_cnt =  0;
-  57   2                      VOIC_DATA(0); //端口电平置位//复位宏定义
-  58   2                      voice_50us_cnt_set =200;//change1
-  59   2              }
-  60   1      }
-  61          
-  62          /*******************************************************************
-  63          函数原型：
-  64          输入参数：
-  65          输出参数：
-  66          函数功能：语音发送时间及顺序
-  67          *******************************************************************/
-  68          void voice_in_timer(void)
-  69          {
-  70   1              if(flag_voice_send)
-  71   1              {
-  72   2                      if(++voice_50us_cnt >= voice_50us_cnt_set)
-  73   2                      {
-  74   3                              voice_50us_cnt = 0;
-  75   3                              switch(voice_send_step) //协议
-  76   3                              {
-  77   4                                      case 0:         
-  78   4                                      VOIC_DATA(1); 
-  79   4                                              voice_50us_cnt_set = 160;
-  80   4                                              break;                                  
-  81   4                                      case 1:
-  82   4                                              VOIC_DATA(0); 
-  83   4                                              voice_50us_cnt_set = 20;                        
-  84   4                                              break;
-  85   4                                      case 2:
-  86   4                                      case 4:
-  87   4                                      case 6:
-  88   4                                      case 8:
-  89   4                                      case 10:
-  90   4                                      case 12:
-  91   4                                      case 14:
-  92   4                                      case 16:
-  93   4                                              VOIC_DATA(1);
-  94   4                                              if(voice_send_data & 0x80)
-  95   4                                                      voice_50us_cnt_set = 30;
-  96   4                                              else
-  97   4                                                      voice_50us_cnt_set = 10;
-  98   4                                              break;
-  99   4                                      case 2+1:
- 100   4                                      case 4+1:
- 101   4                                      case 6+1:
- 102   4                                      case 8+1:
- 103   4                                      case 10+1:
- 104   4                                      case 12+1:
- 105   4                                      case 14+1:
- 106   4                                      case 16+1:
- 107   4                                              VOIC_DATA(0); ; 
- 108   4                                              if(voice_send_data & 0x80)
- 109   4                                                      voice_50us_cnt_set = 10;
- 110   4                                              else
- 111   4                                                      voice_50us_cnt_set =30;
- 112   4                                              voice_send_data=voice_send_data<<1;
- 113   4                                              break;
- 114   4                                      case 17+1:
- 115   4                                                      voice_50us_cnt_set = 200;
- 116   4                                              break;
-C51 COMPILER V9.00   VOICE_IC                                                              08/28/2018 08:45:52 PAGE 3   
+  55   2                      voice_send_data = key-1;
+  56   2                      voice_send_step = 0;
+  57   2                      voice_50us_cnt =  0;
+  58   2                      VOIC_DATA(0); //端口电平置位//复位宏定义
+  59   2                      voice_50us_cnt_set =200;//change1
+  60   2              }
+  61   1      }
+  62          
+  63          /*******************************************************************
+  64          函数原型：
+  65          输入参数：
+  66          输出参数：
+  67          函数功能：语音发送时间及顺序
+  68          *******************************************************************/
+  69          void voice_in_timer(void)
+  70          {
+  71   1              if(flag_voice_send)
+  72   1              {
+  73   2                      if(++voice_50us_cnt >= voice_50us_cnt_set)
+  74   2                      {
+  75   3                              voice_50us_cnt = 0;
+  76   3                              switch(voice_send_step) //协议
+  77   3                              {
+  78   4                                      case 0:         
+  79   4                                      VOIC_DATA(1); 
+  80   4                                              voice_50us_cnt_set = 400-1;
+  81   4                                              break;                                  
+  82   4                                      case 1:
+  83   4                                      case 3:
+  84   4                                      case 5:
+  85   4                                      case 7:
+  86   4                                      case 9:
+  87   4                                      case 11:
+  88   4                                      case 13:
+  89   4                                      case 15:
+  90   4                                              VOIC_DATA(0);
+  91   4                                              if(voice_send_data & 0x80)
+  92   4                                                      voice_50us_cnt_set = 40;//2ms
+  93   4                                              else
+  94   4                                                      voice_50us_cnt_set = 120;//6ms
+  95   4                                              break;
+  96   4                                      case 2:
+  97   4                                      case 4:
+  98   4                                      case 6:
+  99   4                                      case 8:
+ 100   4                                      case 10:
+ 101   4                                      case 12:
+ 102   4                                      case 14:
+ 103   4                                      case 16:
+ 104   4                                              VOIC_DATA(1); ; 
+ 105   4                                              if(voice_send_data & 0x80)
+ 106   4                                                      voice_50us_cnt_set = 120;
+ 107   4                                              else
+ 108   4                                                      voice_50us_cnt_set =40;
+ 109   4                                              voice_send_data=voice_send_data<<1;
+ 110   4                                              break;
+ 111   4                                      case 17+1:
+ 112   4                          VOIC_DATA(0);
+ 113   4                                              voice_50us_cnt_set = 200;
+ 114   4                                              break;
+ 115   4                                      default:
+ 116   4                                              VOIC_DATA(0);
+C51 COMPILER V9.00   VOICE_IC                                                              10/05/2018 16:42:22 PAGE 3   
 
- 117   4                                      default:
- 118   4                                              VOIC_DATA(0);
- 119   4                                              flag_voice_send = 0;
- 120   4                                              break;
- 121   4                              }
- 122   3                              voice_send_step++;
- 123   3                      }       
- 124   2              }
- 125   1      }
- 126          
- 127          /*******************************************************************
- 128          函数原型：
- 129          输入参数：
- 130          输出参数：
- 131          函数功能：被主函数调用
- 132          *******************************************************************/
- 133          void DealWith_Voice(void) //被主函数调用
- 134          {
- 135   1              if(PlayMode == PLAY_MUSIC)
- 136   1              {
- 137   2                      if(gbVoice_Work==0)
- 138   2                      { //类似于初始化，用于刷新数据
- 139   3                              cntSPAOn=0;
- 140   3                              cur_spa_name=~spa_name;
- 141   3                              spa_volume  =~sys_volume; 
- 142   3                              Voice_Step=VOICE_STEP_START;
- 143   3                      }
- 144   2                      gbVoice_Work=1; 
- 145   2                      switch(Voice_Step)
- 146   2                      {
- 147   3                              case VOICE_STEP_START:
- 148   3                                      EN_MUTE();
- 149   3                                      if(++cntSPAOn>25)
- 150   3                                      {
- 151   4                                        CLR_AUCH();
- 152   4                                              SET_BT_POWER(); //置位PA11，对应蓝牙芯片的vbat脚
- 153   4                                              cntSPAOn=0;
- 154   4                                              Voice_Step++;
- 155   4                                      }
- 156   3                                      break;
- 157   3                              case VOICE_STEP_INITI1:
- 158   3              UART1_init(); 
- 159   3                                      SET_VOICE_POWER();
- 160   3                                      if(++cntSPAOn>50)
- 161   3                                      {
- 162   4                                              cntSPAOn=0;
- 163   4                                              Voice_Step++;
- 164   4                                      }
- 165   3                                      break;
- 166   3                              case VOICE_STEP_INITI2:
- 167   3                                      if(++cntSPAOn>200)
- 168   3                                      {
- 169   4                                              Voice_Step++;
- 170   4                                              cntSPAOn=0;
- 171   4                                      }
- 172   3                                      break;
- 173   3                              case VOICE_STEP_INITI3:
- 174   3                                      Voice_Step++;
- 175   3                                      break;
- 176   3                              default: 
- 177   3                                      if(spa_cmd)
- 178   3                                      { 
-C51 COMPILER V9.00   VOICE_IC                                                              08/28/2018 08:45:52 PAGE 4   
+ 117   4                                              flag_voice_send = 0;
+ 118   4                                              break;
+ 119   4                              }
+ 120   3                              voice_send_step++;
+ 121   3                      }       
+ 122   2              }
+ 123   1      }
+ 124          
+ 125          /*******************************************************************
+ 126          函数原型：
+ 127          输入参数：
+ 128          输出参数：
+ 129          函数功能：被主函数调用
+ 130          *******************************************************************/
+ 131          void DealWith_Voice(void) //被主函数调用
+ 132          {
+ 133   1              if(PlayMode == PLAY_MUSIC)
+ 134   1              {
+ 135   2                      if(gbVoice_Work==0)
+ 136   2                      { //类似于初始化，用于刷新数据
+ 137   3                              cntSPAOn=0;
+ 138   3                              cur_spa_name=~spa_name;
+ 139   3                              spa_volume  =~sys_volume; 
+ 140   3                              Voice_Step=VOICE_STEP_START;
+ 141   3                      }
+ 142   2                      gbVoice_Work=1; 
+ 143   2                      switch(Voice_Step)
+ 144   2                      {
+ 145   3                              case VOICE_STEP_START:
+ 146   3                                      EN_MUTE();
+ 147   3                                      if(++cntSPAOn>25)
+ 148   3                                      {
+ 149   4                                              CLR_AUCH();
+ 150   4                                              SET_BT_POWER(); //置位PA11，对应蓝牙芯片的vbat脚
+ 151   4                                              cntSPAOn=0;
+ 152   4                                              Voice_Step++;
+ 153   4                                      }
+ 154   3                                      break;
+ 155   3                              case VOICE_STEP_INITI1:
+ 156   3                                      UART1_init(); 
+ 157   3                                      SET_VOICE_POWER();
+ 158   3                                      if(++cntSPAOn>50)
+ 159   3                                      {
+ 160   4                                              cntSPAOn=0;
+ 161   4                                              Voice_Step++;
+ 162   4                                      }
+ 163   3                                      break;
+ 164   3                              case VOICE_STEP_INITI2:
+ 165   3                                      if(++cntSPAOn>200)
+ 166   3                                      {
+ 167   4                                              Voice_Step++;
+ 168   4                                              cntSPAOn=0;
+ 169   4                                      }
+ 170   3                                      break;
+ 171   3                              case VOICE_STEP_INITI3:
+ 172   3                                      Voice_Step++;
+ 173   3                                      break;
+ 174   3                              default: 
+ 175   3                                      if(spa_cmd)
+ 176   3                                      { 
+ 177   4                                              if(!flag_voice_send) 
+ 178   4                                              {
+C51 COMPILER V9.00   VOICE_IC                                                              10/05/2018 16:42:22 PAGE 4   
 
- 179   4                                              if(!flag_voice_send) 
- 180   4                                              {
- 181   5                                                      if(spa_cmd==SPA_PAUSE)
- 182   5                                                              Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
- 183   5                                                      if(spa_cmd==SPA_PALY)
- 184   5                                                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);
- 185   5                                                      voice_send(spa_cmd);
- 186   5                                                      spa_cmd=0;
- 187   5                                              }
- 188   4                                      } 
- 189   3                                      else if(spa_name!=cur_spa_name) 
- 190   3                                      {
- 191   4                                              if(!flag_voice_send) 
- 192   4                                              {
- 193   5                                                      cur_spa_name=spa_name;
- 194   5                                                      if((spa_name==SPA_OFF)||(spa_name==SPA_PAUSE))
- 195   5                                                      {
- 196   6                                                              enable_SPApause=1;
- 197   6                                                              cur_spa_name=SPA_PAUSE;
- 198   6                                                              Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
- 199   6                                                      }
- 200   5                                                else if((spa_name<=SPA_ZEN))
- 201   5                                                      {
- 202   6                                                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);
- 203   6                                                      }
- 204   5                                                      voice_send(cur_spa_name);       
- 205   5                                                      cur_spa_name=spa_name;
- 206   5                                              }
- 207   4                                      }
- 208   3                                      else if(sys_volume!=spa_volume)
- 209   3                                      {
- 210   4                                              if(!flag_voice_send)
- 211   4                                              {
- 212   5                                                      spa_volume=sys_volume;
- 213   5                                      set_voice_vol(sys_volume);
- 214   5                                              }
- 215   4                                      }
- 216   3                                      else if((enableMute!=enableMute_bk)&&(!Uart0_SendString_3Step))
- 217   3                                      {
- 218   4                                              enableMute_bk=enableMute;
- 219   4                                              if(enableMute)
- 220   4                                              {
- 221   5                                                      Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
- 222   5                                              }
- 223   4                                              else
- 224   4                                              {
- 225   5                                                      Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);
- 226   5                                              }
- 227   4                                      }
- 228   3                                      else
- 229   3                                      {
- 230   4                                       if((enable_SPApause) || (enableMute) || (sys_volume==0))
- 231   4                                              EN_MUTE();
- 232   4                                       else 
- 233   4                                              DE_MUTE();
- 234   4                                      }
- 235   3                                      break;
- 236   3                      }
- 237   2              }       
- 238   1              else
- 239   1              {
- 240   2                      if(gbVoice_Work!=0)
-C51 COMPILER V9.00   VOICE_IC                                                              08/28/2018 08:45:52 PAGE 5   
+ 179   5                                                      if(spa_cmd==SPA_PAUSE)
+ 180   5                                                              Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
+ 181   5                                                      if(spa_cmd==SPA_PALY)
+ 182   5                                                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);
+ 183   5                                                      voice_send(spa_cmd);
+ 184   5                                                      spa_cmd=0;
+ 185   5                                              }
+ 186   4                                      } 
+ 187   3                                      else if(spa_name!=cur_spa_name) 
+ 188   3                                      {
+ 189   4                                              if(!flag_voice_send) 
+ 190   4                                              {
+ 191   5                                                      cur_spa_name=spa_name;
+ 192   5                                                      if((spa_name==SPA_OFF)||(spa_name==SPA_PAUSE))
+ 193   5                                                      {
+ 194   6                                                              enable_SPApause=1;
+ 195   6                                                              cur_spa_name=SPA_PAUSE;
+ 196   6                                                              Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
+ 197   6                                                      }
+ 198   5                                                else if((spa_name<=SPA_SONG12))
+ 199   5                                                      {
+ 200   6                                                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);
+ 201   6                                                      }
+ 202   5      //                                              shi_Temp++;
+ 203   5      //                                              if(shi_Temp>0x0C)
+ 204   5      //                                                      shi_Temp=0x00;
+ 205   5                                                      voice_send(cur_spa_name);//voice_send(cur_spa_name);    
+ 206   5                                                      cur_spa_name=spa_name;
+ 207   5                                              }
+ 208   4                                      }
+ 209   3                                      else if(sys_volume!=spa_volume)
+ 210   3                                      {
+ 211   4                                              if(!flag_voice_send)
+ 212   4                                              {
+ 213   5                                                      spa_volume=sys_volume;
+ 214   5      //                              set_voice_vol(sys_volume);
+ 215   5                                                      bt_volume=sys_volume;
+ 216   5                                                      bt_send_cmd(BT_VOL); //串口发送音量信息到蓝牙模块端
+ 217   5                                              }
+ 218   4                                      }
+ 219   3                                      else if((enableMute!=enableMute_bk)&&(!Uart0_SendString_3Step))
+ 220   3                                      {
+ 221   4                                              enableMute_bk=enableMute;
+ 222   4                                              if(enableMute)
+ 223   4                                              {
+ 224   5                                                      Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
+ 225   5                                              }
+ 226   4                                              else
+ 227   4                                              {
+ 228   5                                                      Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);
+ 229   5                                              }
+ 230   4                                      }
+ 231   3                                      else
+ 232   3                                      {
+ 233   4                                       if((enable_SPApause) || (enableMute) || (sys_volume==0))
+ 234   4                                              EN_MUTE();
+ 235   4                                       else 
+ 236   4                                              DE_MUTE();
+ 237   4                                      }
+ 238   3                                      break;
+ 239   3                      }
+ 240   2              }       
+C51 COMPILER V9.00   VOICE_IC                                                              10/05/2018 16:42:22 PAGE 5   
 
- 241   2                      {
- 242   3                              Voice_Step=VOICE_STEP_START; //为下一次发送做准备，所以赋值为start
- 243   3                      }
- 244   2                      gbVoice_Work=0;
- 245   2                      switch(Voice_Step)
- 246   2                      {
- 247   3                              case VOICE_STEP_START:
- 248   3                                      if(!flag_bt_conn)
- 249   3                                              EN_MUTE();
- 250   3                                      Voice_Step++;
- 251   3                                      break;
- 252   3                              case VOICE_STEP_INITI1:
- 253   3                                      if(++cntSPAOn>20)
- 254   3                                      {
- 255   4                                              cntSPAOn=0;  
- 256   4                                        SET_VOICE_POWER();
- 257   4                                              Voice_Step++;
- 258   4                                      }
- 259   3                                      break;
- 260   3                              case VOICE_STEP_INITI2:
- 261   3                                      if(!Uart0_SendString_3Step)
- 262   3                                      {
- 263   4                                              Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
- 264   4                                              Voice_Step++;
- 265   4                                      }
- 266   3                                      break;
- 267   3                              case VOICE_STEP_INITI3:
- 268   3                                      if(!flag_bt_conn)
- 269   3                                              Voice_Step++;
- 270   3                                      break;
- 271   3                              default: 
- 272   3                                      break;
- 273   3                      }
- 274   2              }
- 275   1      }
- 276          
- 277          
- 278          
+ 241   1              else
+ 242   1              {
+ 243   2                      if(gbVoice_Work!=0)
+ 244   2                      {
+ 245   3                              Voice_Step=VOICE_STEP_START; //为下一次发送做准备，所以赋值为start
+ 246   3                      }
+ 247   2                      gbVoice_Work=0;
+ 248   2                      switch(Voice_Step)
+ 249   2                      {
+ 250   3                              case VOICE_STEP_START:
+ 251   3                                      if(!flag_bt_conn)
+ 252   3                                              EN_MUTE();
+ 253   3                                      Voice_Step++;
+ 254   3                                      break;
+ 255   3                              case VOICE_STEP_INITI1:
+ 256   3                                      if(++cntSPAOn>20)
+ 257   3                                      {
+ 258   4                                              cntSPAOn=0;  
+ 259   4                                        SET_VOICE_POWER();
+ 260   4                                              Voice_Step++;
+ 261   4                                      }
+ 262   3                                      break;
+ 263   3                              case VOICE_STEP_INITI2:
+ 264   3                                      if(!Uart0_SendString_3Step)
+ 265   3                                      {
+ 266   4                                              Uart0Transmit_SendString(&SPASongs_Num_Table[0][0]);
+ 267   4                                              Voice_Step++;
+ 268   4                                      }
+ 269   3                                      break;
+ 270   3                              case VOICE_STEP_INITI3:
+ 271   3                                      if(!flag_bt_conn)
+ 272   3                                              Voice_Step++;
+ 273   3                                      break;
+ 274   3                              default: 
+ 275   3                                      break;
+ 276   3                      }
+ 277   2              }
+ 278   1      }
  279          
+ 280          
+ 281          
+ 282          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    656    ----
+   CODE SIZE        =    689    ----
    CONSTANT SIZE    =     11    ----
    XDATA SIZE       =      3    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-   IDATA SIZE       =      8    ----
+   IDATA SIZE       =     11    ----
    BIT SIZE         =      3    ----
 END OF MODULE INFORMATION.
 

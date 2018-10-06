@@ -236,9 +236,9 @@ void KeyComMsg(void)
 						enableMute=0;
 						enable_SPApause=0;
 						PlayMode=PLAY_MUSIC;
-						if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
+						if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_SONG12为枚举变量元素
 						{
-							spa_name=SPA_BROOK;
+							spa_name=SPA_SONG1;
 						}
 					}
 					else if(PlayMode==PLAY_MUSIC) //第二次进入
@@ -252,16 +252,16 @@ void KeyComMsg(void)
 						}
 						enable_SPApause=0;
 						++spa_name;
-						if(spa_name == SPA_OFF)
-						{
-							spa_name= SPA_BROOK;
-	//						if(color_mode==COLOR_OFF)
-	//							TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 	
-	//					    PlayMode=PLAY_ON;
-	//						spa_name=SPA_OFF;
-	//						enable_SPApause=1;
-						}
-						else if (spa_name>SPA_ZEN)
+//						if(spa_name == SPA_OFF)
+//						{
+//							spa_name= SPA_SONG1;
+//	//						if(color_mode==COLOR_OFF)
+//	//							TimerMode=cntTimer=alarm.cntTimer=TIMER_OFF; 	
+//	//					    PlayMode=PLAY_ON;
+//	//						spa_name=SPA_OFF;
+//	//						enable_SPApause=1;
+//						}
+						if (spa_name>SPA_SONG12)
 						{
 							spa_name = SPA_OFF;
 						}

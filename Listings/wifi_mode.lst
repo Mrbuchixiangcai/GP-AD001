@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 1   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE WIFI_MODE
@@ -62,7 +62,7 @@ line level    source
   52          char char_to_hex(char indata1,char indata2)
   53          {
   54   1              if(indata1>='A')
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 2   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 2   
 
   55   1                      indata1=((indata1-'A')+0x0A);
   56   1              else
@@ -126,7 +126,7 @@ line level    source
  114   1              uint8_t tmp;
  115   1              tmp = indata >> 8;
  116   1              if (tmp >= 0x0A)
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 3   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 3   
 
  117   1                      *p = ((tmp - 0x0A) + 'A');
  118   1              else
@@ -190,7 +190,7 @@ line level    source
  174          void GP389_OFF(void) //
  175          {
  176   1              PlayMode_bk=PlayMode;
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 4   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 4   
 
  177   1              PlayMode=PLAY_OFF;
  178   1              sys_volume_bk=sys_volume;
@@ -254,7 +254,7 @@ line level    source
  234   1       //  0x80 代表是否重复闹铃
  235   1       //  0x01 代表周一启动闹铃，但是只响一次，这一次是七天之内的，
  236   1       //  0xFF 代表闹铃全开，并且每周重复，以此类推
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 5   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 5   
 
  237   1       //  BIT            7       6    5    4    3    2    1    0
  238   1       //  星期x   repeat  日  六  五  四  三  二  一  （注：repeat为每周都重复闹铃，否则只响一次，这一次
@@ -318,7 +318,7 @@ line level    source
  290          输入参数：
  291          输出参数：
  292          函数功能：串口接收到的命令协议和预定的协议对比确定是哪个进而执行操作，否则无操作
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 6   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 6   
 
  293          *******************************************************************/
  294          void Wifi_CommandDeal(char *Uart0_Receive)
@@ -382,7 +382,7 @@ line level    source
  350   1      //              else
  351   1      //               Flag_alarm_wake_only=0;
  352   1      //      }
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 7   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 7   
 
  353   1      //      else if(char_compare(WIFI_CMD,"{AlarmOnOff")==0)  //闹钟功能在001和003中屏蔽了
  354   1      //      {//$$${AlarmOnOff:[00,00,10/21/33/12/01/1D/01]}\r\n
@@ -446,7 +446,7 @@ line level    source
  412   2                              curG_val=0;
  413   2                              curB_val=0;
  414   2                              Light_Brightness=((Light_Brightness==0)?1:Light_Brightness);
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 8   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 8   
 
  415   2                              return;
  416   2                      } 
@@ -500,8 +500,8 @@ line level    source
  464   2                              PlayMode=PLAY_MUSIC;
  465   2                              enableMute=0;     //解除静音
  466   2                              enable_SPApause=0;//为0表示播放
- 467   2                              if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_ZEN为枚举变量元素
- 468   2                                      spa_name=SPA_BROOK;
+ 467   2                              if(spa_name==SPA_OFF) //spa_name为枚举变量类型，SPA_SONG12为枚举变量元素
+ 468   2                                      spa_name=SPA_SONG1;
  469   2                              else
  470   2                                      spa_cmd=SPA_PALY;                       
  471   2                              /*if(PlayMode==PLAY_BT)
@@ -510,7 +510,7 @@ line level    source
  474   2                                      {
  475   2                                              bt_cmd=BT_PALY;//协议里面是一条命令，所以播放/暂停都要发送这条
  476   2                                      }
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 9   
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 9   
 
  477   2                              }*/
  478   2                              return;
@@ -574,7 +574,7 @@ line level    source
  532   1      //              {//$$${Program:[00,01,01,00,FFFFFF,03,0A,00,1E]}\r\n
  533   1      //                      Uart0Transmit_SendString(Uart0_Receive);
  534   1      //                      if(PlayMode==PLAY_OFF)
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 10  
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 10  
 
  535   1      //                              GP389_ON_APP();
  536   1      //                      if(alarm.Runing)
@@ -638,7 +638,7 @@ line level    source
  590   3                              IE3 |= 0x04;            // Enable WT interrupt
  591   3                              Falg_TimeSync_Allow=0;//接收到同步信息就不再发送请求同步，所以置为0
  592   3                              return;
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 11  
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 11  
 
  593   3                      }       
  594   2                      else if(char_compare(WIFI_CMD, "Turn off unit")==0) 
@@ -665,7 +665,7 @@ line level    source
  615   2                      else if (char_compare(WIFI_CMD, "previous song\r\n") == 0)
  616   2                      {//$$$previous song\r\n 上一首歌  
  617   3                              spa_cmd = SPA_PALY;
- 618   3                              if ((spa_name > SPA_OFF) && (spa_name <= SPA_ZEN))
+ 618   3                              if ((spa_name > SPA_OFF) && (spa_name <= SPA_SONG12))
  619   3                              {
  620   4                                      
  621   4                                      spa_name--;
@@ -673,7 +673,7 @@ line level    source
  623   3                              else
  624   3                                      if (spa_name == SPA_OFF)//形成循环
  625   3                                      {
- 626   4                                              spa_name = SPA_ZEN;
+ 626   4                                              spa_name = SPA_SONG12;
  627   4                                              enableMute=0; //解mute
  628   4                                              if(enable_SPApause)
  629   4                                              {
@@ -687,7 +687,7 @@ line level    source
  637   2                      else if (char_compare(WIFI_CMD, "next song\r\n") == 0)
  638   2                      {//$$$next song\r\n 下一首歌
  639   3                              spa_cmd = SPA_PALY;
- 640   3                              if ((spa_name >= SPA_OFF) && (spa_name < SPA_ZEN))
+ 640   3                              if ((spa_name >= SPA_OFF) && (spa_name < SPA_SONG12))
  641   3                              {
  642   4                                      spa_name++;
  643   4                                      enableMute=0; //解mute
@@ -698,11 +698,11 @@ line level    source
  648   5                                      }
  649   4                              }
  650   3                              else
- 651   3                                      if (spa_name == SPA_ZEN) //形成循环
+ 651   3                                      if (spa_name == SPA_SONG12) //形成循环
  652   3                                              spa_name = SPA_OFF;
  653   3                              Uart0Transmit_SendString(&SPASongs_Num_Table[spa_name][0]);//每次更改音乐就发给app同步
  654   3                              return;
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 12  
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 12  
 
  655   3                      }
  656   2                      else if(char_compare(WIFI_CMD, "music pause")==0)
@@ -766,7 +766,7 @@ line level    source
  714   3                              return;
  715   3                      }
  716   2                      else if(char_compare(WIFI_CMD, "Set Timer")==0)//ok
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 13  
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 13  
 
  717   2                      {//$$$Set Timer XXX\r\n(030/060/090)
  718   3      //                      if(alarm.Runing)  //闹钟功能在001和003中屏蔽了
@@ -830,7 +830,7 @@ line level    source
  776   3                       //                     {
  777   3                       //                             GP389_OFF_AND_AlarmOFF();
  778   3                       //                             return;
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 14  
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 14  
 
  779   3                       //                     }
  780   3                              AtomizationMode1 = char_to_bcd(WIFI_CMD[18], WIFI_CMD[19]);
@@ -894,7 +894,7 @@ line level    source
  834   3                              for(i=0;i<UART0_LEN_BUFFER;i++)
  835   3                                      Uart0_Receive[i]=0x00;
  836   3                              for(i=0;i<55;i++)
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 15  
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 15  
 
  837   3                                      Uart0_Receive[i]=respNorGpSta[i];
  838   3                              hex_to_char(&Uart0_Receive[14],1);//在这里是开机
@@ -958,7 +958,7 @@ line level    source
  893   3                              hex_to_char(&Uart0_Receive[17], ((PlayMode == PLAY_MUSIC) ? spa_name : 7));//首先判断是不是音乐模式，如
              -果是，是第几首歌，如果不是就返回暂停，7
  894   3                              hex_to_char(&Uart0_Receive[20], (color_mode == COLOR_OFF) ? 0 : 1);
-C51 COMPILER V9.00   WIFI_MODE                                                             08/28/2018 08:45:53 PAGE 16  
+C51 COMPILER V9.00   WIFI_MODE                                                             10/05/2018 16:42:22 PAGE 16  
 
  895   3                              hex_to_char(&Uart0_Receive[23], (color_mode == COLOR_CHANGE) ? 0 : 1);//是否是彩灯模式（循环渐变模式）
  896   3                              hex_to_char(&Uart0_Receive[26], userR_val);
